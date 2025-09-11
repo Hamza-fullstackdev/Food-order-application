@@ -11,16 +11,15 @@ class SplashScreen extends StatefulWidget{
 }
 
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
-  late AnimationController _controller ;
+
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this,duration: Duration(seconds: 3),animationBehavior: AnimationBehavior.normal);
-    _controller.repeat(reverse: false,min: 1,max: 1);
-
+    
     Future.delayed(Duration(seconds: 4),(){
       if(mounted){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) =>  MyHomePage(title: "Welcome to HomePage")));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => 
+           MyHomePage(title: "Welcome to HomePage")));
       }
     });
     
@@ -33,6 +32,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       decoration: BoxDecoration(
       color: AppContants.whiteColor,
       image: DecorationImage(
+        fit: BoxFit.cover,
       image: AssetImage("assets/images/bg_image.png"))
       ),
       child: Center(
@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: DefaultTextStyle(style: TextStyle(fontSize: 24,color: AppContants.redColor,fontWeight: FontWeight.bold), child: 
+              child: DefaultTextStyle(style: TextStyle(fontSize: 48,color: AppContants.redColor,fontWeight: FontWeight.bold), child: 
               AnimatedTextKit(animatedTexts: [
                 TyperAnimatedText("Food Couriers"),
               ]),),
