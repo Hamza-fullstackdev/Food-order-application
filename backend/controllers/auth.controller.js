@@ -112,3 +112,14 @@ export const login = async (req, res, next) => {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };
+
+export const logout = async (req, res, next) => {
+  const user = req.user;
+  try {
+    user.refreshToken = [];
+    await user.save();
+    res.status(200).json({ status: 200, message: "Logged out successfully" });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
