@@ -38,8 +38,8 @@ const userScheama = new mongoose.Schema(
     },
     refreshToken: [
       {
-        type: String,
-        expiresAt: Date,
+        token: { type: String, required: true },
+        expiresAt: { type: Date, required: true },
       },
     ],
   },
