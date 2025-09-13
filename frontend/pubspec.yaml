@@ -37,6 +37,7 @@ dependencies:
   animated_text_kit: ^4.2.3
   animations:
   flutter_animate:
+  google_fonts: 
   lottie:
   smooth_page_indicator:
 
