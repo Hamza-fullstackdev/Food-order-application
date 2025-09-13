@@ -5,6 +5,8 @@ import { hashPassword, comparePassword } from "../utils/hashedPassword.js";
 import generateAccessToken from "../utils/generateAccessToken.js";
 import generateRefreshToken from "../utils/generateRefreshToken.js";
 import User from "../models/User.model.js";
+import jwt from "jsonwebtoken";
+import { config } from "../utils/config.js";
 
 export const register = async (req, res, next) => {
   const { name, email, password, phoneNumber, profileImage, isAdmin } =
@@ -109,6 +111,48 @@ export const login = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const logout = async (req, res, next) => {
+  const user = req.user;
+  try {
+    user.refreshToken = [];
+    await user.save();
+    res.status(200).json({ status: 200, message: "Logged out successfully" });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const refreshToken = async (req, res, next) => {
+  const refreshToken = req.headers.authorization.split(" ")[1];
+  if (!refreshToken) {
+    return next(errorHandler(400, "Refresh token is required"));
+  }
+  try {
+    const decoded = jwt.verify(refreshToken, config.JWT_SECRET_KEY);
+    const user = await User.findOne({ _id: decoded.userId });
+    if (!user) {
+      return next(errorHandler(400, "User not found"));
+    }
+    const newAccessToken = await generateAccessToken(user._id);
+    res.status(200).json({
+      status: 200,
+      message: "Token refreshed successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        profileImage: user.profileImage,
+        isAdmin: user.isAdmin,
+        refreshToken,
+        accessToken: newAccessToken,
+      },
+    });
+  } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };
