@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/utils/app_contants.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class TextView extends StatelessWidget{
+class TextView extends StatelessWidget {
   final String text;
   final color;
   final double size;
@@ -18,7 +19,7 @@ class TextView extends StatelessWidget{
     return Text(
       textAlign: textAlignment ? TextAlign.center : TextAlign.start,
       text,
-      style: TextStyle(
+      style: GoogleFonts.poppins(
         color: color,
         fontSize: size,
         fontWeight: FontWeight.values[weight ~/100 - 1]

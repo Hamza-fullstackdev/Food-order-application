@@ -8,6 +8,7 @@ const userScheama = new mongoose.Schema(
       trim: true,
       minlength: [3, "Name must be at least 3 characters long"],
       maxlength: [25, "Name cannot exceed 25 characters"],
+      
     },
     email: {
       type: String,
@@ -38,8 +39,8 @@ const userScheama = new mongoose.Schema(
     },
     refreshToken: [
       {
-        type: String,
-        expiresAt: Date,
+        token: { type: String, required: true },
+        expiresAt: { type: Date, required: true },
       },
     ],
   },

@@ -13,7 +13,8 @@ let isConnected = false;
 
 export const connectToDatabase = async () => {
   if (isConnected) {
-    return;
+    return;  
+
   }
 
   try {
