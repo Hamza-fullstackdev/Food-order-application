@@ -5,12 +5,12 @@ class TextView extends StatelessWidget{
   final String text;
   final color;
   final double size;
-  final bool bold;
+  final int weight;
   final bool textAlignment;
 
   const TextView({super.key,required this.text,
-   this.color = AppContants.blackColor
-  ,this.bold = false,
+   this.color = AppContants.blackColor,
+   this.weight = 300,
   this.size = 18,
   this.textAlignment = false});
   @override
@@ -21,7 +21,7 @@ class TextView extends StatelessWidget{
       style: TextStyle(
         color: color,
         fontSize: size,
-        fontWeight: bold ? FontWeight.bold : FontWeight.normal 
+        fontWeight: FontWeight.values[weight ~/100 - 1]
       ),
     );
   }
