@@ -17,6 +17,7 @@ class TextView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
+      
       textAlign: textAlignment ? TextAlign.center : TextAlign.start,
       text,
       style: GoogleFonts.poppins(

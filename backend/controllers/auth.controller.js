@@ -127,17 +127,42 @@ export const logout = async (req, res, next) => {
 };
 
 export const refreshToken = async (req, res, next) => {
-  const refreshToken = req.headers.authorization.split(" ")[1];
-  if (!refreshToken) {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
     return next(errorHandler(400, "Refresh token is required"));
   }
+
   try {
-    const decoded = jwt.verify(refreshToken, config.JWT_SECRET_KEY);
-    const user = await User.findOne({ _id: decoded.userId });
+    const decoded = jwt.verify(token, config.JWT_SECRET_KEY);
+    const user = await User.findById(decoded.userId);
+
     if (!user) {
-      return next(errorHandler(400, "User not found"));
+      return next(errorHandler(404, "User not found"));
     }
-    const newAccessToken = await generateAccessToken(user._id);
+
+    const storedToken = user.refreshToken[0];
+
+    if (!storedToken || storedToken.token !== token) {
+      return next(errorHandler(403, "Invalid refresh token"));
+    }
+
+    if (new Date() > storedToken.expiresAt) {
+      user.refreshToken = [];
+      await user.save();
+      return next(
+        errorHandler(401, "Refresh token expired, please login again")
+      );
+    }
+
+    const refreshToken = await generateRefreshToken(user._id);
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7);
+
+    user.refreshToken = [{ token: refreshToken, expiresAt }];
+    await user.save();
+
+    const accessToken = await generateAccessToken(user._id);
+
     res.status(200).json({
       status: 200,
       message: "Token refreshed successfully",
@@ -149,9 +174,20 @@ export const refreshToken = async (req, res, next) => {
         profileImage: user.profileImage,
         isAdmin: user.isAdmin,
         refreshToken,
-        accessToken: newAccessToken,
+        accessToken,
       },
     });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  const user = req.user;
+
+  try {
+    await User.findByIdAndDelete(user._id);
+    res.status(200).json({ status: 200, message: "User deleted successfully" });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
