@@ -44,3 +44,13 @@ export const getSingleCategory = async (req, res, next) => {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };
+
+export const deleteCategory = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await Category.findByIdAndDelete(id);
+    res.status(200).json({ status: 200, message: "Category deleted successfully" });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};

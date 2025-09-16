@@ -61,3 +61,27 @@ export const getSingleSubcategory = async (req, res, next) => {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };
+
+export const getBycategory = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const subcategories = await Subcategory.find({ categoryId: id }).select(
+      "-categoryId"
+    );
+    res.status(200).json({ status: 200, subcategories });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const deleteSubcategory = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await Subcategory.findByIdAndDelete(id);
+    res
+      .status(200)
+      .json({ status: 200, message: "Subcategory deleted successfully" });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};

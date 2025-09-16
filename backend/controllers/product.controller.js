@@ -3,7 +3,14 @@ import errorHandler from "../middleware/error.middleware.js";
 import uploadImage from "../utils/upload.js";
 
 export const addProduct = async (req, res, next) => {
-  const { name, shortDescription, description, price, categoryId, subcategoryId } = req.body;
+  const {
+    name,
+    shortDescription,
+    description,
+    price,
+    categoryId,
+    subcategoryId,
+  } = req.body;
   const userId = req.user._id;
 
   if (!name || !shortDescription || !description || !price) {
@@ -33,6 +40,25 @@ export const addProduct = async (req, res, next) => {
   }
 };
 
+export const getByCategory = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const products = await Product.find({ categoryId: id });
+    res.status(200).json({ status: 200, products });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const getBySubCategory = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const products = await Product.find({ subcategoryId: id });
+    res.status(200).json({ status: 200, products });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
 export const getAllProducts = async (req, res, next) => {
   try {
     const products = await Product.find({});
@@ -57,6 +83,16 @@ export const getAllProductsByUser = async (req, res, next) => {
   try {
     const products = await Product.find({ userId });
     res.status(200).json({ status: 200, products });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const deleteProduct = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await Product.findByIdAndDelete(id);
+    res.status(200).json({ status: 200, message: "Product deleted successfully" });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
