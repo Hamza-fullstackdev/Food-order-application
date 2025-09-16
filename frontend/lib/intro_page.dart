@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Repos/auth_provider.dart';
-import 'package:frontend/homeScreen.dart';
+import 'package:frontend/home_screen.dart';
 import 'package:frontend/utils/app_contants.dart';
 import 'package:frontend/utils/common_button.dart';
 import 'package:frontend/utils/text_view.dart';
@@ -15,22 +15,36 @@ class IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<IntroPage> {
-  late final GlobalKey _formKey;
   late PageController _controller;
   late final TextEditingController _nameController;
-  late final TextEditingController _emailController;
-  late final TextEditingController _passController;
+  late final TextEditingController _signupEmailController;
+  late final TextEditingController _signupPassController;
+
+  late final TextEditingController _loginEmailController;
+  late final TextEditingController _loginPassController;
   late int _itemCount;
 
   @override
   void initState() {
-    _formKey = GlobalKey<FormState>();
     _controller = PageController();
     _nameController = TextEditingController();
-    _emailController = TextEditingController();
-    _passController = TextEditingController();
+    _signupEmailController = TextEditingController();
+    _signupPassController = TextEditingController();
+    _loginEmailController = TextEditingController();
+    _loginPassController = TextEditingController();
     _itemCount = 3;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _nameController.dispose();
+    _signupEmailController.dispose();
+    _signupPassController.dispose();
+    _loginEmailController.dispose();
+    _loginPassController.dispose();
+    super.dispose();
   }
 
   @override
@@ -57,30 +71,35 @@ class _IntroPageState extends State<IntroPage> {
                         pageItem(
                           "assets/images/intro_img1.png",
                           "Select the\nFavorities Menu",
-                          "Now eat well, don't leave the house,You can\n" 
-                          "choose your favorite food only with\n",
-                              () => _controller.nextPage(duration: Duration(microseconds: 500), curve: Curves.linearToEaseOut)
-                              
+                          "Now eat well, don't leave the house,You can\n"
+                              "choose your favorite food only with\n",
+                          () => _controller.nextPage(
+                            duration: Duration(microseconds: 500),
+                            curve: Curves.linearToEaseOut,
+                          ),
                         ),
-                    
+
                         pageItem(
                           "assets/images/intro_img2.png",
                           "Good food at a\ncheap price",
-                          "You can eat at expensive\nrestaurants with\n" 
+                          "You can eat at expensive\nrestaurants with\n"
                               "affordable price",
-                              () => _controller.nextPage(duration: Duration(microseconds: 500), curve: Curves.linearToEaseOut)
+                          () => _controller.nextPage(
+                            duration: Duration(microseconds: 500),
+                            curve: Curves.linearToEaseOut,
+                          ),
                         ),
-                    
+
                         pageItem(
                           "assets/images/intro_img1.png",
                           "Select the\nFavorities Menu",
-                          "Now eat well, don't leave the house,You can\n" 
+                          "Now eat well, don't leave the house,You can\n"
                               "choose your favorite food only with\n",
-                              () => presistanceBottomSheet(context)
+                          () => presistanceBottomSheet(context),
                         ),
                       ],
                     );
-                  }
+                  },
                 ),
               ),
             ],
@@ -111,7 +130,7 @@ class _IntroPageState extends State<IntroPage> {
                   builder: (context) {
                     return IconButton(
                       onPressed: () {
-                        if (_controller.page!.round() > _itemCount - 1) {
+                        if (_controller.page!.round() < _itemCount - 1) {
                           _controller.nextPage(
                             duration: Duration(milliseconds: 500),
                             curve: Curves.linearToEaseOut,
@@ -143,10 +162,11 @@ class _IntroPageState extends State<IntroPage> {
       elevation: 5,
       context: context,
       builder: (context) => SizedBox(
-        height: 550,
+        // height: 550,
         child: DefaultTabController(
           length: 2,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               TabBar(
                 labelColor: AppContants.redColor,
@@ -174,17 +194,16 @@ class _IntroPageState extends State<IntroPage> {
                       child: TabView(
                         islogin: false,
                         nameController: _nameController,
-                        emailController: _emailController,
-                        passController: _passController,
+                        emailController: _signupEmailController,
+                        passController: _signupPassController,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: TabView(
                         islogin: true,
-                        nameController: _nameController,
-                        emailController: _emailController,
-                        passController: _passController,
+                        emailController: _loginEmailController,
+                        passController: _loginPassController,
                       ),
                     ),
                   ],
@@ -197,27 +216,27 @@ class _IntroPageState extends State<IntroPage> {
     );
   }
 
-  Column pageItem(imgResource, pageHeading, pageDescription,VoidCallback onPressed) {
+  Column pageItem(
+    imgResource,
+    pageHeading,
+    pageDescription,
+    VoidCallback onPressed,
+  ) {
     return Column(
       children: [
         Image.asset(imgResource, height: 334, width: 308),
-        TextView(
-          text: pageHeading,
-          textAlignment: true,
-          size: 22,
-          weight: 700,
-        ),
+        TextView(text: pageHeading, textAlignment: true, size: 22, weight: 700),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: TextView(
-            text:pageDescription,
+            text: pageDescription,
             textAlignment: true,
             size: 12,
             weight: 400,
           ),
         ),
         CommonButton(
-          onPressed:onPressed,
+          onPressed: onPressed,
           isGradient: true,
           child: TextView(
             text: "Next",
@@ -232,11 +251,12 @@ class _IntroPageState extends State<IntroPage> {
   }
 }
 
+// ignore: must_be_immutable
 class TabView extends StatelessWidget {
   TabView({
     super.key,
     required bool islogin,
-    required TextEditingController nameController,
+    TextEditingController? nameController,
     required TextEditingController emailController,
     required TextEditingController passController,
   }) : _nameController = nameController,
@@ -244,7 +264,7 @@ class TabView extends StatelessWidget {
        _passController = passController,
        _login = islogin;
 
-  final TextEditingController _nameController;
+  final TextEditingController? _nameController;
   final TextEditingController _emailController;
   final TextEditingController _passController;
   final bool _login;
@@ -261,7 +281,6 @@ class TabView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             if (!_login)
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -272,8 +291,8 @@ class TabView extends StatelessWidget {
               ),
             if (!_login)
               TextFormField(
-                validator: (value){
-                  if(value == null || value.isEmpty){
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
                     return "User name required.";
                   }
                   return null;
@@ -282,7 +301,7 @@ class TabView extends StatelessWidget {
                 obscureText: false,
                 decoration: InputDecoration(
                   hint: TextView(text: "Enter you name", size: 14, weight: 500),
-        
+
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(7),
                     borderSide: BorderSide(color: AppContants.offWhiteColor),
@@ -298,22 +317,24 @@ class TabView extends StatelessWidget {
                 ),
               ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 14),
+              padding: const EdgeInsets.symmetric(
+                vertical: 4.0,
+                horizontal: 14,
+              ),
               child: TextView(text: "Email address", size: 14, weight: 500),
             ),
             TextFormField(
-              
-                validator: (value){
-                  if(value == null || value.isEmpty){
-                    return "User name required.";
-                  }
-                  return null;
-                },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "User name required.";
+                }
+                return null;
+              },
               controller: _emailController,
               obscureText: false,
               decoration: InputDecoration(
                 hint: TextView(text: "Enter your email", size: 14, weight: 500),
-        
+
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(7),
                   borderSide: BorderSide(color: AppContants.offWhiteColor),
@@ -329,27 +350,29 @@ class TabView extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 14),
+              padding: const EdgeInsets.symmetric(
+                vertical: 4.0,
+                horizontal: 14,
+              ),
               child: TextView(text: "Password", size: 14, weight: 500),
             ),
             TextFormField(
-                validator: (value){
-                  if(value == null || value.isEmpty){
-                    return "User password required.";
-                  }
-                  return null;
-                },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "User password required.";
+                }
+                return null;
+              },
               controller: _passController,
               obscureText: true,
               obscuringCharacter: "*",
               decoration: InputDecoration(
                 hint: TextView(
-                  
                   text: "Enter your password",
                   size: 14,
                   weight: 500,
                 ),
-        
+
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(7),
                   borderSide: BorderSide(color: AppContants.offWhiteColor),
@@ -369,9 +392,7 @@ class TabView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () {
-                      
-                    },
+                    onPressed: () {},
                     child: Text(
                       "Forgot Password?",
                       style: TextStyle(
@@ -383,64 +404,95 @@ class TabView extends StatelessWidget {
                   ),
                 ],
               ),
-        
+
             Center(
-              
               child: Padding(
-                
                 padding: const EdgeInsets.only(top: 16),
                 child: CommonButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      FutureBuilder(future:  authProvider.loginUser(_emailController.text, _passController.text,
-                       _nameController.text,false)
-                      , builder: (context,snapshot){
-                        if(!snapshot.hasData){
-                          return CircularProgressIndicator();
-                        }else{
-                          print(snapshot.data);
-                         return Text("${snapshot.data}");
-                         }
-                       
-                      },);
+                      FutureBuilder(
+                        future: authProvider.loginUser(
+                          _emailController.text,
+                          _passController.text,
+                          false,
+                          userName: _nameController!.text,
+
+                        ),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return CircularProgressIndicator();
+                          } else {
+                            print(snapshot.data);
+                            return Text("${snapshot.data}");
+                          }
+                        },
+                      );
                     }
                   },
                   isGradient: true,
-                  child: _login ? TextButton(onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      bool isRegistered = await authProvider.loginUser(_emailController.text, _passController.text,
-                       _nameController.text,true);
-                       if(isRegistered){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(title: "Hello world")));
-                       }
-                    }
-                  }, child:  TextView(
-                    text: "Login",
-                    size: 14,
-                    weight: 900,
-                    color: AppContants.whiteColor,
-                    textAlignment: true,
-                  )):TextButton(onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      FutureBuilder(future:  authProvider.loginUser(_emailController.text, _passController.text,
-                       _nameController.text,false)
-                      , builder: (context,snapshot){
-                        if(!snapshot.hasData){
-                          return CircularProgressIndicator();
-                        }else{
-                          print(snapshot.data);
-                         return Text("${snapshot.data}");
-                         }
-                       
-                      },);
-                    }
-                  }, child:  TextView(
-                    text: "Sign Up",
-                    size: 14,
-                    weight: 900,
-                    color: AppContants.whiteColor,
-                    textAlignment: true,
-                  )),
+                  child: _login
+                      ? TextButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              //  _emailController.clear();
+                              // _passController.clear();
+                              // _nameController!.clear();
+                              bool isLogin = await authProvider.loginUser(
+                                _emailController.text,
+                                _passController.text,
+                                true,
+                              );
+                              if (isLogin) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        MyHomePage(title: "Hello world"),
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                          child: TextView(
+                            text: "Login",
+                            size: 14,
+                            weight: 900,
+                            color: AppContants.whiteColor,
+                            textAlignment: true,
+                          ),
+                        )
+                      : TextButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              // _emailController.clear();
+                              // _passController.clear();
+                              // _nameController!.clear();
+                              bool isRegistered = await authProvider.loginUser(
+                                _emailController.text,
+                                _passController.text,
+                                false,
+                                userName : _nameController!.text,
+                              );
+                              if (isRegistered) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        MyHomePage(title: "Hello world"),
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                          child: TextView(
+                            text: "Sign Up",
+                            size: 14,
+                            weight: 900,
+                            color: AppContants.whiteColor,
+                            textAlignment: true,
+                          ),
+                        ),
                 ),
               ),
             ),
@@ -448,12 +500,12 @@ class TabView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 148.0),
               child: Divider(thickness: 1),
             ),
-        
+
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: CommonButton(
-                  onPressed : (){},
+                  onPressed: () {},
                   isGradient: false,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,

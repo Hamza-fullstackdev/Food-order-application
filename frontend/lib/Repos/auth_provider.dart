@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:frontend/Repos/app_url.dart';
 import 'package:http/http.dart' as http;
@@ -11,46 +10,45 @@ class AuthProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  Future<bool> loginUser(email, pass, userName,isLogin) async {
+  Future<bool> loginUser(email, pass, isLogin,{String? userName} ) async {
     try {
       late final response;
-
       _isLoading = true;
-      
+
       final url = isLogin ? AppUrl.login_url : AppUrl.signup_url;
-      
-      final body = isLogin ? {"email": email, "password": pass} :
-       {"name" : userName,"email": email, "password": pass};
-
+      final body = isLogin
+          ? {"email": email, "password": pass}
+          : {"name": userName, "email": email, "password": pass};
       final header = {"Content-Type": "application/json"};
-      
-      response = await http.post(Uri.parse(url),
-      headers: header,
-      body: jsonEncode(body));
 
-      if(response.statusCode == 200 || response.statusCode == 201) {
+      response = await http.post(
+        Uri.parse(url),
+        headers: header,
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         _isLoading = false;
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setString("tokenId", response.body.toString());
-        print(jsonDecode(response.body));
-        print("Login success");
-
+        final data = jsonDecode(response.body);
+        if (data["user"] != null && data["user"]["refreshToken"] != null) {
+          SharedPreferences pref = await SharedPreferences.getInstance();
+          String token = data["user"]["refreshToken"];
+          await pref.setString("Access_Token", token);
+        }
         return true;
-
-      }else {
+      } else {
         _isLoading = false;
-        
+
         print("Login Failed");
         print(response.body);
         return false;
-
       }
     } catch (e) {
-        _isLoading = false;
-      
+      _isLoading = false;
+
       print(e.toString());
-      
-        return false;
+
+      return false;
     }
   }
 }
