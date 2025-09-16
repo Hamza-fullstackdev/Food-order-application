@@ -30,3 +30,32 @@ export const addProduct = async (req, res, next) => {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };
+
+export const getAllProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find({});
+    res.status(200).json({ status: 200, products });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const getSingleProduct = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findById(id);
+    res.status(200).json({ status: 200, product });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const getAllProductsByUser = async (req, res, next) => {
+  const userId = req.user._id;
+  try {
+    const products = await Product.find({ userId });
+    res.status(200).json({ status: 200, products });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
