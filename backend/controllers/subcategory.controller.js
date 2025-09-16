@@ -1,19 +1,39 @@
 import Subcategory from "../models/Subcategory.model.js";
-import "../models/Category.model.js";
+import Category from "../models/Category.model.js";
 import errorHandler from "../middleware/error.middleware.js";
-
 
 export const addSubcategory = async (req, res, next) => {
   const { name, categoryId } = req.body;
+  const userId = req.user._id;
+
+  if (!name || !categoryId) {
+    return next(
+      errorHandler(400, "You must give name and category id to add subcategory")
+    );
+  }
   try {
-    const subcategory = await Subcategory.create({ name, categoryId });
-    res
-      .status(200)
-      .json({
-        status: 200,
-        message: "Subcategory added successfully",
-        subcategory,
+    const isCategoryExist = await Category.findById(categoryId);
+    if (isCategoryExist) {
+      const isSubcategoryExist = await Subcategory.findOne({
+        name: name.toLowerCase(),
+        categoryId,
       });
+      if (isSubcategoryExist) {
+        return next(errorHandler(400, "Subcategory already exists"));
+      }
+    } else {
+      return next(errorHandler(400, "Category does not exist"));
+    }
+    const subcategory = await Subcategory.create({
+      name: name.toLowerCase(),
+      categoryId,
+      userId,
+    });
+    res.status(200).json({
+      status: 200,
+      message: "Subcategory added successfully",
+      subcategory,
+    });
   } catch (error) {
     if (error.name === "ValidationError") {
       const messages = Object.values(error.errors).map((val) => val.message);

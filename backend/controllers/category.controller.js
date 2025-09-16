@@ -3,8 +3,17 @@ import errorHandler from "../middleware/error.middleware.js";
 
 export const addCategory = async (req, res, next) => {
   const { name } = req.body;
+  const userId = req.user._id;
+
+  if (!name) {
+    return next(errorHandler(400, "All fields are required"));
+  }
   try {
-    const category = await Category.create({ name });
+    const isCategoryExist = await Category.findOne({ name: name.toLowerCase() });
+    if (isCategoryExist) {
+      return next(errorHandler(400, "Category already exists"));
+    }
+    const category = await Category.create({ name: name.toLowerCase(), userId });
     res
       .status(200)
       .json({ status: 200, message: "Category added successfully", category });
