@@ -3,7 +3,7 @@ import errorHandler from "../middleware/error.middleware.js";
 import uploadImage from "../utils/upload.js";
 
 export const addProduct = async (req, res, next) => {
-  const { name, shortDescription, description, price } = req.body;
+  const { name, shortDescription, description, price, categoryId, subcategoryId } = req.body;
   const userId = req.user._id;
 
   if (!name || !shortDescription || !description || !price) {
@@ -13,6 +13,8 @@ export const addProduct = async (req, res, next) => {
     const uploaded_img = await uploadImage(req.file.path);
     const product = await Product.create({
       userId,
+      categoryId,
+      subcategoryId,
       name,
       shortDescription,
       description,

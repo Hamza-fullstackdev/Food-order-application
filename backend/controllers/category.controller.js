@@ -1,0 +1,37 @@
+import Category from "../models/Category.model.js";
+import errorHandler from "../middleware/error.middleware.js";
+
+export const addCategory = async (req, res, next) => {
+  const { name } = req.body;
+  try {
+    const category = await Category.create({ name });
+    res
+      .status(200)
+      .json({ status: 200, message: "Category added successfully", category });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      const messages = Object.values(error.errors).map((val) => val.message);
+      return next(errorHandler(400, messages.join(", ")));
+    }
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const getAllCategories = async (req, res, next) => {
+  try {
+    const categories = await Category.find({});
+    res.status(200).json({ status: 200, categories });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const getSingleCategory = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const category = await Category.findById(id);
+    res.status(200).json({ status: 200, category });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
