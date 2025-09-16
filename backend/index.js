@@ -13,8 +13,10 @@ app.use(cookieParser());
 app.use(cors());
 
 import authRouter from "./routes/auth.route.js";
+import productRouter from "./routes/product.route.js";
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/product", productRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -1,0 +1,42 @@
+import mongoose from "mongoose";
+
+const productScheama = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "User is required"],
+    },
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      trim: true,
+    },
+    shortDescription: {
+      type: String,
+      required: [true, "Short description is required"],
+      trim: true,
+    },
+    description: {
+      type: String,
+      required: [true, "Description is required"],
+      trim: true,
+    },
+    price: {
+      type: Number,
+      required: [true, "Price is required"],
+    },
+    image: {
+      type: String,
+      required: [true, "Image is required"],
+      trim: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const Product =
+  mongoose.models.Product || mongoose.model("Product", productScheama);
+export default Product;
