@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:frontend/Repos/app_url.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -7,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   bool _isLoading = false;
-
+  bool _isLoggedIn = false;
+  
+  bool get isLoggedIn => _isLoggedIn;
   bool get isLoading => _isLoading;
 
   Future<bool> loginUser(email, pass, isLogin,{String? userName} ) async {
@@ -35,6 +36,8 @@ class AuthProvider extends ChangeNotifier {
           String token = data["user"]["refreshToken"];
           await pref.setString("Access_Token", token);
         }
+        _isLoggedIn = true;
+        notifyListeners();
         return true;
       } else {
         _isLoading = false;

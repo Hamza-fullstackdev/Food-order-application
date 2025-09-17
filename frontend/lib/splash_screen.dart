@@ -1,17 +1,16 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/Resources/assetsPaths/assetsPath.dart';
 import 'package:frontend/homeScreen.dart';
 import 'package:frontend/intro_page.dart';
 import 'package:frontend/utils/app_contants.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatefulWidget{
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<SplashScreen> createState()=> _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
@@ -30,44 +29,37 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         }else {
          Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(title: "Hello world")));
       }
+      
     });
     
   }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
-
+      
       decoration: BoxDecoration(
-        color: AppContants.whiteColor,
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          image: AssetImage("assets/images/bg_image.png"),
-        ),
+      color: AppContants.whiteColor,
+      image: DecorationImage(
+        fit: BoxFit.cover,
+      image: AssetImage("assets/images/bg_image.png"),filterQuality: FilterQuality.high)
       ),
       child: Center(
         child: Column(
+          
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               color: AppContants.whiteColor,
-              child: Image.asset(AssetsPath.bikeImage,
-              filterQuality: FilterQuality.high,), // adding extra line :  for better quallity approach  
+            child: Image.asset("assets/images/bike_image.png"),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: DefaultTextStyle(
-                style: TextStyle(
-                  fontSize: 48,
-                  color: AppContants.redColor,
-                  fontWeight: FontWeight.bold,
-                ),
-                child: AnimatedTextKit(
-                  animatedTexts: [TyperAnimatedText("Food Couriers")],
-                ),
-              ),
-            ),
+              child: DefaultTextStyle(style: TextStyle(fontSize: 48,color: AppContants.redColor,fontWeight: FontWeight.bold), child: 
+              AnimatedTextKit(animatedTexts: [
+                TyperAnimatedText("Food Couriers"),
+              ]),),
+            )
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Repos/auth_provider.dart';
+import 'package:frontend/helper_classes/tab_view.dart';
 import 'package:frontend/utils/app_contants.dart';
 import 'package:frontend/utils/common_button.dart';
 import 'package:frontend/utils/text_view.dart';
@@ -13,8 +14,9 @@ class IntroPage extends StatefulWidget {
   State<IntroPage> createState() => _IntroPageState();
 }
 
-class _IntroPageState extends State<IntroPage> {
+class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin{
   late PageController _controller;
+  late final TabController _tabController;
   late final TextEditingController _nameController;
   late final TextEditingController _signupEmailController;
   late final TextEditingController _signupPassController;
@@ -25,6 +27,7 @@ class _IntroPageState extends State<IntroPage> {
 
   @override
   void initState() {
+    _tabController = TabController(length: 2, vsync: this);
     _controller = PageController();
     _nameController = TextEditingController();
     _signupEmailController = TextEditingController();
@@ -49,7 +52,9 @@ class _IntroPageState extends State<IntroPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body: Stack(
+        
         children: [
           Column(
             children: [
@@ -157,62 +162,79 @@ class _IntroPageState extends State<IntroPage> {
     return showBottomSheet(
       showDragHandle: true,
       enableDrag: true,
+      
       backgroundColor: AppContants.whiteColor,
       elevation: 5,
       context: context,
       builder: (context) => SizedBox(
-        // height: 550,
-        child: DefaultTabController(
-          length: 2,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TabBar(
-                labelColor: AppContants.redColor,
-                labelStyle: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                ),
-                unselectedLabelStyle: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppContants.blackColor,
-                  fontSize: 16,
-                ),
-                indicatorColor: AppContants.redColor,
-                indicatorWeight: 1.0,
-                tabs: [
-                  Tab(text: "Create Account"),
-                  Tab(text: "Login"),
-                ],
-              ),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: TabView(
-                        islogin: false,
-                        nameController: _nameController,
-                        emailController: _signupEmailController,
-                        passController: _signupPassController,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: TabView(
-                        islogin: true,
-                        emailController: _loginEmailController,
-                        passController: _loginPassController,
-                      ),
-                    ),
+        height: MediaQuery.of(context).size.height * 0.7,
+        child: Consumer<AuthProvider> (builder: (context, value, child) =>
+          DefaultTabController(
+           
+            length: 2,
+            initialIndex: value.isLoggedIn ? 1 : 0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TabBar(
+                  controller:  _tabController,
+                  labelColor: AppContants.redColor,
+                  labelStyle: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
+                  unselectedLabelStyle: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: AppContants.blackColor,
+                    fontSize: 16,
+                  ),
+                  indicatorColor: AppContants.redColor,
+                  indicatorWeight: 1.0,
+                  tabs: [
+                    Tab(text: "Create Account"),
+                    Tab(text: "Login"),
                   ],
                 ),
-              ),
-            ],
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: SingleChildScrollView(
+                          child: TabView(
+                            nameController: _nameController,
+                            emailController: _signupEmailController,
+                            passController: _signupPassController,
+                            tabController: _tabController,
+                            login: false,
+
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        
+                        child: SingleChildScrollView(
+                          child: TabView(
+                            emailController: _loginEmailController,
+                            passController: _loginPassController,
+                            tabController: _tabController,
+                            login: true,
+
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+        }
   }
 
   Column pageItem(
@@ -248,284 +270,4 @@ class _IntroPageState extends State<IntroPage> {
       ],
     );
   }
-}
 
-// ignore: must_be_immutable
-class TabView extends StatelessWidget {
-  TabView({
-    super.key,
-    required bool islogin,
-    TextEditingController? nameController,
-    required TextEditingController emailController,
-    required TextEditingController passController,
-  }) : _nameController = nameController,
-       _emailController = emailController,
-       _passController = passController,
-       _login = islogin;
-
-  final TextEditingController? _nameController;
-  final TextEditingController _emailController;
-  final TextEditingController _passController;
-  final bool _login;
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (!_login)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 4.0,
-                  horizontal: 14,
-                ),
-                child: TextView(text: "First Name", size: 14, weight: 500),
-              ),
-            if (!_login)
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "User name required.";
-                  }
-                  return null;
-                },
-                controller: _nameController,
-                obscureText: false,
-                decoration: InputDecoration(
-                  hint: TextView(text: "Enter you name", size: 14, weight: 500),
-
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: BorderSide(color: AppContants.offWhiteColor),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: BorderSide(color: AppContants.offWhiteColor),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7),
-                    borderSide: BorderSide(color: AppContants.redColor),
-                  ),
-                ),
-              ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 4.0,
-                horizontal: 14,
-              ),
-              child: TextView(text: "Email address", size: 14, weight: 500),
-            ),
-            TextFormField(
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "User name required.";
-                }
-                return null;
-              },
-              controller: _emailController,
-              obscureText: false,
-              decoration: InputDecoration(
-                hint: TextView(text: "Enter your email", size: 14, weight: 500),
-
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(7),
-                  borderSide: BorderSide(color: AppContants.offWhiteColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(7),
-                  borderSide: BorderSide(color: AppContants.offWhiteColor),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(7),
-                  borderSide: BorderSide(color: AppContants.redColor),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 4.0,
-                horizontal: 14,
-              ),
-              child: TextView(text: "Password", size: 14, weight: 500),
-            ),
-            TextFormField(
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "User password required.";
-                }
-                return null;
-              },
-              controller: _passController,
-              obscureText: true,
-              obscuringCharacter: "*",
-              decoration: InputDecoration(
-                hint: TextView(
-                  text: "Enter your password",
-                  size: 14,
-                  weight: 500,
-                ),
-
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(7),
-                  borderSide: BorderSide(color: AppContants.offWhiteColor),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(7),
-                  borderSide: BorderSide(color: AppContants.offWhiteColor),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(7),
-                  borderSide: BorderSide(color: AppContants.redColor),
-                ),
-              ),
-            ),
-            if (_login)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Forgot Password?",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xffFF0000),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: CommonButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      FutureBuilder(
-                        future: authProvider.loginUser(
-                          _emailController.text,
-                          _passController.text,
-                          false,
-                          userName: _nameController!.text,
-
-                        ),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return CircularProgressIndicator();
-                          } else {
-                            print(snapshot.data);
-                            return Text("${snapshot.data}");
-                          }
-                        },
-                      );
-                    }
-                  },
-                  isGradient: true,
-                  child: _login
-                      ? TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              //  _emailController.clear();
-                              // _passController.clear();
-                              // _nameController!.clear();
-                              bool isLogin = await authProvider.loginUser(
-                                _emailController.text,
-                                _passController.text,
-                                true,
-                              );
-                              if (isLogin) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        MyHomePage(title: "Hello world"),
-                                  ),
-                                );
-                              }
-                            }
-                          },
-                          child: TextView(
-                            text: "Login",
-                            size: 14,
-                            weight: 900,
-                            color: AppContants.whiteColor,
-                            textAlignment: true,
-                          ),
-                        )
-                      : TextButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              // _emailController.clear();
-                              // _passController.clear();
-                              // _nameController!.clear();
-                              bool isRegistered = await authProvider.loginUser(
-                                _emailController.text,
-                                _passController.text,
-                                false,
-                                userName : _nameController!.text,
-                              );
-                              if (isRegistered) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        MyHomePage(title: "Hello world"),
-                                  ),
-                                );
-                              }
-                            }
-                          },
-                          child: TextView(
-                            text: "Sign Up",
-                            size: 14,
-                            weight: 900,
-                            color: AppContants.whiteColor,
-                            textAlignment: true,
-                          ),
-                        ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 148.0),
-              child: Divider(thickness: 1),
-            ),
-
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: CommonButton(
-                  onPressed: () {},
-                  isGradient: false,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image(image: AssetImage("assets/images/ic_google.png")),
-                      SizedBox(width: 20),
-                      TextView(
-                        text: "Sign up with Google",
-                        size: 14,
-                        weight: 700,
-                        color: AppContants.blackColor,
-                        textAlignment: true,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
