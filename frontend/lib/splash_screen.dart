@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/Resources/assetsPaths/assetsPath.dart';
 import 'package:frontend/homeScreen.dart';
 import 'package:frontend/intro_page.dart';
 import 'package:frontend/utils/app_contants.dart';
@@ -40,9 +41,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       
       decoration: BoxDecoration(
       color: AppContants.whiteColor,
-      image: DecorationImage(
-        fit: BoxFit.cover,
-      image: AssetImage("assets/images/bg_image.png"),filterQuality: FilterQuality.high)
       ),
       child: Center(
         child: Column(
@@ -51,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           children: [
             Container(
               color: AppContants.whiteColor,
-            child: Image.asset("assets/images/bike_image.png"),
+            child: Image.asset(AssetsPath.bikeImage,height: MediaQuery.of(context).size.height * 0.30,width: MediaQuery.of(context).size.width * 0.30,)
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

@@ -5,20 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
-  bool _isLoading = false;
-  bool _isLoggedIn = false;
-  
-  bool get isLoggedIn => _isLoggedIn;
-  bool get isLoading => _isLoading;
-
-  Future<bool> loginUser(email, pass, userName,isLogin ) async {
+  Future<bool> loginUser(email, pass, isLogin,{String ? userName} ) async {
     try {
-      late final http.Response response;
-
-      _isLoading = true;
-      
+      late final http.Response response;      
       final url = isLogin ? AppUrl.login_url : AppUrl.signup_url;
-      
+    
       final body = isLogin ? {"email": email, "password": pass} :
        {"name" : userName,"email": email, "password": pass};
 
@@ -46,7 +37,6 @@ class AuthProvider extends ChangeNotifier {
         return true;
 
       }else {
-        _isLoading = false;
         
         print("Login Failed");
         print(response.body);
@@ -54,10 +44,6 @@ class AuthProvider extends ChangeNotifier {
 
       }
     } catch (e) {
-        _isLoading = false;
-      
-      print(e.toString());
-      
         return false;
     }
   }
