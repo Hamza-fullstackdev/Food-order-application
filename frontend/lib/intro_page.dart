@@ -68,6 +68,7 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin{
               ),
               Expanded(
                 child: Builder(
+
                   builder: (context) {
                     return PageView(
                       controller: _controller,
@@ -157,6 +158,7 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin{
       ),
     );
   }
+
 
   PersistentBottomSheetController presistanceBottomSheet(BuildContext context) {
     return showBottomSheet(
