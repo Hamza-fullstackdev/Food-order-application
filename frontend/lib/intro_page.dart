@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Repos/auth_provider.dart';
-import 'package:frontend/home_screen.dart';
 import 'package:frontend/utils/app_contants.dart';
 import 'package:frontend/utils/common_button.dart';
 import 'package:frontend/utils/text_view.dart';
