@@ -11,9 +11,9 @@ class AuthProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  Future<bool> loginUser(email, pass, userName,isLogin) async {
+  Future<bool> loginUser(email, pass, userName,isLogin ) async {
     try {
-      late final response;
+      late final http.Response response;
 
       _isLoading = true;
       
