@@ -15,22 +15,36 @@ class IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<IntroPage> {
-  late final GlobalKey _formKey;
   late PageController _controller;
   late final TextEditingController _nameController;
-  late final TextEditingController _emailController;
-  late final TextEditingController _passController;
+  late final TextEditingController _signupEmailController;
+  late final TextEditingController _signupPassController;
+
+  late final TextEditingController _loginEmailController;
+  late final TextEditingController _loginPassController;
   late int _itemCount;
 
   @override
   void initState() {
-    _formKey = GlobalKey<FormState>();
     _controller = PageController();
     _nameController = TextEditingController();
-    _emailController = TextEditingController();
-    _passController = TextEditingController();
+    _signupEmailController = TextEditingController();
+    _signupPassController = TextEditingController();
+    _loginEmailController = TextEditingController();
+    _loginPassController = TextEditingController();
     _itemCount = 3;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _nameController.dispose();
+    _signupEmailController.dispose();
+    _signupPassController.dispose();
+    _loginEmailController.dispose();
+    _loginPassController.dispose();
+    super.dispose();
   }
 
   @override
@@ -150,10 +164,11 @@ class _IntroPageState extends State<IntroPage> {
       elevation: 5,
       context: context,
       builder: (context) => SizedBox(
-        height: 550,
+        // height: 550,
         child: DefaultTabController(
           length: 2,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               TabBar(
                 labelColor: AppContants.redColor,
@@ -181,17 +196,16 @@ class _IntroPageState extends State<IntroPage> {
                       child: TabView(
                         islogin: false,
                         nameController: _nameController,
-                        emailController: _emailController,
-                        passController: _passController,
+                        emailController: _signupEmailController,
+                        passController: _signupPassController,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: TabView(
                         islogin: true,
-                        nameController: _nameController,
-                        emailController: _emailController,
-                        passController: _passController,
+                        emailController: _loginEmailController,
+                        passController: _loginPassController,
                       ),
                     ),
                   ],
@@ -203,8 +217,6 @@ class _IntroPageState extends State<IntroPage> {
       ),
     );
   }
-
-
 
   Column pageItem(
     imgResource,
@@ -241,11 +253,12 @@ class _IntroPageState extends State<IntroPage> {
   }
 }
 
+// ignore: must_be_immutable
 class TabView extends StatelessWidget {
   TabView({
     super.key,
     required bool islogin,
-    required TextEditingController nameController,
+    TextEditingController? nameController,
     required TextEditingController emailController,
     required TextEditingController passController,
   }) : _nameController = nameController,
@@ -253,7 +266,7 @@ class TabView extends StatelessWidget {
        _passController = passController,
        _login = islogin;
 
-  final TextEditingController _nameController;
+  final TextEditingController? _nameController;
   final TextEditingController _emailController;
   final TextEditingController _passController;
   final bool _login;
@@ -404,8 +417,9 @@ class TabView extends StatelessWidget {
                         future: authProvider.loginUser(
                           _emailController.text,
                           _passController.text,
-                          _nameController.text,
                           false,
+                          userName: _nameController!.text,
+
                         ),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
@@ -423,13 +437,15 @@ class TabView extends StatelessWidget {
                       ? TextButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              bool isRegistered = await authProvider.loginUser(
+                              //  _emailController.clear();
+                              // _passController.clear();
+                              // _nameController!.clear();
+                              bool isLogin = await authProvider.loginUser(
                                 _emailController.text,
                                 _passController.text,
-                                _nameController.text,
                                 true,
                               );
-                              if (isRegistered) {
+                              if (isLogin) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -451,22 +467,24 @@ class TabView extends StatelessWidget {
                       : TextButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              FutureBuilder(
-                                future: authProvider.loginUser(
-                                  _emailController.text,
-                                  _passController.text,
-                                  _nameController.text,
-                                  false,
-                                ),
-                                builder: (context, snapshot) {
-                                  if (!snapshot.hasData) {
-                                    return CircularProgressIndicator();
-                                  } else {
-                                    print(snapshot.data);
-                                    return Text("${snapshot.data}");
-                                  }
-                                },
+                              // _emailController.clear();
+                              // _passController.clear();
+                              // _nameController!.clear();
+                              bool isRegistered = await authProvider.loginUser(
+                                _emailController.text,
+                                _passController.text,
+                                false,
+                                userName : _nameController!.text,
                               );
+                              if (isRegistered) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        MyHomePage(title: "Hello world"),
+                                  ),
+                                );
+                              }
                             }
                           },
                           child: TextView(

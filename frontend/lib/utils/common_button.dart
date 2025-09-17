@@ -11,7 +11,7 @@ class CommonButton extends StatelessWidget{
   const CommonButton({super.key,required this.onPressed,this.isGradient = false,this.color = AppContants.offWhiteColor,required this.child});
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onPressed,
       child: Container(
         

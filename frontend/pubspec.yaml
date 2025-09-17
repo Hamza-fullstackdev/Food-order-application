@@ -43,6 +43,7 @@ dependencies:
   http: ^1.5.0
   shared_preferences: ^2.5.3
   provider: 
+  jwt_decoder: ^2.0.1
 
 
 dev_dependencies:
