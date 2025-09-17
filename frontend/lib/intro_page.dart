@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Repos/auth_provider.dart';
 import 'package:frontend/helper_classes/tab_view.dart';
 import 'package:frontend/utils/app_contants.dart';
 import 'package:frontend/utils/common_button.dart';
 import 'package:frontend/utils/text_view.dart';
-import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroPage extends StatefulWidget {
@@ -170,68 +168,65 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin{
       context: context,
       builder: (context) => SizedBox(
         height: MediaQuery.of(context).size.height * 0.7,
-        child: Consumer<AuthProvider> (builder: (context, value, child) =>
-          DefaultTabController(
-           
-            length: 2,
-            initialIndex: value.isLoggedIn ? 1 : 0,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TabBar(
-                  controller:  _tabController,
-                  labelColor: AppContants.redColor,
-                  labelStyle: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                  ),
-                  unselectedLabelStyle: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: AppContants.blackColor,
-                    fontSize: 16,
-                  ),
-                  indicatorColor: AppContants.redColor,
-                  indicatorWeight: 1.0,
-                  tabs: [
-                    Tab(text: "Create Account"),
-                    Tab(text: "Login"),
+        child: DefaultTabController(
+         
+          length: 2,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TabBar(
+                controller:  _tabController,
+                labelColor: AppContants.redColor,
+                labelStyle: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
+                unselectedLabelStyle: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: AppContants.blackColor,
+                  fontSize: 16,
+                ),
+                indicatorColor: AppContants.redColor,
+                indicatorWeight: 1.0,
+                tabs: [
+                  Tab(text: "Create Account"),
+                  Tab(text: "Login"),
+                ],
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: SingleChildScrollView(
+                        child: TabView(
+                          nameController: _nameController,
+                          emailController: _signupEmailController,
+                          passController: _signupPassController,
+                          tabController: _tabController,
+                          login: false,
+        
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      
+                      child: SingleChildScrollView(
+                        child: TabView(
+                          emailController: _loginEmailController,
+                          passController: _loginPassController,
+                          tabController: _tabController,
+                          login: true,
+        
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: SingleChildScrollView(
-                          child: TabView(
-                            nameController: _nameController,
-                            emailController: _signupEmailController,
-                            passController: _signupPassController,
-                            tabController: _tabController,
-                            login: false,
-
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        
-                        child: SingleChildScrollView(
-                          child: TabView(
-                            emailController: _loginEmailController,
-                            passController: _loginPassController,
-                            tabController: _tabController,
-                            login: true,
-
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

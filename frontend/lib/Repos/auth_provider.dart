@@ -29,15 +29,20 @@ class AuthProvider extends ChangeNotifier {
       body: jsonEncode(body));
 
       if(response.statusCode == 200 || response.statusCode == 201) {
-        _isLoading = false;
         final data = jsonDecode(response.body);
         if (data["user"] != null && data["user"]["refreshToken"] != null) {
           SharedPreferences pref = await SharedPreferences.getInstance();
-          String token = data["user"]["refreshToken"];
-          await pref.setString("Access_Token", token);
+          String refreshToken = data["user"]["refreshToken"];
+          String accessToken = data["user"]["accessToken"];
+          
+          await pref.setString("refreshToken", refreshToken);
+          
+          await pref.setString("accessToken", accessToken);
+          
         }
-        _isLoggedIn = true;
-        notifyListeners();
+
+        
+        print(response.body);
         return true;
 
       }else {
