@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-import { config } from "./config.js";
 
-const mongoDbConnection = config.MONGODB_URI;
+const mongoDbConnection = process.env.MONGODB_URI;
 
 if (!mongoDbConnection) {
   throw new Error(
@@ -19,7 +18,7 @@ export const connectToDatabase = async () => {
 
   try {
     await mongoose.connect(mongoDbConnection, {
-      dbName: config.DATABASE,
+      dbName: process.env.DATABASE,
       bufferCommands: false,
     });
 
