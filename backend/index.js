@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://food-order-application-vvps.vercel.app",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
   })
@@ -33,7 +33,6 @@ app.use("/api/v1/cart", cartRouter);
 // app.listen(process.env.PORT || 3000, () => {
 //   console.log(`Server is running on port ${process.env.PORT || 3000}`);
 // })
-module.exports = app;
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
@@ -44,3 +43,5 @@ app.use((err, req, res, next) => {
     message,
   });
 });
+
+export default app;
