@@ -15,7 +15,7 @@ import upload from "../utils/multer.js";
 const router = express.Router();
 
 router.post("/add-product", verifyJwt, upload.single("image"), addProduct);
-router.get("/get-all-products", getAllProducts);
+router.get("/get-all-products", verifyJwt, getAllProducts);
 router.get("/get-product/:id", verifyJwt, getSingleProduct);
 router.get("/get-products-by-user", verifyJwt, getAllProductsByUser);
 router.get("/get-by-category/:id", verifyJwt, getByCategory);

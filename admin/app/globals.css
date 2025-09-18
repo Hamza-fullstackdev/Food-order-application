@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+[data-slot="sidebar-content"] {
+  background-image: linear-gradient(to right, #fe4f70, #ffa387) !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

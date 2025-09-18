@@ -55,9 +55,16 @@ const userSlice = createSlice({
         ...action.payload,
       };
     },
+    updateTokens(
+      state,
+      action: PayloadAction<{ accessToken: string; refreshToken: string }>
+    ) {
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    },
   },
 });
 
-export const { loginUser, logoutUser, deleteUser, updateUser } =
+export const { loginUser, logoutUser, deleteUser, updateUser, updateTokens } =
   userSlice.actions;
 export default userSlice.reducer;

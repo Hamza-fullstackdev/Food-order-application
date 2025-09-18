@@ -1,14 +1,17 @@
 "use client";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginUser } from "@/lib/features/user/userSlice";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
+import { setCookie, deleteCookie } from "cookies-next";
 
 const Login = () => {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
+  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,21 +25,25 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/login`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/login`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const data = await res.json();
       setLoading(false);
       if (res.ok) {
         dispatch(loginUser(data.user));
-        console.log(data);
+        setCookie("accessToken", data.user.accessToken);
+        setCookie("refreshToken", data.user.refreshToken);
+        router.push("/dashboard");
       } else {
-        console.log(data);
         setLoading(false);
         setError(true);
         setErrorMessage(data.message);
