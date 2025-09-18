@@ -65,7 +65,9 @@ export const getAllProducts = async (req, res, next) => {
     const products = await Product.find({});
     res.status(200).json({ status: 200, products });
   } catch (error) {
-    next(errorHandler(500, "Something went wrong, please try again later"));
+    res
+      .status(500)
+      .json({ status: 500, message: "Something went wrong", error: error });
   }
 };
 
