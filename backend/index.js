@@ -10,7 +10,10 @@ connectToDatabase();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3001",
+  credentials: true
+}));
 
 import authRouter from "./routes/auth.route.js";
 import productRouter from "./routes/product.route.js";
