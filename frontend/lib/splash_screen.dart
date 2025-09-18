@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     _token = pref.getString("Access_Token");
       if(!mounted){return ;} 
         if(_token == null || JwtDecoder.isExpired(_token!)){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => IntroPage()));
+        // Navigator.push(context, MaterialPageRoute(builder: (context) => IntroPage()));
         }else {
          Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(title: "Hello world")));
       }

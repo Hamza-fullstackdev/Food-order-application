@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Repos/auth_provider.dart';
-import 'package:frontend/splash_screen.dart';
+import 'package:frontend/productScreen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SplashScreen(),
+      home: ProductScreen(),
     );
   }
 }
