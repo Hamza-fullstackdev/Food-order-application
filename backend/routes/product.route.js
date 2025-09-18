@@ -2,6 +2,7 @@ import express from "express";
 import verifyJwt from "../utils/vertifyJwt.js";
 import {
   addProduct,
+  addReview,
   deleteProduct,
   getAllProducts,
   getAllProductsByUser,
@@ -20,5 +21,6 @@ router.get("/get-products-by-user", verifyJwt, getAllProductsByUser);
 router.get("/get-by-category/:id", verifyJwt, getByCategory);
 router.get("/get-by-subcategory/:id", verifyJwt, getBySubCategory);
 router.delete("/delete-product/:id", verifyJwt, deleteProduct);
+router.post("/add-review", verifyJwt, addReview);
 
 export default router;

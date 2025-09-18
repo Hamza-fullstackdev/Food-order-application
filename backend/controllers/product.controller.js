@@ -1,4 +1,5 @@
 import Product from "../models/Product.model.js";
+import Rating from "../models/Rating.model.js";
 import errorHandler from "../middleware/error.middleware.js";
 import uploadImage from "../utils/upload.js";
 
@@ -72,7 +73,8 @@ export const getSingleProduct = async (req, res, next) => {
   const { id } = req.params;
   try {
     const product = await Product.findById(id);
-    res.status(200).json({ status: 200, product });
+    const reviews = await Rating.find({ productId: id });
+    res.status(200).json({ status: 200, product, reviews });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
@@ -92,7 +94,30 @@ export const deleteProduct = async (req, res, next) => {
   const { id } = req.params;
   try {
     await Product.findByIdAndDelete(id);
-    res.status(200).json({ status: 200, message: "Product deleted successfully" });
+    res
+      .status(200)
+      .json({ status: 200, message: "Product deleted successfully" });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const addReview = async (req, res, next) => {
+  const { productId, rating, comment } = req.body;
+  const userId = req.user._id;
+  if (!productId || !rating || !comment) {
+    return next(errorHandler(400, "All fields are required"));
+  }
+  try {
+    const review = await Rating.create({
+      userId,
+      productId,
+      rating,
+      comment,
+    });
+    res
+      .status(200)
+      .json({ status: 200, message: "Review added successfully", review });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
