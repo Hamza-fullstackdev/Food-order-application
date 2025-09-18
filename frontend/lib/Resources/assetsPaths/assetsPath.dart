@@ -15,4 +15,5 @@ class AssetsPath {
 
   static const String productScreenGroup =
       '${baseUrl}Group.png'; // imagie to show on the top of product screen  ya pic top pr lagani ha back pr
+static const String mealMenuTopPattren = '${baseUrl}mealMenu_pattren.jpg';// image to show on the top header  of mealMenuScreen
 }
