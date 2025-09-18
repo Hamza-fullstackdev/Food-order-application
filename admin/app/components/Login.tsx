@@ -36,6 +36,7 @@ const Login = () => {
         dispatch(loginUser(data.user));
         console.log(data);
       } else {
+        console.log(data);
         setLoading(false);
         setError(true);
         setErrorMessage(data.message);

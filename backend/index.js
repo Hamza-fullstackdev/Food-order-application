@@ -1,19 +1,22 @@
 import express from "express";
-import { config } from "./utils/config.js";
+// import { config } from "./utils/config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { connectToDatabase } from "./utils/db.js";
 
 const app = express();
-const PORT = config.PORT || 3000;
+// const PORT = config.PORT || 3000;
 connectToDatabase();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-  origin: "http://localhost:3001",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "https://food-order-application-vvps.vercel.app",
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true,
+  })
+);
 
 import authRouter from "./routes/auth.route.js";
 import productRouter from "./routes/product.route.js";
@@ -27,9 +30,10 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/subcategory", subCategoryRouter);
 app.use("/api/v1/cart", cartRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// app.listen(process.env.PORT || 3000, () => {
+//   console.log(`Server is running on port ${process.env.PORT || 3000}`);
+// })
+module.exports = app;
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
