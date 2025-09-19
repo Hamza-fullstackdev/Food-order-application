@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/ProfileScreen.dart';
 import 'package:frontend/Repos/auth_provider.dart';
+import 'package:frontend/cart_Screen.dart';
 import 'package:frontend/intro_page.dart';
+import 'package:frontend/mealMenu_Screen.dart';
+import 'package:frontend/productDetailscreen.dart';
+import 'package:frontend/productScreen.dart';
 import 'package:frontend/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -19,12 +24,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Food Curier',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SplashScreen(),
+      home: CartScreen(),
     );
   }
 }

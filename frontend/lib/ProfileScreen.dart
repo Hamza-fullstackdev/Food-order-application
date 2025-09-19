@@ -25,12 +25,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             right: -100,
             child: Image.asset(
               AssetsPath.mealMenuTopPattren,
-              height: 240,
+              height: 220,
               width: MediaQuery.of(context).size.width + 150,
               fit: BoxFit.contain,
             ),
           ),
-          // Main content
+
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(25.0),

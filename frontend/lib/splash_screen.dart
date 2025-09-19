@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Resources/assetsPaths/assetsPath.dart';
 import 'package:frontend/homeScreen.dart';
+import 'package:frontend/intro_page.dart';
 import 'package:frontend/utils/app_contants.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     _token = pref.getString("Access_Token");
       if(!mounted){return ;} 
         if(_token == null || JwtDecoder.isExpired(_token!)){
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => IntroPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => IntroPage()));
         }else {
          Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(title: "Hello world")));
       }
