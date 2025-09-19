@@ -21,9 +21,16 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import Link from "next/link";
-import { Pen, Table, Trash2 } from "lucide-react";
+import { Pen, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import api from "@/utils/axiosInstance";
+
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  createdAt: string | Date;
+}
 const User = () => {
   const [formData, setFormData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -46,13 +53,13 @@ const User = () => {
       if (res.status === 200) {
         getAllUsers();
       }
-    } catch (error) {
+    } catch {
       alert("Something went wrong");
     }
   };
 
   const filteredUsers = searchTerm
-    ? formData.filter((user: any) => {
+    ? formData.filter((user: User) => {
         const lowerSearch = searchTerm.toLowerCase().trim();
         return (
           user?._id?.toString().toLowerCase().includes(lowerSearch) ||
@@ -108,7 +115,7 @@ const User = () => {
               </TableRow>
             )}
             {filteredUsers?.length > 0 ? (
-              filteredUsers.map((user: any) => (
+              filteredUsers.map((user: User) => (
                 <TableRow className='relative' key={user._id}>
                   <TableCell>{user._id}</TableCell>
                   <TableCell>{user.name}</TableCell>

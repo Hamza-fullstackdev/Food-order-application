@@ -23,7 +23,7 @@ const EditUser = () => {
       const res = await api.get(`/api/v1/user/get-user/${params.id}`);
       const data = res.data;
       setFormData(data.user);
-    } catch (error) {
+    } catch {
       setError(true);
       setErrorMessage("Something went wrong");
     }
@@ -52,7 +52,7 @@ const EditUser = () => {
         setError(true);
         setErrorMessage(data.message);
       }
-    } catch (error) {
+    } catch {
       setError(true);
       setLoading(false);
       setErrorMessage("Something went wrong");

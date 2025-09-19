@@ -5,7 +5,7 @@ import { loginUser } from "@/lib/features/user/userSlice";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { setCookie, deleteCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 
 const Login = () => {
   const [formData, setFormData] = useState({});

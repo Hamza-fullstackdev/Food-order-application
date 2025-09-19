@@ -34,7 +34,7 @@ const AddUser = () => {
         setError(true);
         setErrorMessage(data.message);
       }
-    } catch (error) {
+    } catch {
       setError(true);
       setLoading(false);
       setErrorMessage("Something went wrong");
