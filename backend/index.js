@@ -12,7 +12,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3001",
+      "https://food-order-application-rust.vercel.app",
+    ],
     methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
   })
