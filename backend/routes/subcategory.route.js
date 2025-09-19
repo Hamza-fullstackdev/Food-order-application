@@ -5,12 +5,14 @@ import {
   getAllSubcategories,
   getSingleSubcategory,
   getBycategory,
-  deleteSubcategory
+  deleteSubcategory,
+  updateSubcategory
 } from "../controllers/subcategory.controller.js";
 
 const router = express.Router();
 
 router.post("/add-subcategory", verifyJwt, addSubcategory);
+router.patch("/update-subcategory/:id", verifyJwt, updateSubcategory);
 router.get("/get-all-subcategories", verifyJwt, getAllSubcategories);
 router.get("/get-subcategory/:id", verifyJwt, getSingleSubcategory);
 router.get("/get-by-category/:id", verifyJwt, getBycategory);

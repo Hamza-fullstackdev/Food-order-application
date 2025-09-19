@@ -165,6 +165,7 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
       showDragHandle: true,
       enableDrag: true,
 
+
       backgroundColor: AppContants.whiteColor,
       elevation: 5,
       context: context,

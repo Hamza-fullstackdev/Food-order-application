@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Resources/assetsPaths/assetsPath.dart';
+import 'package:frontend/mealMenu_Screen.dart';
 import 'package:frontend/productDetailscreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -395,7 +396,14 @@ class _ProductScreenState extends State<ProductScreen> {
                               ),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MealMenuScreen(),
+                                  ),
+                                );
+                              },
                               child: Icon(
                                 Icons.play_arrow,
                                 size: 18,
@@ -456,12 +464,15 @@ class _ProductScreenState extends State<ProductScreen> {
                                     ],
                                   ),
                                   Spacer(),
-                                  Text(
-                                    "\$15",
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 16,
-                                      color: Color(0xffD61355),
-                                      fontWeight: FontWeight.bold,
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "\$15",
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                        color: Color(0xffD61355),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ],

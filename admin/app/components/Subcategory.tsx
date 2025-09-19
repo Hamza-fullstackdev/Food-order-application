@@ -1,0 +1,211 @@
+"use client";
+import {
+  Table as TableWrapper,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Pen, Trash2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import React from "react";
+import api from "@/utils/axiosInstance";
+
+interface Category {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt?: string;
+  userId?: string;
+}
+
+interface Subcategory {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt?: string;
+  userId?: string;
+  categoryId: Category;
+}
+
+const Subcategory = () => {
+  const [formData, setFormData] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const subRes = await api.get("/api/v1/subcategory/get-all-subcategories");
+      const subData = subRes.data;
+      if (subData.status === 200) {
+        setFormData(subData.subcategories);
+      }
+    } catch {
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
+  const filteredCategory = searchTerm
+    ? formData.filter((subcategory: Subcategory) => {
+        const lowerSearch = searchTerm.toLowerCase().trim();
+        const mainCategoryName =
+          typeof subcategory.categoryId !== "string"
+            ? subcategory.categoryId?.name?.toLowerCase()
+            : undefined;
+
+        return (
+          subcategory?._id?.toString().toLowerCase().includes(lowerSearch) ||
+          subcategory?.name?.toLowerCase().includes(lowerSearch) ||
+          mainCategoryName?.includes(lowerSearch)
+        );
+      })
+    : formData;
+
+  const handleDeleteCategory = async (id: string) => {
+    try {
+      const res = await api.delete(
+        `/api/v1/subcategory/delete-subcategory/${id}`
+      );
+      if (res.status === 200) {
+        fetchData();
+      }
+    } catch {
+      alert("Something went wrong");
+    }
+  };
+  return (
+    <section className='my-8'>
+      <div className='flex items-center justify-between mb-6'>
+        <div>
+          <h1 className='font-bold text-2xl text-gray-800'>Category Lists</h1>
+        </div>
+        <div>
+          <Link
+            href={"/dashboard/sub-category/create"}
+            className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
+          >
+            Create new
+          </Link>
+        </div>
+      </div>
+      <div>
+        <div className='mb-2 flex items-end justify-end'>
+          <Input
+            type='search'
+            id='search'
+            name='search'
+            placeholder='Start typing to search'
+            className='w-[300px] bg-transparent border border-[#fe4f70] focus-visible:ring-0'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <TableWrapper>
+          <TableCaption>
+            A list of your recently created sub-categories.
+          </TableCaption>
+          <TableHeader className='!bg-[#fe4f70]/70 hover:!bg-[#fe4f70]'>
+            <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>Main Category</TableHead>
+              <TableHead>Sub Category</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading && (
+              <TableRow>
+                <TableCell colSpan={5} className='text-center'>
+                  Loading...
+                </TableCell>
+              </TableRow>
+            )}
+            {filteredCategory?.length > 0 ? (
+              filteredCategory.map((category: Subcategory) => (
+                <TableRow key={category._id}>
+                  <TableCell>{category._id.slice(0, 13)}...</TableCell>
+                  <TableCell className='capitalize'>
+                    {category.categoryId?.name}
+                  </TableCell>
+                  <TableCell className='capitalize'>{category.name}</TableCell>
+                  <TableCell className='capitalize'>
+                    {new Date(category.createdAt).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </TableCell>
+                  <TableCell>
+                    <div className='flex gap-x-2 items-center'>
+                      <Link
+                        href={`/dashboard/sub-category/edit/${category._id}`}
+                        className='bg-green-500 text-white px-2 py-2 rounded'
+                      >
+                        <Pen size={12} />
+                      </Link>
+                      <AlertDialog>
+                        <AlertDialogTrigger className='bg-red-500 text-white cursor-pointer px-2 py-2 rounded'>
+                          <Trash2 size={12} />
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete the sub category and remove all
+                              of it data from our servers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDeleteCategory(category._id)}
+                            >
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className='text-center'>
+                  No categories found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </TableWrapper>
+      </div>
+    </section>
+  );
+};
+
+export default Subcategory;

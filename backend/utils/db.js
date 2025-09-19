@@ -1,32 +1,30 @@
 import mongoose from "mongoose";
-import { config } from "./config.js";
 
-const mongoDbConnection = config.MONGODB_URI;
+const mongoDbConnection = process.env.MONGODB_URI;
 
 if (!mongoDbConnection) {
-  throw new Error(
-    "Please define the MONGODB_URI environment variable inside envoirement file"
-  );
+  throw new Error("Please define the MONGODB_URI environment variable");
 }
 
-let isConnected = false;
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
 
 export const connectToDatabase = async () => {
-  if (isConnected) {
-    return;  
+  if (cached.conn) return cached.conn;
 
+  if (!cached.promise) {
+    cached.promise = mongoose
+      .connect(mongoDbConnection, {
+        dbName: process.env.DATABASE,
+        bufferCommands: false,
+        maxPoolSize: 10,
+      })
+      .then((mongoose) => mongoose);
   }
 
-  try {
-    await mongoose.connect(mongoDbConnection, {
-      dbName: config.DATABASE,
-      bufferCommands: false,
-    });
-
-    isConnected = true;
-    console.log("MongoDB connected");
-  } catch (error) {
-    console.error("MongoDB connection error:", error);
-    throw error;
-  }
+  cached.conn = await cached.promise;
+  return cached.conn;
 };
