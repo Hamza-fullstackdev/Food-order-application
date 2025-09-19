@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           children: [
             Container(
               color: AppContants.whiteColor,
-            child: Image.asset(AssetsPath.bikeImage,height: MediaQuery.of(context).size.height * 0.30,width: MediaQuery.of(context).size.width * 0.30,)
+            child: Image.asset(AssetsPath.bikeImage,height: MediaQuery.of(context).size.height * 0.70,width: MediaQuery.of(context).size.width * 0.70,)
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

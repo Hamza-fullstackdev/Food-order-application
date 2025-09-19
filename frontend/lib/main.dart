@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Repos/auth_provider.dart';
+import 'package:frontend/intro_page.dart';
 import 'package:frontend/splash_screen.dart';
 import 'package:provider/provider.dart';
 
