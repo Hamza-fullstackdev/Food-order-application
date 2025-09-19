@@ -12,8 +12,11 @@ class AssetsPath {
   static const String profilePic = '${baseUrl}profile_pic.jpg';
   static const String burgerPic = '${baseUrl}burger.png';
   static const String burgerDetailPic = '${baseUrl}burgerDetail.jpeg';
+  static const String cardBackGroundpic =
+      '${baseUrl}card_BACKGROUND.png'; // image jo card k back pr lagni ha
 
   static const String productScreenGroup =
       '${baseUrl}Group.png'; // imagie to show on the top of product screen  ya pic top pr lagani ha back pr
-static const String mealMenuTopPattren = '${baseUrl}mealMenu_pattren.jpg';// image to show on the top header  of mealMenuScreen
+  static const String mealMenuTopPattren =
+      '${baseUrl}mealMenu_pattren.jpg'; // image to show on the top header  of mealMenuScreen
 }
