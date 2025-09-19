@@ -71,7 +71,9 @@ export const updateSubcategory = async (req, res, next) => {
 };
 export const getAllSubcategories = async (req, res, next) => {
   try {
-    const subcategories = await Subcategory.find({}).populate("categoryId");
+    const subcategories = await Subcategory.find({})
+      .sort({ createdAt: -1 })
+      .populate("categoryId");
     res.status(200).json({ status: 200, subcategories });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
@@ -91,9 +93,9 @@ export const getSingleSubcategory = async (req, res, next) => {
 export const getBycategory = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const subcategories = await Subcategory.find({ categoryId: id }).select(
-      "-categoryId"
-    );
+    const subcategories = await Subcategory.find({ categoryId: id })
+      .sort({ createdAt: -1 })
+      .select("-categoryId");
     res.status(200).json({ status: 200, subcategories });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));

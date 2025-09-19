@@ -35,7 +35,7 @@ const AddSubcategory = () => {
       const res = await api.get("/api/v1/category/get-all-categories");
       const data = res.data;
       setMainCategories(data.categories);
-    } catch{
+    } catch {
       setError(true);
       setErrorMessage("Something went wrong");
     }
@@ -96,7 +96,9 @@ const AddSubcategory = () => {
             <Select
               name='categoryId'
               value={formData?.categoryId}
-              onValueChange={(e) => setFormData({ ...formData, categoryId: e })}
+              onValueChange={(e: string) =>
+                setFormData({ ...formData, categoryId: e })
+              }
             >
               <SelectTrigger className='w-full border border-black'>
                 <SelectValue placeholder='Select main category' />

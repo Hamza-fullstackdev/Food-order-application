@@ -1,5 +1,5 @@
 import React from "react";
-import { Folder, Inbox, Pen, Tag, UserRoundPlus } from "lucide-react";
+import { Folder, Inbox, Pen, Store, Tag, UserRoundPlus } from "lucide-react";
 
 import {
   Sidebar as SidebarRoot,
@@ -34,6 +34,11 @@ const items = [
     title: "Sub-categories",
     url: "/dashboard/sub-category",
     icon: Tag,
+  },
+  {
+    title: "Products",
+    url: "/dashboard/products",
+    icon: Store,
   },
 ];
 const Sidebar = () => {

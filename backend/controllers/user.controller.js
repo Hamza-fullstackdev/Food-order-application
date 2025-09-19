@@ -3,7 +3,9 @@ import User from "../models/User.model.js";
 import { hashPassword } from "../utils/hashedPassword.js";
 export const getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find({});
+    const users = await User.find({})
+      .sort({ createdAt: -1 })
+      .select("-password");
     res.status(200).json({ status: 200, users });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));

@@ -57,7 +57,7 @@ export const updateCategory = async (req, res, next) => {
 
 export const getAllCategories = async (req, res, next) => {
   try {
-    const categories = await Category.find({});
+    const categories = await Category.find({}).sort({ createdAt: -1 });
     res.status(200).json({ status: 200, categories });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
