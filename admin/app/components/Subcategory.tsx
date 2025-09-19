@@ -29,37 +29,66 @@ interface Category {
   _id: string;
   name: string;
   createdAt: string;
+  updatedAt?: string;
+  userId?: string;
 }
-const Category = () => {
+
+interface Subcategory {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt?: string;
+  userId?: string;
+  categoryId: Category;
+}
+
+const Subcategory = () => {
   const [formData, setFormData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
 
-  const getAllCategories = async () => {
-    setLoading(true);
-    const res = await api.get("/api/v1/category/get-all-categories");
-    const data = res.data;
-    setLoading(false);
-    setFormData(data.categories);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const subRes = await api.get("/api/v1/subcategory/get-all-subcategories");
+      const subData = subRes.data;
+      if (subData.status === 200) {
+        setFormData(subData.subcategories);
+      }
+    } catch {
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
+
   React.useEffect(() => {
-    getAllCategories();
+    fetchData();
   }, []);
 
   const filteredCategory = searchTerm
-    ? formData.filter((category: Category) => {
+    ? formData.filter((subcategory: Subcategory) => {
         const lowerSearch = searchTerm.toLowerCase().trim();
+        const mainCategoryName =
+          typeof subcategory.categoryId !== "string"
+            ? subcategory.categoryId?.name?.toLowerCase()
+            : undefined;
+
         return (
-          category?._id?.toString().toLowerCase().includes(lowerSearch) ||
-          category?.name?.toLowerCase().includes(lowerSearch)
+          subcategory?._id?.toString().toLowerCase().includes(lowerSearch) ||
+          subcategory?.name?.toLowerCase().includes(lowerSearch) ||
+          mainCategoryName?.includes(lowerSearch)
         );
       })
     : formData;
+
   const handleDeleteCategory = async (id: string) => {
     try {
-      const res = await api.delete(`/api/v1/category/delete-category/${id}`);
+      const res = await api.delete(
+        `/api/v1/subcategory/delete-subcategory/${id}`
+      );
       if (res.status === 200) {
-        getAllCategories();
+        fetchData();
       }
     } catch {
       alert("Something went wrong");
@@ -73,10 +102,10 @@ const Category = () => {
         </div>
         <div>
           <Link
-            href={"/dashboard/category/create"}
+            href={"/dashboard/sub-category/create"}
             className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
           >
-            Create new Category
+            Create new
           </Link>
         </div>
       </div>
@@ -94,14 +123,14 @@ const Category = () => {
         </div>
         <TableWrapper>
           <TableCaption>
-            A list of your recently created categories.
+            A list of your recently created sub-categories.
           </TableCaption>
           <TableHeader className='!bg-[#fe4f70]/70 hover:!bg-[#fe4f70]'>
             <TableRow>
-              <TableHead className='w-[100px]'>ID</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Time</TableHead>
+              <TableHead>ID</TableHead>
+              <TableHead>Main Category</TableHead>
+              <TableHead>Sub Category</TableHead>
+              <TableHead>Created At</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -114,27 +143,24 @@ const Category = () => {
               </TableRow>
             )}
             {filteredCategory?.length > 0 ? (
-              filteredCategory.map((category: Category) => (
+              filteredCategory.map((category: Subcategory) => (
                 <TableRow key={category._id}>
                   <TableCell>{category._id.slice(0, 13)}...</TableCell>
-                  <TableCell className='capitalize'>{category.name}</TableCell>
-                  <TableCell>
-                    {new Date(category.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
+                  <TableCell className='capitalize'>
+                    {category.categoryId?.name}
                   </TableCell>
-                  <TableCell>
-                    {new Date(category.createdAt).toLocaleTimeString("en-US", {
-                      hour: "2-digit",
-                      minute: "2-digit",
+                  <TableCell className='capitalize'>{category.name}</TableCell>
+                  <TableCell className='capitalize'>
+                    {new Date(category.createdAt).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
                     })}
                   </TableCell>
                   <TableCell>
                     <div className='flex gap-x-2 items-center'>
                       <Link
-                        href={`/dashboard/category/edit/${category._id}`}
+                        href={`/dashboard/sub-category/edit/${category._id}`}
                         className='bg-green-500 text-white px-2 py-2 rounded'
                       >
                         <Pen size={12} />
@@ -150,8 +176,8 @@ const Category = () => {
                             </AlertDialogTitle>
                             <AlertDialogDescription>
                               This action cannot be undone. This will
-                              permanently delete the category and remove all of
-                              it data from our servers.
+                              permanently delete the sub category and remove all
+                              of it data from our servers.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -182,4 +208,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Subcategory;

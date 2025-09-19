@@ -43,6 +43,32 @@ export const addSubcategory = async (req, res, next) => {
   }
 };
 
+export const updateSubcategory = async (req, res, next) => {
+  const { id } = req.params;
+  const { name, categoryId } = req.body;
+  try {
+    const subcategory = await Subcategory.findById(id);
+    if (!subcategory) {
+      return next(errorHandler(400, "Subcategory does not exist"));
+    }
+    subcategory.name = name.toLowerCase();
+    if (categoryId) {
+      subcategory.categoryId = categoryId;
+    }
+    await subcategory.save();
+    res.status(200).json({
+      status: 200,
+      message: "Subcategory updated successfully",
+      subcategory,
+    });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      const messages = Object.values(error.errors).map((val) => val.message);
+      return next(errorHandler(400, messages.join(", ")));
+    }
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
 export const getAllSubcategories = async (req, res, next) => {
   try {
     const subcategories = await Subcategory.find({}).populate("categoryId");

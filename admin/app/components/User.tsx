@@ -109,7 +109,7 @@ const User = () => {
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell colSpan={4} className='text-center'>
+                <TableCell colSpan={5} className='text-center'>
                   Loading...
                 </TableCell>
               </TableRow>
@@ -166,7 +166,7 @@ const User = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={4} className='text-center'>
+                <TableCell colSpan={5} className='text-center'>
                   No users found
                 </TableCell>
               </TableRow>
