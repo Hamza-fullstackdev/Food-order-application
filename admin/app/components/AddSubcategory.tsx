@@ -25,6 +25,11 @@ const AddSubcategory = () => {
   });
   const router = useRouter();
 
+  interface Category {
+    _id: string;
+    name: string;
+    createdAt: string;
+  }
   const getCategories = async () => {
     try {
       const res = await api.get("/api/v1/category/get-all-categories");
@@ -99,7 +104,7 @@ const AddSubcategory = () => {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Main Categories</SelectLabel>
-                  {mainCategories?.map((category: any) => (
+                  {mainCategories?.map((category: Category) => (
                     <SelectItem key={category?._id} value={category?._id}>
                       {category?.name}
                     </SelectItem>

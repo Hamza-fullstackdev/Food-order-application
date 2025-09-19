@@ -15,6 +15,11 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import api from "@/utils/axiosInstance";
 
+interface Category {
+  _id: string;
+  name: string;
+  createdAt: string;
+}
 const EditSubcategory = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -35,13 +40,13 @@ const EditSubcategory = () => {
       );
       const data = res.data;
       setFormData({
-      _id: data.subcategory._id,
-      name: data.subcategory.name,
-      categoryId:
-        typeof data.subcategory.categoryId === "string"
-          ? data.subcategory.categoryId
-          : data.subcategory.categoryId._id, // 👈 extract id if it's object
-    });
+        _id: data.subcategory._id,
+        name: data.subcategory.name,
+        categoryId:
+          typeof data.subcategory.categoryId === "string"
+            ? data.subcategory.categoryId
+            : data.subcategory.categoryId._id, // 👈 extract id if it's object
+      });
     } catch {
       setError(true);
       setErrorMessage("Something went wrong");
@@ -122,7 +127,7 @@ const EditSubcategory = () => {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Main Categories</SelectLabel>
-                  {mainCategories.map((category: any) => (
+                  {mainCategories.map((category: Category) => (
                     <SelectItem key={category._id} value={category._id}>
                       {category.name}
                     </SelectItem>
