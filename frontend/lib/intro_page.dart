@@ -160,11 +160,10 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
     );
   }
 
-  PersistentBottomSheetController presistanceBottomSheet(BuildContext context) {
+PersistentBottomSheetController presistanceBottomSheet(BuildContext context) {
     return showBottomSheet(
       showDragHandle: true,
       enableDrag: true,
-
 
       backgroundColor: AppContants.whiteColor,
       elevation: 5,
@@ -242,7 +241,6 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
         );
   }
 }
-
 Column pageItem(
   imgResource,
   pageHeading,

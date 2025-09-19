@@ -166,6 +166,8 @@ class TabView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: CommonButton(
+                  width: 256,
+                  height: 46,
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       //  _emailController.clear();
@@ -221,6 +223,8 @@ class TabView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: CommonButton(
+                  height: 46,
+                  width: 256,
                   onPressed: () {},
                   isGradient: false,
                   child: Row(
