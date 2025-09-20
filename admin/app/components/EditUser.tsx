@@ -17,15 +17,18 @@ const EditUser = () => {
     name: "",
     email: "",
     password: "",
+    phoneNumber: "",
+    isAdmin: false,
   });
   const getUserById = async () => {
     try {
       const res = await api.get(`/api/v1/user/get-user/${params.id}`);
       const data = res.data;
       setFormData(data.user);
-    } catch {
+    } catch (error: any) {
       setError(true);
-      setErrorMessage("Something went wrong");
+      setErrorMessage(error.message);
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -43,19 +46,14 @@ const EditUser = () => {
         `/api/v1/user/update-user/${params.id}`,
         formData
       );
-      const data = res.data;
       setLoading(false);
       if (res.status === 200) {
         router.push("/dashboard/users");
-      } else {
-        setLoading(false);
-        setError(true);
-        setErrorMessage(data.message);
       }
-    } catch {
+    } catch (error: any) {
       setError(true);
+      setErrorMessage(error.message);
       setLoading(false);
-      setErrorMessage("Something went wrong");
     }
   };
   return (
@@ -90,7 +88,7 @@ const EditUser = () => {
               className='border border-black placeholder:text-black'
               required
               autoComplete='off'
-              value={formData.name}
+              value={formData?.name ?? ""}
               onChange={handleChange}
             />
           </div>
@@ -104,7 +102,7 @@ const EditUser = () => {
               className='border border-black placeholder:text-black'
               required
               autoComplete='off'
-              value={formData.email}
+              value={formData?.email ?? ""}
               onChange={handleChange}
             />
           </div>
@@ -119,6 +117,31 @@ const EditUser = () => {
               autoComplete='off'
               onChange={handleChange}
             />
+          </div>
+          <div className='flex flex-col gap-2'>
+            <Label htmlFor='phoneNumber'>Phone Number</Label>
+            <Input
+              type='number'
+              id='phoneNumber'
+              name='phoneNumber'
+              placeholder='Enter Phone Number'
+              className='border border-black placeholder:text-black'
+              autoComplete='off'
+              value={formData?.phoneNumber ?? ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div className='flex flex-row gap-2'>
+            <input
+              type='checkbox'
+              name='isAdmin'
+              id='isAdmin'
+              checked={formData?.isAdmin ?? false}
+              onChange={(e) =>
+                setFormData({ ...formData, isAdmin: e.target.checked })
+              }
+            />
+            <Label htmlFor='isAdmin'>Make Admin?</Label>
           </div>
         </div>
         <div className='mt-6'>

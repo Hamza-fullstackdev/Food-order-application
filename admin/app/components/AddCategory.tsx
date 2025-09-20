@@ -23,19 +23,14 @@ const AddCategory = () => {
     setLoading(true);
     try {
       const res = await api.post("/api/v1/category/add-category", formData);
-      const data = res.data;
       setLoading(false);
       if (res.status === 200) {
         router.push("/dashboard/category");
-      } else {
-        setLoading(false);
-        setError(true);
-        setErrorMessage(data.message);
       }
-    } catch {
+    } catch (error: any) {
       setError(true);
       setLoading(false);
-      setErrorMessage("Something went wrong");
+      setErrorMessage(error.message);
     }
   };
   return (

@@ -35,9 +35,9 @@ const AddSubcategory = () => {
       const res = await api.get("/api/v1/category/get-all-categories");
       const data = res.data;
       setMainCategories(data.categories);
-    } catch {
+    } catch (error: any) {
       setError(true);
-      setErrorMessage("Something went wrong");
+      setErrorMessage(error.message);
     }
   };
   useEffect(() => {
@@ -54,19 +54,14 @@ const AddSubcategory = () => {
         "/api/v1/subcategory/add-subcategory",
         formData
       );
-      const data = res.data;
       setLoading(false);
       if (res.status === 200) {
         router.push("/dashboard/sub-category");
-      } else {
-        setLoading(false);
-        setError(true);
-        setErrorMessage(data?.message);
       }
-    } catch {
+    } catch (error: any) {
       setError(true);
       setLoading(false);
-      setErrorMessage("Something went wrong");
+      setErrorMessage(error.message);
     }
   };
   return (

@@ -14,6 +14,8 @@ const AddUser = () => {
     name: "",
     email: "",
     password: "",
+    phoneNumber: "",
+    isAdmin: false,
   });
   const router = useRouter();
 
@@ -25,19 +27,14 @@ const AddUser = () => {
     setLoading(true);
     try {
       const res = await api.post("/api/v1/auth/register", formData);
-      const data = res.data;
       setLoading(false);
       if (res.status === 201) {
         router.push("/dashboard/users");
-      } else {
-        setLoading(false);
-        setError(true);
-        setErrorMessage(data.message);
       }
-    } catch {
+    } catch (error: any) {
       setError(true);
       setLoading(false);
-      setErrorMessage("Something went wrong");
+      setErrorMessage(error.message);
     }
   };
   return (
@@ -103,6 +100,30 @@ const AddUser = () => {
               value={formData.password}
               onChange={handleChange}
             />
+          </div>
+          <div className='flex flex-col gap-2'>
+            <Label htmlFor='phoneNumber'>Phone Number</Label>
+            <Input
+              type='number'
+              id='phoneNumber'
+              name='phoneNumber'
+              placeholder='Enter Phone Number'
+              className='border border-black placeholder:text-black'
+              autoComplete='off'
+              value={formData.phoneNumber}
+              onChange={handleChange}
+            />
+          </div>
+          <div className='flex flex-row gap-2'>
+            <input
+              type='checkbox'
+              name='isAdmin'
+              id='isAdmin'
+              onChange={(e) =>
+                setFormData({ ...formData, isAdmin: e.target.checked })
+              }
+            />
+            <Label htmlFor='isAdmin'>Make Admin?</Label>
           </div>
         </div>
         <div className='mt-6'>

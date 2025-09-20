@@ -67,6 +67,14 @@ const Category = () => {
   };
   return (
     <section className='my-8'>
+      {loading && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center animate-fadeIn'>
+          <div className='absolute inset-0 bg-black/40'></div>
+          <div className='relative z-10'>
+            <div className='h-12 w-12 border-4 border-white/30 border-t-white rounded-full animate-spin'></div>
+          </div>
+        </div>
+      )}
       <div className='flex items-center justify-between mb-6'>
         <div>
           <h1 className='font-bold text-2xl text-gray-800'>Category Lists</h1>
@@ -106,13 +114,6 @@ const Category = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {loading && (
-              <TableRow>
-                <TableCell colSpan={5} className='text-center'>
-                  Loading...
-                </TableCell>
-              </TableRow>
-            )}
             {filteredCategory?.length > 0 ? (
               filteredCategory.map((category: Category) => (
                 <TableRow key={category._id}>

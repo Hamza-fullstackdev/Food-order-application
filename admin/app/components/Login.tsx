@@ -43,15 +43,11 @@ const Login = () => {
         setCookie("accessToken", data.user.accessToken);
         setCookie("refreshToken", data.user.refreshToken);
         router.push("/dashboard");
-      } else {
-        setLoading(false);
-        setError(true);
-        setErrorMessage(data.message);
       }
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
+      setErrorMessage(error.message);
       setError(true);
-      setErrorMessage("Something went wrong");
     }
   };
   return (

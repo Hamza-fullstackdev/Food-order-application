@@ -39,18 +39,14 @@ const EditCategory = () => {
         `/api/v1/category/update-category/${params.id}`,
         formData
       );
-      const data = res.data;
       setLoading(false);
       if (res.status === 200) {
         router.push("/dashboard/category");
-      } else {
-        setLoading(false);
-        setError(true);
-        setErrorMessage(data.message);
       }
-    } catch {
+    } catch (error: any) {
       setError(true);
-      setErrorMessage("Something went wrong");
+      setErrorMessage(error.message);
+      setLoading(false);
     }
   };
   return (

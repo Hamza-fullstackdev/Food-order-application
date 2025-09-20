@@ -1,7 +1,7 @@
 import axios from "axios";
 import { store } from "../lib/store";
 import { updateTokens, logoutUser } from "../lib/features/user/userSlice";
-import { setCookie, deleteCookie } from "cookies-next";
+import { getCookie, setCookie, deleteCookie } from "cookies-next";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -10,7 +10,10 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const state = store.getState();
-    const token = state.user.accessToken;
+    let token = state.user.accessToken;
+    if (!token) {
+      token = getCookie("accessToken") as string;
+    }
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -83,18 +86,30 @@ api.interceptors.response.use(
         processQueue(null, accessToken);
 
         return api(originalRequest);
-      } catch (err) {
+      } catch (err: any) {
         processQueue(err, null);
         store.dispatch(logoutUser());
         deleteCookie("accessToken");
         deleteCookie("refreshToken");
-        return Promise.reject(err);
+        return Promise.reject(
+          err.response?.data || {
+            success: false,
+            status: 500,
+            message: "Failed to refresh token",
+          }
+        );
       } finally {
         isRefreshing = false;
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(
+      error.response?.data || {
+        success: false,
+        status: 500,
+        message: "Something went wrong",
+      }
+    );
   }
 );
 
