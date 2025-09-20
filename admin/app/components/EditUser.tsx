@@ -12,40 +12,63 @@ const EditUser = () => {
   const [errorMessage, setErrorMessage] = React.useState("");
   const params = useParams();
   const router = useRouter();
-  const [formData, setFormData] = React.useState({
+
+  const [formData, setFormData] = React.useState<any>({
     _id: "",
     name: "",
     email: "",
     password: "",
     phoneNumber: "",
     isAdmin: false,
+    image: null,
   });
+
   const getUserById = async () => {
     try {
       const res = await api.get(`/api/v1/user/get-user/${params.id}`);
       const data = res.data;
-      setFormData(data.user);
+      setFormData({ ...data.response.user, image: null });
     } catch (error: any) {
       setError(true);
       setErrorMessage(error.message);
       setLoading(false);
     }
   };
+
   useEffect(() => {
     getUserById();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.type === "file") {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.files?.[0] || null,
+      });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
+
   const handleFormData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const res = await api.patch(
-        `/api/v1/user/update-user/${params.id}`,
-        formData
-      );
+      const fd = new FormData();
+      fd.append("name", formData.name);
+      fd.append("email", formData.email);
+      if (formData.password) fd.append("password", formData.password);
+      fd.append("phoneNumber", formData.phoneNumber);
+      fd.append("isAdmin", String(formData.isAdmin));
+      if (formData.image) {
+        fd.append("profileImage", formData.image);
+      }
+
+      const res = await api.patch(`/api/v1/user/update-user/${params.id}`, fd, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       setLoading(false);
       if (res.status === 200) {
         router.push("/dashboard/users");
@@ -56,27 +79,26 @@ const EditUser = () => {
       setLoading(false);
     }
   };
+
   return (
     <section className='my-8'>
       <div className='flex items-center justify-between mb-6'>
-        <div>
-          <h1 className='font-bold text-2xl text-gray-800'>Update User</h1>
-        </div>
-        <div>
-          <Link
-            href={"/dashboard/users"}
-            className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
-          >
-            Go Back
-          </Link>
-        </div>
+        <h1 className='font-bold text-2xl text-gray-800'>Update User</h1>
+        <Link
+          href={"/dashboard/users"}
+          className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
+        >
+          Go Back
+        </Link>
       </div>
-      <form onSubmit={handleFormData}>
+
+      <form onSubmit={handleFormData} encType='multipart/form-data'>
         {error && (
           <div className='mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative'>
             <span className='block sm:inline text-sm'>{errorMessage}</span>
           </div>
         )}
+
         <div className='grid grid-cols-1 gap-4'>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='name'>Name</Label>
@@ -85,13 +107,12 @@ const EditUser = () => {
               id='name'
               name='name'
               placeholder='Enter Name'
-              className='border border-black placeholder:text-black'
               required
-              autoComplete='off'
               value={formData?.name ?? ""}
               onChange={handleChange}
             />
           </div>
+
           <div className='flex flex-col gap-2'>
             <Label htmlFor='email'>Email</Label>
             <Input
@@ -99,13 +120,12 @@ const EditUser = () => {
               id='email'
               name='email'
               placeholder='Enter Email'
-              className='border border-black placeholder:text-black'
               required
-              autoComplete='off'
               value={formData?.email ?? ""}
               onChange={handleChange}
             />
           </div>
+
           <div className='flex flex-col gap-2'>
             <Label htmlFor='password'>Password</Label>
             <Input
@@ -113,11 +133,10 @@ const EditUser = () => {
               id='password'
               name='password'
               placeholder='Enter Password'
-              className='border border-black placeholder:text-black'
-              autoComplete='off'
               onChange={handleChange}
             />
           </div>
+
           <div className='flex flex-col gap-2'>
             <Label htmlFor='phoneNumber'>Phone Number</Label>
             <Input
@@ -125,12 +144,22 @@ const EditUser = () => {
               id='phoneNumber'
               name='phoneNumber'
               placeholder='Enter Phone Number'
-              className='border border-black placeholder:text-black'
-              autoComplete='off'
               value={formData?.phoneNumber ?? ""}
               onChange={handleChange}
             />
           </div>
+
+          <div className='flex flex-col gap-2'>
+            <Label htmlFor='image'>Profile Image</Label>
+            <Input
+              type='file'
+              id='image'
+              name='image'
+              accept='image/*'
+              onChange={handleChange}
+            />
+          </div>
+
           <div className='flex flex-row gap-2'>
             <input
               type='checkbox'
@@ -144,13 +173,14 @@ const EditUser = () => {
             <Label htmlFor='isAdmin'>Make Admin?</Label>
           </div>
         </div>
+
         <div className='mt-6'>
           <button
             type='submit'
             disabled={loading}
             className='w-full py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
           >
-            Update User
+            {loading ? "Updating..." : "Update User"}
           </button>
         </div>
       </form>

@@ -12,6 +12,14 @@ const categorySchema = new mongoose.Schema(
       required: [true, "Name is required"],
       trim: true,
     },
+    image: {
+      type: String,
+      trim: true,
+    },
+    imageId: {
+      type: String,
+      trim: true,
+    },
   },
   { timestamps: true }
 );

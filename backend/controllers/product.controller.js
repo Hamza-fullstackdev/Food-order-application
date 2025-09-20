@@ -3,7 +3,6 @@ import Rating from "../models/Rating.model.js";
 import errorHandler from "../middleware/error.middleware.js";
 import uploadImage from "../utils/upload.js";
 import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
-import { v2 as cloudinary } from "cloudinary";
 
 export const addProduct = async (req, res, next) => {
   const {

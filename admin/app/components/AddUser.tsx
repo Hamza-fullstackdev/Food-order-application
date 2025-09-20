@@ -2,6 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import api from "@/utils/axiosInstance";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -10,6 +11,8 @@ const AddUser = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [profileImage, setProfileImage] = React.useState<File | null>(null);
+
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
@@ -17,16 +20,40 @@ const AddUser = () => {
     phoneNumber: "",
     isAdmin: false,
   });
+
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setProfileImage(e.target.files[0]);
+    }
+  };
+
   const handleFormData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const res = await api.post("/api/v1/auth/register", formData);
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("password", formData.password);
+      formDataToSend.append("phoneNumber", formData.phoneNumber);
+      formDataToSend.append("isAdmin", String(formData.isAdmin));
+      if (profileImage) {
+        formDataToSend.append("profileImage", profileImage);
+      }
+
+      const res = await api.post("/api/v1/auth/register", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       setLoading(false);
       if (res.status === 201) {
         router.push("/dashboard/users");
@@ -37,6 +64,7 @@ const AddUser = () => {
       setErrorMessage(error.message);
     }
   };
+
   return (
     <section className='my-8'>
       <div className='flex items-center justify-between mb-6'>
@@ -52,12 +80,29 @@ const AddUser = () => {
           </Link>
         </div>
       </div>
-      <form onSubmit={handleFormData}>
+      <form onSubmit={handleFormData} encType='multipart/form-data'>
         {error && (
           <div className='mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative'>
             <span className='block sm:inline text-sm'>{errorMessage}</span>
           </div>
         )}
+        <div className='w-[180px] h-[180px] mx-auto relative'>
+          <Image
+            src={
+              profileImage ? URL.createObjectURL(profileImage) : "/no-image.png"
+            }
+            fill
+            alt='user'
+            className='mx-auto rounded-full cursor-pointer object-cover'
+          />
+          <input
+            type='file'
+            name='profileImage'
+            id='profileImage'
+            className='absolute inset-0 opacity-0 cursor-pointer'
+            onChange={handleFileChange}
+          />
+        </div>
         <div className='grid grid-cols-1 gap-4'>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='name'>Name</Label>
@@ -119,6 +164,7 @@ const AddUser = () => {
               type='checkbox'
               name='isAdmin'
               id='isAdmin'
+              checked={formData.isAdmin}
               onChange={(e) =>
                 setFormData({ ...formData, isAdmin: e.target.checked })
               }
@@ -132,7 +178,7 @@ const AddUser = () => {
             disabled={loading}
             className='w-full py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
           >
-            Create
+            {loading ? "Creating..." : "Create"}
           </button>
         </div>
       </form>

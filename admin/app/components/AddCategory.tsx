@@ -13,16 +13,37 @@ const AddCategory = () => {
   const [formData, setFormData] = React.useState({
     name: "",
   });
+  const [image, setImage] = React.useState<File | null>(null);
+
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
   const handleFormData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const res = await api.post("/api/v1/category/add-category", formData);
+      const data = new FormData();
+      data.append("name", formData.name);
+      if (image) {
+        data.append("image", image);
+      }
+
+      const res = await api.post("/api/v1/category/add-category", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       setLoading(false);
       if (res.status === 200) {
         router.push("/dashboard/category");
@@ -30,30 +51,29 @@ const AddCategory = () => {
     } catch (error: any) {
       setError(true);
       setLoading(false);
-      setErrorMessage(error.message);
+      setErrorMessage(error.response?.data?.message || error.message);
     }
   };
+
   return (
     <section className='my-8'>
       <div className='flex items-center justify-between mb-6'>
-        <div>
-          <h1 className='font-bold text-2xl text-gray-800'>Add Category</h1>
-        </div>
-        <div>
-          <Link
-            href={"/dashboard/category"}
-            className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
-          >
-            Go Back
-          </Link>
-        </div>
+        <h1 className='font-bold text-2xl text-gray-800'>Add Category</h1>
+        <Link
+          href={"/dashboard/category"}
+          className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
+        >
+          Go Back
+        </Link>
       </div>
-      <form onSubmit={handleFormData}>
+
+      <form onSubmit={handleFormData} encType='multipart/form-data'>
         {error && (
           <div className='mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative'>
             <span className='block sm:inline text-sm'>{errorMessage}</span>
           </div>
         )}
+
         <div className='grid grid-cols-1 gap-4'>
           <div className='flex flex-col gap-2'>
             <Label htmlFor='name'>Category name</Label>
@@ -69,14 +89,27 @@ const AddCategory = () => {
               onChange={handleChange}
             />
           </div>
+
+          <div className='flex flex-col gap-2'>
+            <Label htmlFor='image'>Category Image</Label>
+            <Input
+              type='file'
+              id='image'
+              name='image'
+              required
+              accept='image/*'
+              onChange={handleImageChange}
+            />
+          </div>
         </div>
+
         <div className='mt-6'>
           <button
             type='submit'
             disabled={loading}
             className='w-full py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
           >
-            Create
+            {loading ? "Creating..." : "Create"}
           </button>
         </div>
       </form>

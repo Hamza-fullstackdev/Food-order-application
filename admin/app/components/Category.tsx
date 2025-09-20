@@ -24,10 +24,12 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import React from "react";
 import api from "@/utils/axiosInstance";
+import Image from "next/image";
 
 interface Category {
   _id: string;
   name: string;
+  image: string;
   createdAt: string;
 }
 const Category = () => {
@@ -107,6 +109,7 @@ const Category = () => {
           <TableHeader className='!bg-[#fe4f70]/70 hover:!bg-[#fe4f70]'>
             <TableRow>
               <TableHead className='w-[100px]'>ID</TableHead>
+              <TableHead>Image</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Time</TableHead>
@@ -118,6 +121,14 @@ const Category = () => {
               filteredCategory.map((category: Category) => (
                 <TableRow key={category._id}>
                   <TableCell>{category._id.slice(0, 13)}...</TableCell>
+                  <TableCell>
+                    <Image
+                      src={category.image || "/no-image.png"}
+                      alt={category.name}
+                      width={50}
+                      height={50}
+                    />
+                  </TableCell>
                   <TableCell className='capitalize'>{category.name}</TableCell>
                   <TableCell>
                     {new Date(category.createdAt).toLocaleDateString("en-US", {

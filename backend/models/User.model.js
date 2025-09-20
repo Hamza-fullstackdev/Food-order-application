@@ -8,7 +8,6 @@ const userScheama = new mongoose.Schema(
       trim: true,
       minlength: [3, "Name must be at least 3 characters long"],
       maxlength: [25, "Name cannot exceed 25 characters"],
-      
     },
     email: {
       type: String,
@@ -26,6 +25,9 @@ const userScheama = new mongoose.Schema(
       type: String,
       default:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ87KJTvoZmlpQo-zqqQqFPbUXHqBnJt8xDZg&s",
+    },
+    profileImageId: {
+      type: String,
     },
     phoneNumber: {
       type: String,

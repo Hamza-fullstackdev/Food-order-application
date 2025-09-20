@@ -1,5 +1,8 @@
 import Category from "../models/Category.model.js";
 import errorHandler from "../middleware/error.middleware.js";
+import uploadCategoryImage from "../utils/uploadCategory.js";
+import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export const addCategory = async (req, res, next) => {
   const { name } = req.body;
@@ -15,8 +18,11 @@ export const addCategory = async (req, res, next) => {
     if (isCategoryExist) {
       return next(errorHandler(400, "Category already exists"));
     }
+    const uploaded_img = await uploadCategoryImage(req.file.path);
     const category = await Category.create({
       name: name.toLowerCase(),
+      image: uploaded_img.secure_url,
+      imageId: uploaded_img.public_id,
       userId,
     });
     res
@@ -34,23 +40,42 @@ export const addCategory = async (req, res, next) => {
 export const updateCategory = async (req, res, next) => {
   const { id } = req.params;
   const { name } = req.body;
+
   try {
     const category = await Category.findById(id);
     if (!category) {
       return next(errorHandler(400, "Category does not exist"));
     }
-    category.name = name.toLowerCase();
+
+    if (name) {
+      category.name = name.toLowerCase();
+    }
+
+    if (req.file) {
+      if (category.imageId) {
+        await cloudinary.uploader.destroy(category.imageId);
+      }
+
+      const uploaded_img = await uploadCategoryImage(req.file.path);
+      category.image = uploaded_img.secure_url;
+      category.imageId = uploaded_img.public_id;
+    }
+
     await category.save();
+
     res.status(200).json({
       status: 200,
       message: "Category updated successfully",
       category,
     });
   } catch (error) {
+    console.error("Update category error:", error);
+
     if (error.name === "ValidationError") {
       const messages = Object.values(error.errors).map((val) => val.message);
       return next(errorHandler(400, messages.join(", ")));
     }
+
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };
@@ -77,6 +102,12 @@ export const getSingleCategory = async (req, res, next) => {
 export const deleteCategory = async (req, res, next) => {
   const { id } = req.params;
   try {
+    const category = await Category.findById(id);
+
+    if (!category) {
+      return next(errorHandler(404, "Category not found"));
+    }
+    await deleteImageFromCloudinary(category.imageId);
     await Category.findByIdAndDelete(id);
     res
       .status(200)

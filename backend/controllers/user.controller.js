@@ -7,6 +7,9 @@ import Rating from "../models/Rating.model.js";
 import Cart from "../models/Cart.model.js";
 import CartItem from "../models/CartItem.model.js";
 import { hashPassword } from "../utils/hashedPassword.js";
+import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
+import uploadUserImage from "../utils/uploadUser.js";
+
 export const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find({})
@@ -55,16 +58,40 @@ export const getSingleUser = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
   const { id } = req.params;
-  const { password } = req.body;
+  let updateData = { ...req.body };
 
-  if (password) {
-    const hashedPassword = await hashPassword(password);
-    req.body.password = hashedPassword;
-  }
   try {
-    const user = await User.findByIdAndUpdate(id, req.body, { new: true });
-    res.status(200).json({ status: 200, user });
+    const user = await User.findById(id);
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    if (updateData.password) {
+      updateData.password = await hashPassword(updateData.password);
+    }
+
+    if (req.file) {
+      if (user.profileImageId) {
+        await deleteImageFromCloudinary(user.profileImageId);
+      }
+
+      const uploadedImg = await uploadUserImage(req.file.path);
+      updateData.profileImage = uploadedImg.secure_url;
+      updateData.profileImageId = uploadedImg.public_id;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      status: 200,
+      message: "User updated successfully",
+      user: updatedUser,
+    });
   } catch (error) {
+    console.error(error);
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };
@@ -72,7 +99,16 @@ export const updateUser = async (req, res, next) => {
 export const deleteUser = async (req, res, next) => {
   const { id } = req.params;
   try {
-    await User.findByIdAndDelete(id);
+    const isUserExist = await User.findById(id);
+    if (!isUserExist) {
+      return next(errorHandler(404, "User not found"));
+    }
+    const deletedImage = await deleteImageFromCloudinary(
+      isUserExist.profileImageId
+    );
+    if (deletedImage) {
+      await User.findByIdAndDelete(id);
+    }
     res.status(200).json({ status: 200, message: "User deleted successfully" });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));

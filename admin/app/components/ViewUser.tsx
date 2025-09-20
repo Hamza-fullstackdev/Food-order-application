@@ -145,6 +145,7 @@ const ViewUser = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>ID</TableHead>
+                    <TableHead>Image</TableHead>
                     <TableHead>Name</TableHead>
                     <TableHead>Creation Date</TableHead>
                     <TableHead>Creation Time</TableHead>
@@ -154,17 +155,30 @@ const ViewUser = () => {
                   {(formData?.categories?.length > 0 &&
                     formData?.categories?.map((category: any) => (
                       <TableRow key={category?._id}>
-                        <TableCell>{category?._id}</TableCell>
-                        <TableCell className='capitalize'>
-                          {category?.name}
+                        <TableCell title={category?._id}>
+                          {category?._id}
                         </TableCell>
                         <TableCell>
+                          <Image
+                            src={category?.image || "/no-image.png"}
+                            alt='category'
+                            width={50}
+                            height={50}
+                          />
+                        </TableCell>
+                        <TableCell
+                          className='capitalize'
+                          title={category?.name}
+                        >
+                          {category?.name}
+                        </TableCell>
+                        <TableCell title={category?.createdAt}>
                           {new Date(category?.createdAt).toLocaleDateString(
                             "en-US",
                             { year: "numeric", month: "short", day: "numeric" }
                           )}
                         </TableCell>
-                        <TableCell>
+                        <TableCell title={category?.createdAt}>
                           {new Date(category?.createdAt).toLocaleTimeString(
                             "en-US",
                             {
@@ -207,20 +221,28 @@ const ViewUser = () => {
                   {(formData?.subcategories?.length > 0 &&
                     formData?.subcategories?.map((category: any) => (
                       <TableRow key={category?._id}>
-                        <TableCell>{category?._id}</TableCell>
-                        <TableCell className='capitalize'>
+                        <TableCell title={category?._id}>
+                          {category?._id}
+                        </TableCell>
+                        <TableCell
+                          className='capitalize'
+                          title={category?.categoryId?.name}
+                        >
                           {category?.categoryId?.name}
                         </TableCell>
-                        <TableCell className='capitalize'>
+                        <TableCell
+                          className='capitalize'
+                          title={category?.name}
+                        >
                           {category?.name}
                         </TableCell>
-                        <TableCell>
+                        <TableCell title={category?.createdAt}>
                           {new Date(category?.createdAt).toLocaleDateString(
                             "en-US",
                             { year: "numeric", month: "short", day: "numeric" }
                           )}
                         </TableCell>
-                        <TableCell>
+                        <TableCell title={category?.createdAt}>
                           {new Date(category?.createdAt).toLocaleTimeString(
                             "en-US",
                             {
@@ -262,7 +284,9 @@ const ViewUser = () => {
                 {(formData?.ratings?.length > 0 &&
                   formData?.ratings?.map((rating: any) => (
                     <TableRow key={rating?._id}>
-                      <TableCell>{rating?._id.slice(0, 13)}...</TableCell>
+                      <TableCell title={rating?._id}>
+                        {rating?._id.slice(0, 13)}...
+                      </TableCell>
                       <TableCell>
                         <Image
                           src={rating?.productId?.image || "/no-image.png"}
@@ -271,16 +295,19 @@ const ViewUser = () => {
                           height={50}
                         />
                       </TableCell>
-                      <TableCell className='capitalize'>
+                      <TableCell
+                        className='capitalize'
+                        title={rating?.productId?.name}
+                      >
                         {rating?.productId?.name}
                       </TableCell>
-                      <TableCell className='capitalize'>
+                      <TableCell className='capitalize' title={rating?.rating}>
                         {rating?.rating}
                       </TableCell>
-                      <TableCell className='capitalize'>
+                      <TableCell className='capitalize' title={rating?.comment}>
                         {rating?.comment.slice(0, 30)}
                       </TableCell>
-                      <TableCell>
+                      <TableCell title={rating?.createdAt}>
                         {new Date(rating?.createdAt).toLocaleDateString(
                           "en-US",
                           {
@@ -290,7 +317,7 @@ const ViewUser = () => {
                           }
                         )}
                       </TableCell>
-                      <TableCell>
+                      <TableCell title={rating?.createdAt}>
                         {new Date(rating?.createdAt).toLocaleTimeString(
                           "en-US",
                           {
@@ -333,7 +360,7 @@ const ViewUser = () => {
                 {(formData?.cartItems?.length > 0 &&
                   formData?.cartItems?.map((cart: any) => (
                     <TableRow key={cart?._id}>
-                      <TableCell>{cart?._id}</TableCell>
+                      <TableCell title={cart?._id}>{cart?._id}</TableCell>
                       <TableCell>
                         <Image
                           src={cart?.productId?.image || "/no-image.png"}
@@ -342,23 +369,29 @@ const ViewUser = () => {
                           height={50}
                         />
                       </TableCell>
-                      <TableCell className='capitalize'>
+                      <TableCell
+                        className='capitalize'
+                        title={cart?.productId?.name}
+                      >
                         {cart?.productId?.name}
                       </TableCell>
-                      <TableCell className='capitalize'>
+                      <TableCell
+                        className='capitalize'
+                        title={cart?.productId?.price}
+                      >
                         {cart?.productId?.price}
                       </TableCell>
-                      <TableCell className='capitalize'>
+                      <TableCell className='capitalize' title={cart?.quantity}>
                         {cart?.quantity}
                       </TableCell>
-                      <TableCell>
+                      <TableCell title={cart?.createdAt}>
                         {new Date(cart?.createdAt).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "short",
                           day: "numeric",
                         })}
                       </TableCell>
-                      <TableCell>
+                      <TableCell title={cart?.createdAt}>
                         {new Date(cart?.createdAt).toLocaleTimeString("en-US", {
                           hour: "2-digit",
                           minute: "numeric",

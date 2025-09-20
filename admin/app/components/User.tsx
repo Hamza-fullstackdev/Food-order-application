@@ -24,11 +24,13 @@ import Link from "next/link";
 import { Eye, Pen, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import api from "@/utils/axiosInstance";
+import Image from "next/image";
 
 interface User {
   _id: string;
   name: string;
   email: string;
+  profileImage: string;
   isAdmin: boolean;
   createdAt: string | Date;
 }
@@ -109,6 +111,7 @@ const User = () => {
           <TableHeader className='!bg-[#fe4f70]/70 hover:!bg-[#fe4f70]'>
             <TableRow>
               <TableHead className='w-[100px]'>ID</TableHead>
+              <TableHead>Image</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Created At</TableHead>
@@ -120,6 +123,16 @@ const User = () => {
               filteredUsers.map((user: User) => (
                 <TableRow className='relative' key={user._id}>
                   <TableCell>{user._id.slice(0, 13)}...</TableCell>
+                  <TableCell>
+                    <div className='w-8 h-8 relative'>
+                      <Image
+                        src={user.profileImage || "/no-image.png"}
+                        alt={user.name}
+                        fill
+                        className='rounded-full object-cover'
+                      />
+                    </div>
+                  </TableCell>
                   <TableCell className='capitalize'>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
