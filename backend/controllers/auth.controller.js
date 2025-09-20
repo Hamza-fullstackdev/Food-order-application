@@ -9,6 +9,8 @@ import jwt from "jsonwebtoken";
 import { config } from "../utils/config.js";
 import uploadUserImage from "../utils/uploadUser.js";
 import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
+import Notification from "../models/Notification.model.js";
+import Log from "../models/Log.model.js";
 
 export const register = async (req, res, next) => {
   const { name, email, password, phoneNumber, isAdmin } = req.body;
@@ -64,6 +66,12 @@ export const register = async (req, res, next) => {
       profileImageId: uploaded_img.public_id,
       isAdmin,
     });
+    await Notification.create({
+      userId: newUser._id,
+      type: "register",
+      title: `Welcome aboard ${newUser.name}!`,
+      message: "Your account has been created successfully",
+    });
     await newUser.save();
     res
       .status(201)
@@ -103,7 +111,12 @@ export const login = async (req, res, next) => {
     } else {
       user.refreshToken.push({ token: refreshToken, expiresAt: refreshExpiry });
     }
-
+    await Notification.create({
+      userId: user._id,
+      type: "login",
+      title: `Welcome back ${user.name}!`,
+      message: "We are glad to see you again",
+    });
     await user.save();
     res.status(200).json({
       status: 200,
@@ -152,6 +165,11 @@ export const adminLogin = async (req, res, next) => {
       user.refreshToken.push({ token: refreshToken, expiresAt: refreshExpiry });
     }
 
+    await Log.create({
+      type: "admin",
+      title: "Logged in",
+      message: `${user.email} logged in`,
+    });
     await user.save();
     res.status(200).json({
       status: 200,
@@ -177,6 +195,12 @@ export const logout = async (req, res, next) => {
   const user = req.user;
   try {
     user.refreshToken = [];
+    await Notification.create({
+      userId: user._id,
+      type: "logout",
+      title: `Goodbye ${user.name}!`,
+      message: "We hope to see you again soon",
+    });
     await user.save();
     res.status(200).json({ status: 200, message: "Logged out successfully" });
   } catch (error) {
@@ -255,6 +279,15 @@ export const deleteUser = async (req, res, next) => {
       await User.findByIdAndDelete(user._id);
     }
     res.status(200).json({ status: 200, message: "User deleted successfully" });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const getLogs = async (req, res, next) => {
+  try {
+    const logs = await Log.find({}).sort({ createdAt: -1 });
+    res.status(200).json({ status: 200, logs });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }

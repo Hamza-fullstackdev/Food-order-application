@@ -1,5 +1,13 @@
 import React from "react";
-import { Folder, Inbox, Pen, Store, Tag, UserRoundPlus } from "lucide-react";
+import {
+  Folder,
+  Inbox,
+  LockKeyhole,
+  Pen,
+  Store,
+  Tag,
+  UserRoundPlus,
+} from "lucide-react";
 
 import {
   Sidebar as SidebarRoot,
@@ -39,6 +47,11 @@ const items = [
     title: "Products",
     url: "/dashboard/products",
     icon: Store,
+  },
+  {
+    title: "System Logs",
+    url: "/dashboard/logs",
+    icon: LockKeyhole,
   },
 ];
 const Sidebar = () => {

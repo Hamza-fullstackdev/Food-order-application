@@ -20,6 +20,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import Link from "next/link";
 import { Pen, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -44,18 +53,22 @@ interface Product {
   image: string;
   createdAt: string;
 }
+
 const Products = () => {
-  const [formData, setFormData] = React.useState([]);
+  const [formData, setFormData] = React.useState<Product[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 8;
 
   const getAllProducts = async () => {
     setLoading(true);
     const res = await api.get("/api/v1/product/get-all-products");
     const data = res.data;
-    setLoading(false);
     setFormData(data.products);
+    setLoading(false);
   };
+
   React.useEffect(() => {
     getAllProducts();
   }, []);
@@ -83,6 +96,14 @@ const Products = () => {
         );
       })
     : formData;
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentProducts = filteredProducts.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
   return (
     <section className='my-8'>
       {loading && (
@@ -94,17 +115,13 @@ const Products = () => {
         </div>
       )}
       <div className='flex items-center justify-between mb-6'>
-        <div>
-          <h1 className='font-bold text-2xl text-gray-800'>Products Lists</h1>
-        </div>
-        <div>
-          <Link
-            href={"/dashboard/products/create"}
-            className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
-          >
-            Add New Product
-          </Link>
-        </div>
+        <h1 className='font-bold text-2xl text-gray-800'>Products Lists</h1>
+        <Link
+          href={"/dashboard/products/create"}
+          className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
+        >
+          Add New Product
+        </Link>
       </div>
       <div>
         <div className='mb-2 flex items-end justify-end'>
@@ -115,7 +132,10 @@ const Products = () => {
             placeholder='Start typing to search'
             className='w-[300px] bg-transparent border border-[#fe4f70] focus-visible:ring-0'
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
           />
         </div>
         <TableWrapper>
@@ -133,8 +153,8 @@ const Products = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredProducts?.length > 0 ? (
-              filteredProducts.map((product: Product) => (
+            {currentProducts?.length > 0 ? (
+              currentProducts.map((product: Product) => (
                 <TableRow className='relative' key={product?._id}>
                   <TableCell>{product?._id.slice(0, 13)}...</TableCell>
                   <TableCell>
@@ -202,6 +222,39 @@ const Products = () => {
           </TableBody>
         </TableWrapper>
       </div>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              href='#'
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            />
+          </PaginationItem>
+
+          {[...Array(totalPages)].map((_, index) => (
+            <PaginationItem key={index}>
+              <PaginationLink
+                href='#'
+                isActive={currentPage === index + 1}
+                onClick={() => setCurrentPage(index + 1)}
+              >
+                {index + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+
+          {totalPages > 3 && <PaginationEllipsis />}
+
+          <PaginationItem>
+            <PaginationNext
+              href='#'
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </section>
   );
 };

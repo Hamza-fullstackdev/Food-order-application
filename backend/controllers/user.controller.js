@@ -9,6 +9,8 @@ import CartItem from "../models/CartItem.model.js";
 import { hashPassword } from "../utils/hashedPassword.js";
 import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
 import uploadUserImage from "../utils/uploadUser.js";
+import Notification from "../models/Notification.model.js";
+import Log from "../models/Log.model.js";
 
 export const getAllUsers = async (req, res, next) => {
   try {
@@ -84,7 +86,12 @@ export const updateUser = async (req, res, next) => {
       new: true,
       runValidators: true,
     });
-
+    await Notification.create({
+      userId: user._id,
+      type: "profile",
+      title: `Profile updated!`,
+      message: "Your profile changes have been saved",
+    });
     res.status(200).json({
       status: 200,
       message: "User updated successfully",
@@ -107,7 +114,13 @@ export const deleteUser = async (req, res, next) => {
       isUserExist.profileImageId
     );
     if (deletedImage) {
+      await Notification.deleteMany({ userId: id });
       await User.findByIdAndDelete(id);
+      await Log.create({
+        type: "app",
+        title: "User deleted",
+        message: `User deleted by ${req.user.email}`,
+      });
     }
     res.status(200).json({ status: 200, message: "User deleted successfully" });
   } catch (error) {

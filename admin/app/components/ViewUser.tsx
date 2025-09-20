@@ -91,7 +91,7 @@ const ViewUser = () => {
                     src={formData?.user?.profileImage || "/no-image.png"}
                     alt='user'
                     fill
-                    className='rounded-full object-cover'
+                    className='rounded-full object-cover object-top'
                   />
                 </div>
               </div>
@@ -191,7 +191,7 @@ const ViewUser = () => {
                       </TableRow>
                     ))) || (
                     <TableRow>
-                      <TableCell colSpan={4} className='text-center'>
+                      <TableCell colSpan={6} className='text-center'>
                         No categories created by this user
                       </TableCell>
                     </TableRow>

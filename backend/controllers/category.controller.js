@@ -3,6 +3,7 @@ import errorHandler from "../middleware/error.middleware.js";
 import uploadCategoryImage from "../utils/uploadCategory.js";
 import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
 import { v2 as cloudinary } from "cloudinary";
+import Log from "../models/Log.model.js";
 
 export const addCategory = async (req, res, next) => {
   const { name } = req.body;
@@ -24,6 +25,11 @@ export const addCategory = async (req, res, next) => {
       image: uploaded_img.secure_url,
       imageId: uploaded_img.public_id,
       userId,
+    });
+    await Log.create({
+      type: "admin",
+      title: "Category added",
+      message: `Category ${category.name} added by ${req.user.name}`,
     });
     res
       .status(200)
@@ -62,7 +68,11 @@ export const updateCategory = async (req, res, next) => {
     }
 
     await category.save();
-
+    await Log.create({
+      type: "admin",
+      title: "Category updated",
+      message: `Category ${category.name} updated by ${req.user.name}`,
+    });
     res.status(200).json({
       status: 200,
       message: "Category updated successfully",
@@ -109,6 +119,11 @@ export const deleteCategory = async (req, res, next) => {
     }
     await deleteImageFromCloudinary(category.imageId);
     await Category.findByIdAndDelete(id);
+    await Log.create({
+      type: "admin",
+      title: "Category deleted",
+      message: `Category ${category.name} deleted by ${req.user.name}`,
+    });
     res
       .status(200)
       .json({ status: 200, message: "Category deleted successfully" });

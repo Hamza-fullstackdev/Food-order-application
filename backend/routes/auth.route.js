@@ -6,6 +6,7 @@ import {
   logout,
   refreshToken,
   register,
+  getLogs
 } from "../controllers/auth.controller.js";
 import verifyJwt from "../utils/vertifyJwt.js";
 import upload from "../utils/multer.js";
@@ -18,5 +19,6 @@ router.post("/admin-login", adminLogin);
 router.post("/logout", verifyJwt, logout);
 router.post("/refresh-token", refreshToken);
 router.delete("/delete-user", verifyJwt, deleteUser);
+router.get("/get-logs", verifyJwt, getLogs);
 
 export default router;

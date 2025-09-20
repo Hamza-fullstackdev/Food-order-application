@@ -19,6 +19,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { Pen, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -32,10 +41,13 @@ interface Category {
   image: string;
   createdAt: string;
 }
+
 const Category = () => {
-  const [formData, setFormData] = React.useState([]);
+  const [formData, setFormData] = React.useState<Category[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 8;
 
   const getAllCategories = async () => {
     setLoading(true);
@@ -44,6 +56,7 @@ const Category = () => {
     setLoading(false);
     setFormData(data.categories);
   };
+
   React.useEffect(() => {
     getAllCategories();
   }, []);
@@ -57,6 +70,15 @@ const Category = () => {
         );
       })
     : formData;
+
+  const totalPages = Math.ceil(filteredCategory.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCategories = filteredCategory.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
   const handleDeleteCategory = async (id: string) => {
     try {
       const res = await api.delete(`/api/v1/category/delete-category/${id}`);
@@ -67,6 +89,13 @@ const Category = () => {
       alert("Something went wrong");
     }
   };
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
     <section className='my-8'>
       {loading && (
@@ -99,9 +128,13 @@ const Category = () => {
             placeholder='Start typing to search'
             className='w-[300px] bg-transparent border border-[#fe4f70] focus-visible:ring-0'
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
           />
         </div>
+
         <TableWrapper>
           <TableCaption>
             A list of your recently created categories.
@@ -117,8 +150,8 @@ const Category = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredCategory?.length > 0 ? (
-              filteredCategory.map((category: Category) => (
+            {currentCategories.length > 0 ? (
+              currentCategories.map((category) => (
                 <TableRow key={category._id}>
                   <TableCell>{category._id.slice(0, 13)}...</TableCell>
                   <TableCell>
@@ -163,7 +196,7 @@ const Category = () => {
                             <AlertDialogDescription>
                               This action cannot be undone. This will
                               permanently delete the category and remove all of
-                              it data from our servers.
+                              its data from our servers.
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
@@ -182,13 +215,56 @@ const Category = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className='text-center'>
+                <TableCell colSpan={6} className='text-center'>
                   No categories found
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </TableWrapper>
+
+        {totalPages > 1 && (
+          <Pagination className='mt-4'>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href='#'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlePageChange(currentPage - 1);
+                  }}
+                />
+              </PaginationItem>
+
+              {Array.from({ length: totalPages }, (_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    href='#'
+                    isActive={currentPage === i + 1}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(i + 1);
+                    }}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+
+              {totalPages > 5 && <PaginationEllipsis />}
+
+              <PaginationItem>
+                <PaginationNext
+                  href='#'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handlePageChange(currentPage + 1);
+                  }}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
       </div>
     </section>
   );

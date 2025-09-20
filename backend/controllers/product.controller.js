@@ -3,6 +3,11 @@ import Rating from "../models/Rating.model.js";
 import errorHandler from "../middleware/error.middleware.js";
 import uploadImage from "../utils/upload.js";
 import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
+import Notification from "../models/Notification.model.js";
+import Log from "../models/Log.model.js";
+import User from "../models/User.model.js";
+import Category from "../models/Category.model.js";
+import Subcategory from "../models/Subcategory.model.js";
 
 export const addProduct = async (req, res, next) => {
   const {
@@ -30,6 +35,11 @@ export const addProduct = async (req, res, next) => {
       price,
       image: uploaded_img.secure_url,
       imageId: uploaded_img.public_id,
+    });
+    await Log.create({
+      type: "admin",
+      title: "Product added",
+      message: `Product ${product.name} added by ${req.user.name}`,
     });
     res
       .status(200)
@@ -80,7 +90,11 @@ export const updateProduct = async (req, res, next) => {
     if (subcategoryId) product.subcategoryId = subcategoryId;
 
     const updatedProduct = await product.save();
-
+    await Log.create({
+      type: "admin",
+      title: "Product updated",
+      message: `Product ${product.name} updated by ${req.user.name}`,
+    });
     res.status(200).json({
       status: 200,
       message: "Product updated successfully",
@@ -161,6 +175,11 @@ export const deleteProduct = async (req, res, next) => {
     }
     await deleteImageFromCloudinary(product.imageId);
     await Product.findByIdAndDelete(id);
+    await Log.create({
+      type: "admin",
+      title: "Product deleted",
+      message: `Product ${product.name} deleted by ${req.user.name}`,
+    });
     res
       .status(200)
       .json({ status: 200, message: "Product deleted successfully" });
@@ -182,10 +201,40 @@ export const addReview = async (req, res, next) => {
       rating,
       comment,
     });
+    await Notification.create({
+      userId,
+      type: "review",
+      title: "Review Added!",
+      message: `Thanks for your feedback, we really appreciate it!`,
+    });
+    await Log.create({
+      type: "app",
+      title: "Review added",
+      message: `Review added by ${req.user.name}`,
+    });
     res
       .status(200)
       .json({ status: 200, message: "Review added successfully", review });
   } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const getStatistics = async (req, res, next) => {
+  try {
+    const products = await Product.find({}).countDocuments();
+    const users = await User.find({}).countDocuments();
+    const category = await Category.find({}).countDocuments();
+    const subcategory = await Subcategory.find({}).countDocuments();
+    let data = {
+      products,
+      users,
+      category,
+      subcategory,
+    };
+    res.status(200).json({ status: 200, data });
+  } catch (error) {
+    console.log(error);
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };

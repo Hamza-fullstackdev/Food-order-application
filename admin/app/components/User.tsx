@@ -114,7 +114,8 @@ const User = () => {
               <TableHead>Image</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead>Created At</TableHead>
+              <TableHead>Created Date</TableHead>
+              <TableHead>Created Time</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -129,7 +130,7 @@ const User = () => {
                         src={user.profileImage || "/no-image.png"}
                         alt={user.name}
                         fill
-                        className='rounded-full object-cover'
+                        className='rounded-full object-cover object-top'
                       />
                     </div>
                   </TableCell>
@@ -140,6 +141,13 @@ const User = () => {
                       day: "numeric",
                       month: "short",
                       year: "numeric",
+                    })}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(user.createdAt).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "numeric",
+                      hour12: true,
                     })}
                   </TableCell>
                   <TableCell>
@@ -183,14 +191,14 @@ const User = () => {
                       </AlertDialog>
                     </div>
                     {user?.isAdmin && (
-                      <div className='absolute top-1 left-1 h-[5px] w-[5px] rounded-full bg-green-500 animate-ping' />
+                      <div className='absolute top-1 left-1 h-[5px] w-[5px] rounded-full bg-[#fe4f70] animate-ping' />
                     )}
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className='text-center'>
+                <TableCell colSpan={7} className='text-center'>
                   No users found
                 </TableCell>
               </TableRow>

@@ -19,6 +19,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { Pen, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -46,6 +55,8 @@ const Subcategory = () => {
   const [formData, setFormData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 8;
 
   const fetchData = async () => {
     try {
@@ -82,6 +93,18 @@ const Subcategory = () => {
       })
     : formData;
 
+  const totalPages = Math.ceil(filteredCategory.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedData = filteredCategory.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
   const handleDeleteCategory = async (id: string) => {
     try {
       const res = await api.delete(
@@ -143,8 +166,8 @@ const Subcategory = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredCategory?.length > 0 ? (
-              filteredCategory.map((category: Subcategory) => (
+            {paginatedData?.length > 0 ? (
+              paginatedData.map((category: Subcategory) => (
                 <TableRow key={category._id}>
                   <TableCell>{category._id.slice(0, 13)}...</TableCell>
                   <TableCell className='capitalize'>
@@ -205,6 +228,37 @@ const Subcategory = () => {
           </TableBody>
         </TableWrapper>
       </div>
+      {totalPages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href='#'
+                onClick={() => handlePageChange(currentPage - 1)}
+              />
+            </PaginationItem>
+
+            {Array.from({ length: totalPages }, (_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  href='#'
+                  isActive={currentPage === index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                href='#'
+                onClick={() => handlePageChange(currentPage + 1)}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </section>
   );
 };

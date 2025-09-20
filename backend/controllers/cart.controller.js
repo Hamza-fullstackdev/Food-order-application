@@ -42,15 +42,15 @@ export const addToCart = async (req, res, next) => {
 };
 
 export const updateCart = async (req, res, next) => {
-    const { id } = req.params;
-    const { quantity } = req.body;
-    try {
-      await CartItem.findByIdAndUpdate(id, { quantity });
-      res.status(200).json({ status: 200, message: "Cart updated successfully" });
-    } catch (error) {
-      next(errorHandler(500, "Something went wrong, please try again later"));
-    }
-}
+  const { id } = req.params;
+  const { quantity } = req.body;
+  try {
+    await CartItem.findByIdAndUpdate(id, { quantity });
+    res.status(200).json({ status: 200, message: "Cart updated successfully" });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
 export const getCart = async (req, res, next) => {
   const userId = req.user._id;
   try {
