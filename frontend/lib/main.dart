@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/ProfileScreen.dart';
 import 'package:frontend/Repos/auth_provider.dart';
-import 'package:frontend/cart_Screen.dart';
-import 'package:frontend/intro_page.dart';
-import 'package:frontend/mealMenu_Screen.dart';
-import 'package:frontend/productDetailscreen.dart';
-import 'package:frontend/productScreen.dart';
-import 'package:frontend/splash_screen.dart';
+import 'package:frontend/App/Widgets/common/bottomNavigation.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -29,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: CartScreen(),
+      home: SimpleNavigationExample(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/App/MVVM/views/cart_Screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -147,7 +148,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               const Spacer(),
 
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CartScreen()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

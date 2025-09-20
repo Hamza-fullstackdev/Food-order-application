@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/Resources/assetsPaths/assetsPath.dart';
+import 'package:frontend/App/Resources/assetsPaths/assetsPath.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -50,7 +50,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
                             icon: const Icon(
                               CupertinoIcons.back,
                               color: Color(0xffD61355),

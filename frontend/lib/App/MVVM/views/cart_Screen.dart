@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/Resources/assetsPaths/assetsPath.dart';
+import 'package:frontend/App/Resources/assetsPaths/assetsPath.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CartScreen extends StatefulWidget {
