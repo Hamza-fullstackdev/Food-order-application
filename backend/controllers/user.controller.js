@@ -110,18 +110,14 @@ export const deleteUser = async (req, res, next) => {
     if (!isUserExist) {
       return next(errorHandler(404, "User not found"));
     }
-    const deletedImage = await deleteImageFromCloudinary(
-      isUserExist.profileImageId
-    );
-    if (deletedImage) {
-      await Notification.deleteMany({ userId: id });
-      await User.findByIdAndDelete(id);
-      await Log.create({
-        type: "app",
-        title: "User deleted",
-        message: `User deleted by ${req.user.email}`,
-      });
-    }
+    await deleteImageFromCloudinary(isUserExist.profileImageId);
+    await Notification.deleteMany({ userId: id });
+    await User.findByIdAndDelete(id);
+    await Log.create({
+      type: "app",
+      title: "User deleted",
+      message: `User deleted by ${req.user.email}`,
+    });
     res.status(200).json({ status: 200, message: "User deleted successfully" });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
