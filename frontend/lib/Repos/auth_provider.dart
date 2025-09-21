@@ -44,7 +44,10 @@ class AuthProvider extends ChangeNotifier {
 
       }
     } catch (e) {
+      
+        print("Login Failed");
+        print(e.toString());
         return false;
-    }
+        }
   }
 }

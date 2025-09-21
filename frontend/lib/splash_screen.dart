@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     Future.delayed(Duration(seconds: 4),() async {
       
     SharedPreferences pref = await SharedPreferences.getInstance();
-    _token = pref.getString("Access_Token");
+    _token = pref.getString("refreshToken");
       if(!mounted){return ;} 
         if(_token == null || JwtDecoder.isExpired(_token!)){
         Navigator.push(context, MaterialPageRoute(builder: (context) => IntroPage()));
@@ -49,11 +49,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           children: [
             Container(
               color: AppContants.whiteColor,
-            child: Image.asset(AssetsPath.bikeImage,height: MediaQuery.of(context).size.height * 0.70,width: MediaQuery.of(context).size.width * 0.70,)
+            child: Image.asset(AssetsPath.bikeImage,height: MediaQuery.of(context).size.height * 0.20,width: MediaQuery.of(context).size.width,)
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: DefaultTextStyle(style: TextStyle(fontSize: 48,color: AppContants.redColor,fontWeight: FontWeight.bold), child: 
+              child: DefaultTextStyle(style: TextStyle(fontSize: 48,color: AppContants.redColor,fontWeight: FontWeight.w900), child: 
               AnimatedTextKit(animatedTexts: [
                 TyperAnimatedText("Food Couriers"),
               ]),),

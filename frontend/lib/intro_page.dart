@@ -170,7 +170,7 @@ PersistentBottomSheetController presistanceBottomSheet(BuildContext context) {
       context: context,
       builder: (context) => DraggableScrollableSheet(
         expand: false,
-        initialChildSize: 0.70,
+        initialChildSize: 0.75,
         minChildSize: 0.40,
         maxChildSize: 0.90,
         builder: (context, scrollController) {

@@ -1,6 +1,5 @@
 // ignore: must_be_immutable
 
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/Repos/auth_provider.dart';
@@ -165,7 +164,7 @@ class TabView extends StatelessWidget {
 
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 16),
+                padding: const EdgeInsets.only(top: 8),
                 child: CommonButton(
                   height: 53,
                   width: 256,
@@ -216,13 +215,13 @@ class TabView extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 148.0),
-              child: Divider(thickness: 1),
+              padding: const EdgeInsets.symmetric(horizontal: 48.0),
+              child: Divider(thickness: 1,),
             ),
 
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 16),
+                padding: const EdgeInsets.only(top: 8),
                 child: CommonButton(
                   height: 53,
                   width: 256,

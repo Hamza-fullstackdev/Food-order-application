@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/ProfileScreen.dart';
 import 'package:frontend/Repos/auth_provider.dart';
-import 'package:frontend/cart_Screen.dart';
-import 'package:frontend/intro_page.dart';
-import 'package:frontend/mealMenu_Screen.dart';
-import 'package:frontend/productDetailscreen.dart';
-import 'package:frontend/productScreen.dart';
+import 'package:frontend/Repos/product_provider.dart';
 import 'package:frontend/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => AuthProvider())],
+      providers: [ChangeNotifierProvider(create: (context) => AuthProvider()),
+      ChangeNotifierProvider(create: (context) => ProductProvider(),)],
       child: MyApp(),
     ),
   );
@@ -27,9 +23,10 @@ class MyApp extends StatelessWidget {
       title: 'Food Curier',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: CartScreen(),
+      home: SplashScreen(),
     );
   }
 }

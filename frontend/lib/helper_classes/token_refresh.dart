@@ -14,54 +14,40 @@ class TokenRefresh {
   static dynamic tokenResponse;
   static dynamic otherResponse;
 
+static Future<dynamic> checkToken(String url, {Map<String, dynamic>? body}) async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  refreshToken = pref.getString("refreshToken");
+  accessToken = pref.getString("accessToken");
+      print("$accessToken");
 
- static Future<dynamic> checkToken(
-    url,{Map<String,dynamic> ? body}
-    ) async {
-      try {
-        
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    refreshToken = pref.getString("refreshToken");
-    accessToken = pref.getString("accessToken");
-
-
-    final myHeader = {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $refreshToken"
-        };
-        
-    bool isExpired = JwtDecoder.isExpired(accessToken!);
-    if(isExpired){
-      tokenResponse = await http.post(
-        Uri.parse(AppUrl.refresh_url),
-        headers: myHeader     
-        );
-      if (tokenResponse.statusCode == 200) {
-        final data = jsonDecode(tokenResponse.body);
-        if (data["user"] != null && data["user"]["accessToken"] != null) {
-          accessToken = data["user"]["accessToken"];
-          refreshToken = data["user"]["refreshToken"];
-         return hitActualApi(url,{
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $accessToken"
-        });
+  
+  if (JwtDecoder.isExpired(accessToken!)) {
     
-        } 
-      }else{
-          print("Your failed access token is : $accessToken");
-      }
-    }else{
-     return hitActualApi(url,{
-          "Content-Type": "application/json",
-          "Authorization": "Bearer $accessToken"
-        });
-    }
+  print("Refresh Token: $refreshToken" );
+    final tokenResponse = await http.post(
+      Uri.parse(AppUrl.refresh_url),
+      headers: {"Content-Type": "application/json","Authorization": "Bearer $refreshToken"},
+    );
 
+    if (tokenResponse.statusCode == 200) {
+      final data = jsonDecode(tokenResponse.body);
+      accessToken = data["user"]["accessToken"];
+      refreshToken = data["user"]["refreshToken"];
+      
 
-      } catch (e) {
-        print(e.toString());
-      }
+      await pref.setString("accessToken", accessToken!);
+      await pref.setString("refreshToken", refreshToken!);
+    } else {
+      print("Status code is : ${tokenResponse.statusCode} Token refresh failed: ${tokenResponse.body}");
+      return null;
     }
+  }
+
+  return hitActualApi(url, {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer $accessToken"
+  });
+}
   static dynamic hitActualApi(url , myHeader,{Map<String,dynamic>? body}) async {
     try {
       
@@ -71,7 +57,7 @@ class TokenRefresh {
       if (otherResponse.statusCode == 200 || otherResponse.statusCode == 201) {
         final data = jsonDecode(otherResponse.body);
         
-        print(otherResponse.statusCode);
+        // print("${otherResponse.statusCode} with data is $data");
         return data;
       }else {
         print(otherResponse.statusCode);
