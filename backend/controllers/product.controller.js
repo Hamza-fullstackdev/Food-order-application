@@ -165,6 +165,15 @@ export const getAllProductsByUser = async (req, res, next) => {
   }
 };
 
+export const getLatestProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find({}).sort({ createdAt: -1 }).limit(6);
+    res.status(200).json({ status: 200, products });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
 export const deleteProduct = async (req, res, next) => {
   const { id } = req.params;
   try {

@@ -62,8 +62,8 @@ export const register = async (req, res, next) => {
       email,
       password: encryptedPassword,
       phoneNumber,
-      profileImage: uploaded_img.secure_url,
-      profileImageId: uploaded_img.public_id,
+      profileImage: uploaded_img?.secure_url,
+      profileImageId: uploaded_img?.public_id,
       isAdmin,
     });
     await Notification.create({
