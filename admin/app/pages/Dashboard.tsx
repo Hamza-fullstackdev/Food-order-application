@@ -1,9 +1,6 @@
-import React from 'react'
-
+import ViewDashboard from "@/app/components/Dashboard";
 const Dashboard = () => {
-  return (
-    <div>Dashboard</div>
-  )
-}
+  return <ViewDashboard />;
+};
 
-export default Dashboard
+export default Dashboard;

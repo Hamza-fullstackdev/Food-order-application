@@ -26,7 +26,7 @@ const Login = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/login`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/admin-login`,
         {
           method: "POST",
           credentials: "include",
@@ -44,14 +44,12 @@ const Login = () => {
         setCookie("refreshToken", data.user.refreshToken);
         router.push("/dashboard");
       } else {
-        setLoading(false);
-        setError(true);
         setErrorMessage(data.message);
+        setError(true);
       }
-    } catch (error) {
+    } catch {
       setLoading(false);
-      setError(true);
-      setErrorMessage("Something went wrong");
+      alert("Something went wrong");
     }
   };
   return (
@@ -79,7 +77,7 @@ const Login = () => {
           </div>
         </div>
         {error && (
-          <div className='mb-3 flex items-center rounded-lg bg-red-200 p-4'>
+          <div className='mb-3 flex items-center rounded-lg bg-red-100 text-red-500 p-4'>
             <span className='font-normal text-sm'>{errorMessage}</span>
           </div>
         )}

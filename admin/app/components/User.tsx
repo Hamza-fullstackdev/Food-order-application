@@ -21,14 +21,17 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import Link from "next/link";
-import { Pen, Trash2 } from "lucide-react";
+import { Eye, Pen, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import api from "@/utils/axiosInstance";
+import Image from "next/image";
 
 interface User {
   _id: string;
   name: string;
   email: string;
+  profileImage: string;
+  isAdmin: boolean;
   createdAt: string | Date;
 }
 const User = () => {
@@ -70,6 +73,14 @@ const User = () => {
     : formData;
   return (
     <section className='my-8'>
+      {loading && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center animate-fadeIn'>
+          <div className='absolute inset-0 bg-black/40'></div>
+          <div className='relative z-10'>
+            <div className='h-12 w-12 border-4 border-white/30 border-t-white rounded-full animate-spin'></div>
+          </div>
+        </div>
+      )}
       <div className='flex items-center justify-between mb-6'>
         <div>
           <h1 className='font-bold text-2xl text-gray-800'>Users Lists</h1>
@@ -100,25 +111,30 @@ const User = () => {
           <TableHeader className='!bg-[#fe4f70]/70 hover:!bg-[#fe4f70]'>
             <TableRow>
               <TableHead className='w-[100px]'>ID</TableHead>
+              <TableHead>Image</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead>Created At</TableHead>
+              <TableHead>Created Date</TableHead>
+              <TableHead>Created Time</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {loading && (
-              <TableRow>
-                <TableCell colSpan={5} className='text-center'>
-                  Loading...
-                </TableCell>
-              </TableRow>
-            )}
             {filteredUsers?.length > 0 ? (
               filteredUsers.map((user: User) => (
                 <TableRow className='relative' key={user._id}>
-                  <TableCell>{user._id}</TableCell>
-                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user._id.slice(0, 13)}...</TableCell>
+                  <TableCell>
+                    <div className='w-8 h-8 relative'>
+                      <Image
+                        src={user.profileImage || "/no-image.png"}
+                        alt={user.name}
+                        fill
+                        className='rounded-full object-cover object-top'
+                      />
+                    </div>
+                  </TableCell>
+                  <TableCell className='capitalize'>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
                     {new Date(user.createdAt).toLocaleDateString("en-US", {
@@ -128,7 +144,20 @@ const User = () => {
                     })}
                   </TableCell>
                   <TableCell>
+                    {new Date(user.createdAt).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "numeric",
+                      hour12: true,
+                    })}
+                  </TableCell>
+                  <TableCell>
                     <div className='flex gap-x-2 items-center'>
+                      <Link
+                        href={`/dashboard/users/view/${user._id}`}
+                        className='bg-blue-500 text-white px-2 py-2 rounded'
+                      >
+                        <Eye size={12} />
+                      </Link>
                       <Link
                         href={`/dashboard/users/edit/${user._id}`}
                         className='bg-green-500 text-white px-2 py-2 rounded'
@@ -161,12 +190,15 @@ const User = () => {
                         </AlertDialogContent>
                       </AlertDialog>
                     </div>
+                    {user?.isAdmin && (
+                      <div className='absolute top-1 left-1 h-[5px] w-[5px] rounded-full bg-[#fe4f70] animate-ping' />
+                    )}
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={5} className='text-center'>
+                <TableCell colSpan={7} className='text-center'>
                   No users found
                 </TableCell>
               </TableRow>

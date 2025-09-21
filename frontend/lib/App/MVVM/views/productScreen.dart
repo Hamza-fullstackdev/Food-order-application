@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/Resources/assetsPaths/assetsPath.dart';
-import 'package:frontend/mealMenu_Screen.dart';
-import 'package:frontend/productDetailscreen.dart';
+import 'package:frontend/App/MVVM/views/ProfileScreen.dart';
+import 'package:frontend/App/Resources/assetsPaths/assetsPath.dart';
+import 'package:frontend/App/MVVM/views/mealMenu_Screen.dart';
+import 'package:frontend/App/MVVM/views/productDetailscreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -78,9 +79,19 @@ class _ProductScreenState extends State<ProductScreen> {
                     ],
                   ),
                   actions: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage(
-                        "assets/images/profile_pic.jpg",
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfileScreen(),
+                          ),
+                        );
+                      },
+                      child: CircleAvatar(
+                        backgroundImage: AssetImage(
+                          "assets/images/profile_pic.jpg",
+                        ),
                       ),
                     ),
                     SizedBox(width: 12),

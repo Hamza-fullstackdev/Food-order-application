@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/productScreen.dart';
+import 'package:frontend/App/MVVM/views/productScreen.dart';
 import 'package:frontend/utils/app_contants.dart';
 import 'package:frontend/utils/text_view.dart';
 

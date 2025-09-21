@@ -1,6 +1,7 @@
 import Subcategory from "../models/Subcategory.model.js";
 import Category from "../models/Category.model.js";
 import errorHandler from "../middleware/error.middleware.js";
+import Log from "../models/Log.model.js";
 
 export const addSubcategory = async (req, res, next) => {
   const { name, categoryId } = req.body;
@@ -29,6 +30,11 @@ export const addSubcategory = async (req, res, next) => {
       categoryId,
       userId,
     });
+    await Log.create({
+      type: "admin",
+      title: "Subcategory added",
+      message: `Subcategory ${subcategory.name} added by ${req.user.name}`,
+    });
     res.status(200).json({
       status: 200,
       message: "Subcategory added successfully",
@@ -56,6 +62,11 @@ export const updateSubcategory = async (req, res, next) => {
       subcategory.categoryId = categoryId;
     }
     await subcategory.save();
+    await Log.create({
+      type: "admin",
+      title: "Subcategory updated",
+      message: `Subcategory ${subcategory.name} updated by ${req.user.name}`,
+    });
     res.status(200).json({
       status: 200,
       message: "Subcategory updated successfully",
@@ -71,7 +82,9 @@ export const updateSubcategory = async (req, res, next) => {
 };
 export const getAllSubcategories = async (req, res, next) => {
   try {
-    const subcategories = await Subcategory.find({}).populate("categoryId");
+    const subcategories = await Subcategory.find({})
+      .sort({ createdAt: -1 })
+      .populate("categoryId");
     res.status(200).json({ status: 200, subcategories });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
@@ -91,9 +104,9 @@ export const getSingleSubcategory = async (req, res, next) => {
 export const getBycategory = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const subcategories = await Subcategory.find({ categoryId: id }).select(
-      "-categoryId"
-    );
+    const subcategories = await Subcategory.find({ categoryId: id })
+      .sort({ createdAt: -1 })
+      .select("-categoryId");
     res.status(200).json({ status: 200, subcategories });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
@@ -104,6 +117,11 @@ export const deleteSubcategory = async (req, res, next) => {
   const { id } = req.params;
   try {
     await Subcategory.findByIdAndDelete(id);
+    await Log.create({
+      type: "admin",
+      title: "Subcategory deleted",
+      message: `Subcategory deleted by ${req.user.name}`,
+    });
     res
       .status(200)
       .json({ status: 200, message: "Subcategory deleted successfully" });

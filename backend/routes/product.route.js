@@ -2,6 +2,7 @@ import express from "express";
 import verifyJwt from "../utils/vertifyJwt.js";
 import {
   addProduct,
+  updateProduct,
   addReview,
   deleteProduct,
   getAllProducts,
@@ -9,12 +10,20 @@ import {
   getByCategory,
   getBySubCategory,
   getSingleProduct,
+  getStatistics
 } from "../controllers/product.controller.js";
 import upload from "../utils/multer.js";
 
 const router = express.Router();
 
 router.post("/add-product", verifyJwt, upload.single("image"), addProduct);
+router.patch(
+  "/update-product/:id",
+  verifyJwt,
+  upload.single("image"),
+  updateProduct
+);
+router.get("/get-statistics", verifyJwt, getStatistics);
 router.get("/get-all-products", verifyJwt, getAllProducts);
 router.get("/get-product/:id", verifyJwt, getSingleProduct);
 router.get("/get-products-by-user", verifyJwt, getAllProductsByUser);

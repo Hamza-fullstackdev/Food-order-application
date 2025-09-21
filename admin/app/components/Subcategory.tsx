@@ -19,6 +19,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { Pen, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
@@ -46,6 +55,8 @@ const Subcategory = () => {
   const [formData, setFormData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 8;
 
   const fetchData = async () => {
     try {
@@ -82,6 +93,18 @@ const Subcategory = () => {
       })
     : formData;
 
+  const totalPages = Math.ceil(filteredCategory.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedData = filteredCategory.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
   const handleDeleteCategory = async (id: string) => {
     try {
       const res = await api.delete(
@@ -96,6 +119,14 @@ const Subcategory = () => {
   };
   return (
     <section className='my-8'>
+      {loading && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center animate-fadeIn'>
+          <div className='absolute inset-0 bg-black/40'></div>
+          <div className='relative z-10'>
+            <div className='h-12 w-12 border-4 border-white/30 border-t-white rounded-full animate-spin'></div>
+          </div>
+        </div>
+      )}
       <div className='flex items-center justify-between mb-6'>
         <div>
           <h1 className='font-bold text-2xl text-gray-800'>Category Lists</h1>
@@ -135,15 +166,8 @@ const Subcategory = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {loading && (
-              <TableRow>
-                <TableCell colSpan={5} className='text-center'>
-                  Loading...
-                </TableCell>
-              </TableRow>
-            )}
-            {filteredCategory?.length > 0 ? (
-              filteredCategory.map((category: Subcategory) => (
+            {paginatedData?.length > 0 ? (
+              paginatedData.map((category: Subcategory) => (
                 <TableRow key={category._id}>
                   <TableCell>{category._id.slice(0, 13)}...</TableCell>
                   <TableCell className='capitalize'>
@@ -204,6 +228,37 @@ const Subcategory = () => {
           </TableBody>
         </TableWrapper>
       </div>
+      {totalPages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href='#'
+                onClick={() => handlePageChange(currentPage - 1)}
+              />
+            </PaginationItem>
+
+            {Array.from({ length: totalPages }, (_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  href='#'
+                  isActive={currentPage === index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                href='#'
+                onClick={() => handlePageChange(currentPage + 1)}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </section>
   );
 };

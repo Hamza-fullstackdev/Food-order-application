@@ -7,10 +7,13 @@ import generateRefreshToken from "../utils/generateRefreshToken.js";
 import User from "../models/User.model.js";
 import jwt from "jsonwebtoken";
 import { config } from "../utils/config.js";
+import uploadUserImage from "../utils/uploadUser.js";
+import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
+import Notification from "../models/Notification.model.js";
+import Log from "../models/Log.model.js";
 
 export const register = async (req, res, next) => {
-  const { name, email, password, phoneNumber, profileImage, isAdmin } =
-    req.body;
+  const { name, email, password, phoneNumber, isAdmin } = req.body;
 
   if (!name || !email || !password) {
     return next(errorHandler(400, "All fields are required"));
@@ -45,14 +48,29 @@ export const register = async (req, res, next) => {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 
+  let uploaded_img;
+  if (req.file) {
+    try {
+      uploaded_img = await uploadUserImage(req.file.path);
+    } catch (error) {
+      next(errorHandler(500, "Something went wrong, please try again later"));
+    }
+  }
   try {
     const newUser = new User({
       name,
       email,
       password: encryptedPassword,
       phoneNumber,
-      profileImage,
+      profileImage: uploaded_img.secure_url,
+      profileImageId: uploaded_img.public_id,
       isAdmin,
+    });
+    await Notification.create({
+      userId: newUser._id,
+      type: "register",
+      title: `Welcome aboard ${newUser.name}!`,
+      message: "Your account has been created successfully",
     });
     await newUser.save();
     res
@@ -93,7 +111,65 @@ export const login = async (req, res, next) => {
     } else {
       user.refreshToken.push({ token: refreshToken, expiresAt: refreshExpiry });
     }
+    await Notification.create({
+      userId: user._id,
+      type: "login",
+      title: `Welcome back ${user.name}!`,
+      message: "We are glad to see you again",
+    });
+    await user.save();
+    res.status(200).json({
+      status: 200,
+      message: "Logged in successfully",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        profileImage: user.profileImage,
+        isAdmin: user.isAdmin,
+        accessToken,
+        refreshToken,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
 
+export const adminLogin = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(errorHandler(400, "All fields are required"));
+  }
+
+  try {
+    const user = await User.findOne({ email, isAdmin: true });
+    if (!user) {
+      return next(errorHandler(400, "Seems like you are not an admin :("));
+    }
+    const isMatch = await comparePassword(password, user.password);
+    if (!isMatch) {
+      return next(errorHandler(400, "Invalid credentials"));
+    }
+    const refreshToken = await generateRefreshToken(user._id);
+    const accessToken = await generateAccessToken(user._id);
+
+    const refreshExpiry = new Date();
+    refreshExpiry.setDate(refreshExpiry.getDate() + 7);
+    if (user.refreshToken && user.refreshToken.length > 0) {
+      user.refreshToken[0] = { token: refreshToken, expiresAt: refreshExpiry };
+    } else {
+      user.refreshToken.push({ token: refreshToken, expiresAt: refreshExpiry });
+    }
+
+    await Log.create({
+      type: "admin",
+      title: "Logged in",
+      message: `${user.email} logged in`,
+    });
     await user.save();
     res.status(200).json({
       status: 200,
@@ -119,6 +195,12 @@ export const logout = async (req, res, next) => {
   const user = req.user;
   try {
     user.refreshToken = [];
+    await Notification.create({
+      userId: user._id,
+      type: "logout",
+      title: `Goodbye ${user.name}!`,
+      message: "We hope to see you again soon",
+    });
     await user.save();
     res.status(200).json({ status: 200, message: "Logged out successfully" });
   } catch (error) {
@@ -186,8 +268,26 @@ export const deleteUser = async (req, res, next) => {
   const user = req.user;
 
   try {
-    await User.findByIdAndDelete(user._id);
+    const isUserExist = await User.findById(user._id);
+    if (!isUserExist) {
+      return next(errorHandler(404, "User not found"));
+    }
+    const deletedImage = await deleteImageFromCloudinary(
+      isUserExist.profileImageId
+    );
+    if (deletedImage) {
+      await User.findByIdAndDelete(user._id);
+    }
     res.status(200).json({ status: 200, message: "User deleted successfully" });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const getLogs = async (req, res, next) => {
+  try {
+    const logs = await Log.find({}).sort({ createdAt: -1 });
+    res.status(200).json({ status: 200, logs });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
