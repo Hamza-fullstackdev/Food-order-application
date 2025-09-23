@@ -35,7 +35,12 @@ export const getSingleUser = async (req, res, next) => {
         createdAt: -1,
       })
       .populate("categoryId");
-    const products = await Product.find({ userId: id }).sort({ createdAt: -1 });
+    const products = await Product.find({ userId: id })
+      .sort({ createdAt: -1 })
+      .populate("categoryId");
+    const notifications = await Notification.find({ userId: id }).sort({
+      createdAt: -1,
+    });
     const ratings = await Rating.find({ userId: id }).populate("productId");
     const cart = await Cart.findOne({ userId: id });
     const response = {
@@ -44,6 +49,7 @@ export const getSingleUser = async (req, res, next) => {
       subcategories,
       products,
       ratings,
+      notifications,
     };
     if (cart) {
       const cartItems = await CartItem.find({ cartId: cart._id }).populate(
