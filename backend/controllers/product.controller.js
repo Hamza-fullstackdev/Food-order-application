@@ -17,6 +17,7 @@ export const addProduct = async (req, res, next) => {
     price,
     categoryId,
     subcategoryId,
+    variantGroups,
   } = req.body;
   const userId = req.user._id;
 
@@ -24,6 +25,18 @@ export const addProduct = async (req, res, next) => {
     return next(errorHandler(400, "All fields are required"));
   }
   try {
+    let parsedVariants = [];
+    if (variantGroups) {
+      try {
+        parsedVariants = JSON.parse(variantGroups);
+        if (!Array.isArray(parsedVariants)) {
+          parsedVariants = [];
+        }
+      } catch (err) {
+        console.warn("Invalid variantGroups JSON:", err);
+        parsedVariants = [];
+      }
+    }
     const uploaded_img = await uploadImage(req.file.path);
     const product = await Product.create({
       userId,
@@ -35,6 +48,7 @@ export const addProduct = async (req, res, next) => {
       price,
       image: uploaded_img.secure_url,
       imageId: uploaded_img.public_id,
+      variantGroups: parsedVariants,
     });
     await Log.create({
       type: "admin",
@@ -88,6 +102,25 @@ export const updateProduct = async (req, res, next) => {
     if (price) product.price = price;
     if (categoryId) product.categoryId = categoryId;
     if (subcategoryId) product.subcategoryId = subcategoryId;
+    
+
+    if (req.body.variantGroups !== undefined) {
+      let parsedVariants = [];
+      try {
+        parsedVariants =
+          typeof req.body.variantGroups === "string"
+            ? JSON.parse(req.body.variantGroups)
+            : req.body.variantGroups;
+
+        if (!Array.isArray(parsedVariants)) {
+          parsedVariants = [];
+        }
+      } catch (err) {
+        console.warn("Invalid variantGroups JSON:", err);
+        parsedVariants = [];
+      }
+      product.variantGroups = parsedVariants;
+    }
 
     const updatedProduct = await product.save();
     await Log.create({

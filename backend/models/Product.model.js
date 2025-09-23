@@ -44,6 +44,35 @@ const productScheama = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    variantGroups:[
+      {
+        name: {
+          type: String,
+          trim: true,
+        },
+        isRequired: {
+          type: Boolean,
+          default: true
+        },
+        maxSelectable:{
+          type: Number,
+          default: 1
+        },
+        options: [
+          {
+            name: {
+              type: String,
+              required: [true, "Variant name is required"],
+              trim: true,
+            },
+            price: {
+              type: Number,
+              required: [true, "Variant price is required"],
+            },
+          },
+        ],
+      },
+    ]
   },
   {
     timestamps: true,
