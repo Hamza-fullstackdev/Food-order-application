@@ -39,6 +39,11 @@ const userScheama = new mongoose.Schema(
       required: true,
       default: false,
     },
+    isBlocked: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
     refreshToken: [
       {
         token: { type: String, required: true },

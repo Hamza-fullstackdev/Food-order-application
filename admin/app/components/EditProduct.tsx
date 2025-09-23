@@ -56,14 +56,12 @@ const EditProduct = () => {
   const router = useRouter();
   const params = useParams();
 
-  // Fetch product by ID
   const getProductById = async () => {
     try {
       setLoading(true);
       const res = await api.get(`/api/v1/product/get-product/${params.id}`);
       const product = res.data.product;
 
-      // populate form fields
       setFormData({
         name: product.name || "",
         categoryId: product.categoryId?._id || "",
@@ -74,12 +72,10 @@ const EditProduct = () => {
         image: null,
       });
 
-      // populate variant groups if exists
       if (product.variantGroups) {
         setVariantGroups(product.variantGroups);
       }
 
-      // load subcategories if category is set
       if (product.categoryId?._id) {
         await handleChangeCategory(product.categoryId._id, false);
       }
@@ -92,7 +88,6 @@ const EditProduct = () => {
     }
   };
 
-  // Fetch categories
   const getCategories = async () => {
     try {
       const res = await api.get("/api/v1/category/get-all-categories");
@@ -108,7 +103,6 @@ const EditProduct = () => {
     getCategories();
   }, []);
 
-  // Input changes
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -148,7 +142,6 @@ const EditProduct = () => {
     }
   };
 
-  // Variant Groups
   const addVariantGroup = () => {
     setVariantGroups((prev) => [
       ...prev,
@@ -193,7 +186,6 @@ const EditProduct = () => {
     setVariantGroups(newGroups);
   };
 
-  // Submit update
   const handleFormData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -232,6 +224,14 @@ const EditProduct = () => {
 
   return (
     <section className="my-8">
+      {loading && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center animate-fadeIn'>
+          <div className='absolute inset-0 bg-black/40'></div>
+          <div className='relative z-10'>
+            <div className='h-12 w-12 border-4 border-white/30 border-t-white rounded-full animate-spin'></div>
+          </div>
+        </div>
+      )}
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-bold text-2xl text-gray-800">Edit Product</h1>
         <Link
@@ -250,7 +250,6 @@ const EditProduct = () => {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Name */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="name">Name</Label>
             <Input
@@ -266,7 +265,6 @@ const EditProduct = () => {
             />
           </div>
 
-          {/* Short Description */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="shortDescription">Short Description</Label>
             <Input
@@ -282,7 +280,6 @@ const EditProduct = () => {
             />
           </div>
 
-          {/* Category */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="categoryId">Category</Label>
             <Select
@@ -306,7 +303,6 @@ const EditProduct = () => {
             </Select>
           </div>
 
-          {/* Subcategory */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="subcategoryId">Subcategory</Label>
             <Select
@@ -332,7 +328,6 @@ const EditProduct = () => {
             </Select>
           </div>
 
-          {/* Price */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="price">Price</Label>
             <Input
@@ -348,7 +343,6 @@ const EditProduct = () => {
             />
           </div>
 
-          {/* Image */}
           <div className="flex flex-col gap-2">
             <Label htmlFor="image">Select Image</Label>
             <Input
@@ -360,7 +354,6 @@ const EditProduct = () => {
             />
           </div>
 
-          {/* Description */}
           <div className="flex flex-col col-span-2 gap-2">
             <Label htmlFor="description">Description</Label>
             <Textarea
@@ -374,8 +367,6 @@ const EditProduct = () => {
               onChange={handleChange}
             />
           </div>
-
-          {/* Variant Groups */}
           <div className="mt-5 col-span-2">
             <div className="flex items-center justify-between mb-3">
               <h2 className="font-bold text-lg">Variant Groups</h2>
@@ -495,7 +486,6 @@ const EditProduct = () => {
           </div>
         </div>
 
-        {/* Submit */}
         <div className="mt-6">
           <button
             type="submit"

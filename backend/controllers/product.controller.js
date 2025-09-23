@@ -8,6 +8,7 @@ import Log from "../models/Log.model.js";
 import User from "../models/User.model.js";
 import Category from "../models/Category.model.js";
 import Subcategory from "../models/Subcategory.model.js";
+import CartItem from "../models/CartItem.model.js";
 
 export const addProduct = async (req, res, next) => {
   const {
@@ -102,7 +103,6 @@ export const updateProduct = async (req, res, next) => {
     if (price) product.price = price;
     if (categoryId) product.categoryId = categoryId;
     if (subcategoryId) product.subcategoryId = subcategoryId;
-    
 
     if (req.body.variantGroups !== undefined) {
       let parsedVariants = [];
@@ -217,6 +217,8 @@ export const deleteProduct = async (req, res, next) => {
     }
     await deleteImageFromCloudinary(product.imageId);
     await Product.findByIdAndDelete(id);
+    await Rating.deleteMany({ productId: id });
+    await CartItem.deleteMany({ productId: id });
     await Log.create({
       type: "admin",
       title: "Product deleted",

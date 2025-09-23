@@ -1,4 +1,6 @@
 import Category from "../models/Category.model.js";
+import Subcategory from "../models/Subcategory.model.js";
+import Product from "../models/Product.model.js";
 import errorHandler from "../middleware/error.middleware.js";
 import uploadCategoryImage from "../utils/uploadCategory.js";
 import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
@@ -115,10 +117,12 @@ export const deleteCategory = async (req, res, next) => {
     const category = await Category.findById(id);
 
     if (!category) {
-      return next(errorHandler(404, "Category not found"));
+      return next(errorHandler(400, "Category does not exist"));
     }
     await deleteImageFromCloudinary(category.imageId);
     await Category.findByIdAndDelete(id);
+    await Subcategory.deleteMany({ categoryId: id });
+    await Product.deleteMany({ categoryId: id });
     await Log.create({
       type: "admin",
       title: "Category deleted",

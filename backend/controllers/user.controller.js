@@ -73,7 +73,11 @@ export const updateUser = async (req, res, next) => {
     if (!user) {
       return next(errorHandler(404, "User not found"));
     }
-
+    if(updateData.isBlocked === true) {
+      if(req.user.email !== "hamzafullstackdev1@gmail.com"){
+        return next(errorHandler(400, "You are not allowed to block users"));
+      }
+    }
     if (updateData.password) {
       updateData.password = await hashPassword(updateData.password);
     }
