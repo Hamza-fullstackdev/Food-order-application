@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import {config} from "../utils/config.js";
 
-const mongoDbConnection = process.env.MONGODB_URI;
+const mongoDbConnection = config.MONGODB_URI;
 
 if (!mongoDbConnection) {
   throw new Error("Please define the MONGODB_URI environment variable");
@@ -18,7 +19,7 @@ export const connectToDatabase = async () => {
   if (!cached.promise) {
     cached.promise = mongoose
       .connect(mongoDbConnection, {
-        dbName: process.env.DATABASE,
+        dbName: config.DATABASE,
         bufferCommands: false,
         maxPoolSize: 10,
       })
