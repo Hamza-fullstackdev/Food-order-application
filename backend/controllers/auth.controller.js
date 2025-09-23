@@ -154,6 +154,14 @@ export const adminLogin = async (req, res, next) => {
     if (!isMatch) {
       return next(errorHandler(400, "Invalid credentials"));
     }
+    if (user.isBlocked) {
+      return next(
+        errorHandler(
+          400,
+          "You are temporarily blocked by the admin, Apologize Hami first (if you did something wrong) and then try again :) "
+        )
+      );
+    }
     const refreshToken = await generateRefreshToken(user._id);
     const accessToken = await generateAccessToken(user._id);
 

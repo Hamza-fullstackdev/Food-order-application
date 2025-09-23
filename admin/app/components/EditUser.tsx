@@ -20,13 +20,16 @@ const EditUser = () => {
     password: "",
     phoneNumber: "",
     isAdmin: false,
+    isBlocked: false,
     image: null,
   });
 
   const getUserById = async () => {
     try {
+      setLoading(true);
       const res = await api.get(`/api/v1/user/get-user/${params.id}`);
       const data = res.data;
+      setLoading(false);
       setFormData({ ...data.response.user, image: null });
     } catch (error: any) {
       setError(true);
@@ -61,6 +64,7 @@ const EditUser = () => {
       if (formData.password) fd.append("password", formData.password);
       fd.append("phoneNumber", formData.phoneNumber);
       fd.append("isAdmin", String(formData.isAdmin));
+      fd.append("isBlocked", String(formData.isBlocked));
       if (formData.image) {
         fd.append("profileImage", formData.image);
       }
@@ -82,6 +86,14 @@ const EditUser = () => {
 
   return (
     <section className='my-8'>
+      {loading && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center animate-fadeIn'>
+          <div className='absolute inset-0 bg-black/40'></div>
+          <div className='relative z-10'>
+            <div className='h-12 w-12 border-4 border-white/30 border-t-white rounded-full animate-spin'></div>
+          </div>
+        </div>
+      )}
       <div className='flex items-center justify-between mb-6'>
         <h1 className='font-bold text-2xl text-gray-800'>Update User</h1>
         <Link
@@ -172,6 +184,20 @@ const EditUser = () => {
             />
             <Label htmlFor='isAdmin'>Make Admin?</Label>
           </div>
+          {formData?.isAdmin && (
+            <div className='flex flex-row gap-2'>
+              <input
+                type='checkbox'
+                name='isBlocked'
+                id='isBlocked'
+                checked={formData?.isBlocked ?? false}
+                onChange={(e) =>
+                  setFormData({ ...formData, isBlocked: e.target.checked })
+                }
+              />
+              <Label htmlFor='isBlocked'>Block Admin?</Label>
+            </div>
+          )}
         </div>
 
         <div className='mt-6'>

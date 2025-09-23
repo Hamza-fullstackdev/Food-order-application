@@ -15,19 +15,31 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 interface Category {
   _id: string;
   name: string;
   createdAt: string;
 }
+interface VariantOption {
+  name: string;
+  price: string;
+}
 
+interface VariantGroup {
+  name: string;
+  isRequired: boolean;
+  maxSelectable: number;
+  options: VariantOption[];
+}
 const AddProduct = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [mainCategories, setMainCategories] = React.useState([]);
   const [subCategories, setSubCategories] = React.useState([]);
+  const [variantGroups, setVariantGroups] = React.useState<VariantGroup[]>([]);
   const [formData, setFormData] = React.useState({
     name: "",
     categoryId: "",
@@ -94,6 +106,49 @@ const AddProduct = () => {
     }
   };
 
+  const addVariantGroup = () => {
+    setVariantGroups((prev) => [
+      ...prev,
+      { name: "", isRequired: true, maxSelectable: 1, options: [] },
+    ]);
+  };
+
+  const removeVariantGroup = (index: number) => {
+    setVariantGroups((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleVariantGroupChange = (
+    index: number,
+    field: keyof VariantGroup,
+    value: any
+  ) => {
+    const newGroups = [...variantGroups];
+    (newGroups[index] as any)[field] = value;
+    setVariantGroups(newGroups);
+  };
+
+  const addVariantOption = (groupIndex: number) => {
+    const newGroups = [...variantGroups];
+    newGroups[groupIndex].options.push({ name: "", price: "" });
+    setVariantGroups(newGroups);
+  };
+
+  const handleVariantOptionChange = (
+    groupIndex: number,
+    optionIndex: number,
+    field: keyof VariantOption,
+    value: any
+  ) => {
+    const newGroups = [...variantGroups];
+    (newGroups[groupIndex].options[optionIndex] as any)[field] = value;
+    setVariantGroups(newGroups);
+  };
+
+  const removeVariantOption = (groupIndex: number, optionIndex: number) => {
+    const newGroups = [...variantGroups];
+    newGroups[groupIndex].options.splice(optionIndex, 1);
+    setVariantGroups(newGroups);
+  };
   const handleFormData = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -109,7 +164,7 @@ const AddProduct = () => {
       if (formData.image) {
         fd.append("image", formData.image);
       }
-
+      fd.append("variantGroups", JSON.stringify(variantGroups));
       const res = await api.post("/api/v1/product/add-product", fd, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -130,6 +185,14 @@ const AddProduct = () => {
 
   return (
     <section className='my-8'>
+      {loading && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center animate-fadeIn'>
+          <div className='absolute inset-0 bg-black/40'></div>
+          <div className='relative z-10'>
+            <div className='h-12 w-12 border-4 border-white/30 border-t-white rounded-full animate-spin'></div>
+          </div>
+        </div>
+      )}
       <div className='flex items-center justify-between mb-6'>
         <h1 className='font-bold text-2xl text-gray-800'>Add Product</h1>
         <Link
@@ -265,6 +328,120 @@ const AddProduct = () => {
               value={formData.description}
               onChange={handleChange}
             />
+          </div>
+          <div className='mt-5 col-span-2'>
+            <div className='flex items-center justify-between mb-3'>
+              <h2 className='font-bold text-lg'>Variant Groups</h2>
+              <Button type='button' onClick={addVariantGroup}>
+                + Add Group
+              </Button>
+            </div>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              {variantGroups.map((group, gIndex) => (
+                <div
+                  key={gIndex}
+                  className='p-4 border border-gray-300 rounded-lg'
+                >
+                  <div className='flex justify-between items-center mb-2'>
+                    <Label>Group Name</Label>
+                    <Button
+                      type='button'
+                      variant='destructive'
+                      onClick={() => removeVariantGroup(gIndex)}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                  <Input
+                    placeholder='e.g., Size, Crust'
+                    value={group.name}
+                    onChange={(e) =>
+                      handleVariantGroupChange(gIndex, "name", e.target.value)
+                    }
+                  />
+
+                  <div className='mt-2 flex gap-4'>
+                    <label className='flex items-center gap-2'>
+                      <input
+                        type='checkbox'
+                        checked={group.isRequired}
+                        onChange={(e) =>
+                          handleVariantGroupChange(
+                            gIndex,
+                            "isRequired",
+                            e.target.checked
+                          )
+                        }
+                      />
+                      Required
+                    </label>
+                    <Input
+                      type='number'
+                      placeholder='Max Selectable'
+                      value={group.maxSelectable}
+                      onChange={(e) =>
+                        handleVariantGroupChange(
+                          gIndex,
+                          "maxSelectable",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </div>
+                  <div className='mt-4'>
+                    <div className='flex justify-between items-center mb-2'>
+                      <Label>Options</Label>
+                      <Button
+                        type='button'
+                        onClick={() => addVariantOption(gIndex)}
+                      >
+                        + Add Option
+                      </Button>
+                    </div>
+
+                    {group.options.map((option, oIndex) => (
+                      <div
+                        key={oIndex}
+                        className='flex gap-2 mb-2 items-center border p-2 rounded'
+                      >
+                        <Input
+                          placeholder='Option Name (e.g., Small)'
+                          value={option.name}
+                          onChange={(e) =>
+                            handleVariantOptionChange(
+                              gIndex,
+                              oIndex,
+                              "name",
+                              e.target.value
+                            )
+                          }
+                        />
+                        <Input
+                          type='number'
+                          placeholder='Price'
+                          value={option.price}
+                          onChange={(e) =>
+                            handleVariantOptionChange(
+                              gIndex,
+                              oIndex,
+                              "price",
+                              e.target.value
+                            )
+                          }
+                        />
+                        <Button
+                          type='button'
+                          variant='destructive'
+                          onClick={() => removeVariantOption(gIndex, oIndex)}
+                        >
+                          X
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

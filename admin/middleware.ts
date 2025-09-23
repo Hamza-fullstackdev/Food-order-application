@@ -5,7 +5,7 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (pathname.startsWith("/dashboard")) {
-    const token = req.cookies.get("accessToken")?.value;
+    const token = req.cookies.get("refreshToken")?.value;
 
     if (!token) {
       const loginUrl = new URL("/", req.url);
