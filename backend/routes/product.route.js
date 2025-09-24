@@ -10,7 +10,8 @@ import {
   getByCategory,
   getBySubCategory,
   getSingleProduct,
-  getStatistics
+  getStatistics,
+  getLatestProducts,
 } from "../controllers/product.controller.js";
 import upload from "../utils/multer.js";
 
@@ -29,6 +30,7 @@ router.get("/get-product/:id", verifyJwt, getSingleProduct);
 router.get("/get-products-by-user", verifyJwt, getAllProductsByUser);
 router.get("/get-by-category/:id", verifyJwt, getByCategory);
 router.get("/get-by-subcategory/:id", verifyJwt, getBySubCategory);
+router.get("/get-latest-products", verifyJwt, getLatestProducts);
 router.delete("/delete-product/:id", verifyJwt, deleteProduct);
 router.post("/add-review", verifyJwt, addReview);
 

@@ -8,6 +8,7 @@ import Log from "../models/Log.model.js";
 import User from "../models/User.model.js";
 import Category from "../models/Category.model.js";
 import Subcategory from "../models/Subcategory.model.js";
+import CartItem from "../models/CartItem.model.js";
 
 export const addProduct = async (req, res, next) => {
   const {
@@ -17,6 +18,7 @@ export const addProduct = async (req, res, next) => {
     price,
     categoryId,
     subcategoryId,
+    variantGroups,
   } = req.body;
   const userId = req.user._id;
 
@@ -24,6 +26,18 @@ export const addProduct = async (req, res, next) => {
     return next(errorHandler(400, "All fields are required"));
   }
   try {
+    let parsedVariants = [];
+    if (variantGroups) {
+      try {
+        parsedVariants = JSON.parse(variantGroups);
+        if (!Array.isArray(parsedVariants)) {
+          parsedVariants = [];
+        }
+      } catch (err) {
+        console.warn("Invalid variantGroups JSON:", err);
+        parsedVariants = [];
+      }
+    }
     const uploaded_img = await uploadImage(req.file.path);
     const product = await Product.create({
       userId,
@@ -35,6 +49,7 @@ export const addProduct = async (req, res, next) => {
       price,
       image: uploaded_img.secure_url,
       imageId: uploaded_img.public_id,
+      variantGroups: parsedVariants,
     });
     await Log.create({
       type: "admin",
@@ -88,6 +103,24 @@ export const updateProduct = async (req, res, next) => {
     if (price) product.price = price;
     if (categoryId) product.categoryId = categoryId;
     if (subcategoryId) product.subcategoryId = subcategoryId;
+
+    if (req.body.variantGroups !== undefined) {
+      let parsedVariants = [];
+      try {
+        parsedVariants =
+          typeof req.body.variantGroups === "string"
+            ? JSON.parse(req.body.variantGroups)
+            : req.body.variantGroups;
+
+        if (!Array.isArray(parsedVariants)) {
+          parsedVariants = [];
+        }
+      } catch (err) {
+        console.warn("Invalid variantGroups JSON:", err);
+        parsedVariants = [];
+      }
+      product.variantGroups = parsedVariants;
+    }
 
     const updatedProduct = await product.save();
     await Log.create({
@@ -165,6 +198,15 @@ export const getAllProductsByUser = async (req, res, next) => {
   }
 };
 
+export const getLatestProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find({}).sort({ createdAt: -1 }).limit(6);
+    res.status(200).json({ status: 200, products });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
 export const deleteProduct = async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -175,6 +217,8 @@ export const deleteProduct = async (req, res, next) => {
     }
     await deleteImageFromCloudinary(product.imageId);
     await Product.findByIdAndDelete(id);
+    await Rating.deleteMany({ productId: id });
+    await CartItem.deleteMany({ productId: id });
     await Log.create({
       type: "admin",
       title: "Product deleted",

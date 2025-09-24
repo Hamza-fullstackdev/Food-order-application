@@ -129,7 +129,9 @@ const Subcategory = () => {
       )}
       <div className='flex items-center justify-between mb-6'>
         <div>
-          <h1 className='font-bold text-2xl text-gray-800'>Category Lists</h1>
+          <h1 className='font-bold text-2xl text-gray-800'>
+            Subcategories Lists
+          </h1>
         </div>
         <div>
           <Link

@@ -35,7 +35,12 @@ export const getSingleUser = async (req, res, next) => {
         createdAt: -1,
       })
       .populate("categoryId");
-    const products = await Product.find({ userId: id }).sort({ createdAt: -1 });
+    const products = await Product.find({ userId: id })
+      .sort({ createdAt: -1 })
+      .populate("categoryId");
+    const notifications = await Notification.find({ userId: id }).sort({
+      createdAt: -1,
+    });
     const ratings = await Rating.find({ userId: id }).populate("productId");
     const cart = await Cart.findOne({ userId: id });
     const response = {
@@ -44,6 +49,7 @@ export const getSingleUser = async (req, res, next) => {
       subcategories,
       products,
       ratings,
+      notifications,
     };
     if (cart) {
       const cartItems = await CartItem.find({ cartId: cart._id }).populate(
@@ -67,7 +73,11 @@ export const updateUser = async (req, res, next) => {
     if (!user) {
       return next(errorHandler(404, "User not found"));
     }
-
+    if(updateData.isBlocked === true) {
+      if(req.user.email !== "hamzafullstackdev1@gmail.com"){
+        return next(errorHandler(400, "You are not allowed to block users"));
+      }
+    }
     if (updateData.password) {
       updateData.password = await hashPassword(updateData.password);
     }
@@ -110,18 +120,14 @@ export const deleteUser = async (req, res, next) => {
     if (!isUserExist) {
       return next(errorHandler(404, "User not found"));
     }
-    const deletedImage = await deleteImageFromCloudinary(
-      isUserExist.profileImageId
-    );
-    if (deletedImage) {
-      await Notification.deleteMany({ userId: id });
-      await User.findByIdAndDelete(id);
-      await Log.create({
-        type: "app",
-        title: "User deleted",
-        message: `User deleted by ${req.user.email}`,
-      });
-    }
+    await deleteImageFromCloudinary(isUserExist.profileImageId);
+    await Notification.deleteMany({ userId: id });
+    await User.findByIdAndDelete(id);
+    await Log.create({
+      type: "app",
+      title: "User deleted",
+      message: `User deleted by ${req.user.email}`,
+    });
     res.status(200).json({ status: 200, message: "User deleted successfully" });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));

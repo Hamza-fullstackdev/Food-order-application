@@ -62,8 +62,8 @@ export const register = async (req, res, next) => {
       email,
       password: encryptedPassword,
       phoneNumber,
-      profileImage: uploaded_img.secure_url,
-      profileImageId: uploaded_img.public_id,
+      profileImage: uploaded_img?.secure_url,
+      profileImageId: uploaded_img?.public_id,
       isAdmin,
     });
     await Notification.create({
@@ -153,6 +153,14 @@ export const adminLogin = async (req, res, next) => {
     const isMatch = await comparePassword(password, user.password);
     if (!isMatch) {
       return next(errorHandler(400, "Invalid credentials"));
+    }
+    if (user.isBlocked) {
+      return next(
+        errorHandler(
+          400,
+          "You are temporarily blocked by the admin, Apologize Hami first (if you did something wrong) and then try again :) "
+        )
+      );
     }
     const refreshToken = await generateRefreshToken(user._id);
     const accessToken = await generateAccessToken(user._id);

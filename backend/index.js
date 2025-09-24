@@ -2,7 +2,7 @@ import express from "express";
 // import { config } from "./utils/config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { connectToDatabase } from "./utils/db.js";
+import { connectToDatabase } from "./config/db.js";
 
 const app = express();
 // const PORT = config.PORT || 3000;
@@ -13,7 +13,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      "http://localhost:3001",
+      "http://localhost:3000",
       "https://food-order-application-rust.vercel.app",
     ],
     methods: ["GET", "POST", "PATCH", "DELETE"],
