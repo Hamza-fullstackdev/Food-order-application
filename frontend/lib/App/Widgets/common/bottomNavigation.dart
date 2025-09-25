@@ -39,6 +39,8 @@ class _FoodCourierBottomNavState extends State<FoodCourierBottomNav> {
           if (!didpop && _selectedIndex != 0) {
             setState(() {
               _selectedIndex = 0;
+              // this is help full 
+              
             });
           }
         },
