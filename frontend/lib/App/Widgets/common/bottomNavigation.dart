@@ -1,70 +1,17 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:frontend/ProfileScreen.dart';
-// import 'package:frontend/cart_Screen.dart';
-// import 'package:frontend/productScreen.dart';
-
-// class FoodCurierBottomNavBar extends StatefulWidget {
-//   const FoodCurierBottomNavBar({super.key});
-//   @override
-//   State<FoodCurierBottomNavBar> createState() => _FoodCurierBottomNavBarState();
-// }
-
-// class _FoodCurierBottomNavBarState extends State<FoodCurierBottomNavBar> {
-//   final int _selectedIndex = 0;
-//   final List<Widget> _screens = [
-//     ProductScreen(),
-//     ProfileScreen(),
-//     CartScreen(),
-//   ];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         bottomNavigationBar: BottomNavigationBar(
-//           items: [
-//             BottomNavigationBarItem(
-//               icon: Icon(CupertinoIcons.house),
-//               label: 'Home',
-//             ),
-//             BottomNavigationBarItem(
-//               icon: Icon(CupertinoIcons.house),
-//               label: 'Home',
-//             ),
-//             BottomNavigationBarItem(
-//               icon: Icon(CupertinoIcons.house),
-//               label: 'Home',
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-//!  Simple structure:
-// Ek integer currentIndex (kaunsa tab selected hai)
-// Ek list of pages (Home, Search, Profile)
-// Tap hone par currentIndex change hota hai, aur wo page dikhata hai.
-
-// Simple Bottom Navigation does'nt follow the Stack Concept, In it only one screen remians in
-// the memory that is visible, remaining screens only sawap with previous Screen
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/App/MVVM/views/ProfileScreen.dart';
 import 'package:frontend/App/MVVM/views/cart_Screen.dart';
 import 'package:frontend/homeScreen.dart';
 import 'package:frontend/App/MVVM/views/productScreen.dart';
 
-class SimpleNavigationExample extends StatefulWidget {
-  const SimpleNavigationExample({super.key});
+class FoodCourierBottomNav extends StatefulWidget {
+  const FoodCourierBottomNav({super.key});
   @override
-  State<SimpleNavigationExample> createState() =>
-      _SimpleNavigationExampleState();
+  State<FoodCourierBottomNav> createState() => _FoodCourierBottomNavState();
 }
 
-class _SimpleNavigationExampleState extends State<SimpleNavigationExample> {
+class _FoodCourierBottomNavState extends State<FoodCourierBottomNav> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
@@ -100,21 +47,25 @@ class _SimpleNavigationExampleState extends State<SimpleNavigationExample> {
           body: _screens[_selectedIndex],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _selectedIndex,
+            selectedItemColor: Color(0xffD61355),
+            unselectedItemColor: Color(0xffFF8080),
+            backgroundColor: Colors.white,
             onTap: _onItemTapped,
+            type: BottomNavigationBarType.fixed,
             items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.house_fill),
+                label: 'Home',
+              ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: 'Profile',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.chat_rounded),
+                icon: Icon(Icons.shopping_cart),
                 label: 'Chat',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                label: 'Cart',
-              ),
+              BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Cart'),
             ],
           ),
         ),
@@ -122,13 +73,3 @@ class _SimpleNavigationExampleState extends State<SimpleNavigationExample> {
     );
   }
 }
-
-//!  2️⃣ Problem – Simple method me kya hota hai?
-/* Jab tum ek tab se dusre tab pe jaate ho, purani screen dispose ho jaati hai (state reset ho jaata hai).
-Example: Search tab me scroll karke neeche gaye → Home pe gaye → wapas Search pe aaye → scroll position reset
-//! Solution:
-Iske liye hum IndexedStack use karte hain:
-Ye saare pages memory me rakhta hai, bas active page ko show karta hai
-IndexedStack keeps all children in the tree (not disposed), only shows
- the child at index. Use it for preserving state, but be mindful: all children stay in memory.
- */
