@@ -12,6 +12,7 @@ class AssetsPath {
   static const String profilePic = '${baseUrl}profile_pic.jpg';
   static const String burgerPic = '${baseUrl}burger.png';
   static const String burgerDetailPic = '${baseUrl}burgerDetail.jpeg';
+    static const String posterBugerPic = '${baseUrl}posterBurger.jpg';
   static const String cardBackGroundpic =
       '${baseUrl}card_BACKGROUND.png'; // image jo card k back pr lagni ha
 
