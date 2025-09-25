@@ -3,9 +3,10 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { connectToDatabase } from "./config/db.js";
+import { config } from "./utils/config.js";
 
 const app = express();
-// const PORT = config.PORT || 3000;
+const PORT = config.PORT || 3000;
 connectToDatabase();
 
 app.use(express.json());
@@ -35,9 +36,9 @@ app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/subcategory", subCategoryRouter);
 app.use("/api/v1/cart", cartRouter);
 
-// app.listen(process.env.PORT || 3000, () => {
-//   console.log(`Server is running on port ${process.env.PORT || 3000}`);
-// });
+app.listen(PORT || 3000, () => {
+  console.log(`Server is running on port ${PORT || 3000}`);
+});
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
@@ -49,4 +50,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-export default app;
+// export default app;

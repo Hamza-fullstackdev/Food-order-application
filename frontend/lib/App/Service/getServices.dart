@@ -1,5 +1,1 @@
-class FoodCourierGetServices {
-
-
-  
-}
+class FoodCourierGetServices {}

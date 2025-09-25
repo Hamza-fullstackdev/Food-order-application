@@ -44,19 +44,19 @@ class Products {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['userId'] = this.userId;
-    data['name'] = this.name;
-    data['shortDescription'] = this.shortDescription;
-    data['description'] = this.description;
-    data['price'] = this.price;
-    data['image'] = this.image;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['__v'] = this.iV;
-    data['categoryId'] = this.categoryId;
-    data['subcategoryId'] = this.subcategoryId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['userId'] = userId;
+    data['name'] = name;
+    data['shortDescription'] = shortDescription;
+    data['description'] = description;
+    data['price'] = price;
+    data['image'] = image;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['__v'] = iV;
+    data['categoryId'] = categoryId;
+    data['subcategoryId'] = subcategoryId;
     return data;
   }
 }

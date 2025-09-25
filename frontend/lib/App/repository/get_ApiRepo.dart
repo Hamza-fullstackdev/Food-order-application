@@ -1,10 +1,3 @@
-class FoodCourierGetRepo
-{
-Future<void> getCategory()  async 
-    {
-
-
-    }  
-
-  
+class FoodCourierGetRepo {
+  Future<void> getCategory() async {}
 }

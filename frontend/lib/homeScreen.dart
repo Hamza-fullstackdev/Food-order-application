@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/App/MVVM/views/mealMenu_Screen.dart';
-import 'package:frontend/App/MVVM/views/productDetailscreen.dart';
 import 'package:frontend/App/Resources/assetsPaths/assetsPath.dart';
 import 'package:frontend/Repos/product_provider.dart';
 import 'package:frontend/detail_screen.dart';
-
 import 'package:frontend/utils/app_contants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -328,7 +326,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => DetailScreen(),
+                                          builder: (context) =>
+                                              DetailScreen(
+                                                imagePath: productProvider.productList[index].sId!,
+                                              ),
                                         ),
                                       );
                                     },
@@ -472,8 +473,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProductDetailScreen(
-                                  imagePath: AssetsPath.burgerPic,
+                                builder: (context) => DetailScreen(imagePath: productProvider.productList[0].sId!,
                                 ),
                               ),
                             );
