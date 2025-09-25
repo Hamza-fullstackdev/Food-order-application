@@ -5,6 +5,7 @@ import 'package:frontend/App/Resources/assetsPaths/assetsPath.dart';
 import 'package:frontend/App/MVVM/views/mealMenu_Screen.dart';
 import 'package:frontend/App/MVVM/views/productDetailscreen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -16,6 +17,32 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   List<String> items = ["Burger", "Pizza", "Sandwich"];
   int selectedIndex = 0;
+  final PageController _controller = PageController();
+  final List<Color> posterButtonTextColor = [
+    Colors.red,
+    Colors.pink,
+    Color(0xffFF8080),
+  ];
+  final List<Map<String, dynamic>> posters = [
+    {
+      "title": "Special Offer\nfor March",
+      "subtitle": "We are here with the best\ndeserts in town.",
+      "image": AssetsPath.posterBugerPic,
+      "colors": [Color(0xffFF0000), Color(0xffFFB4B4)],
+    },
+    {
+      "title": "New Arrival\nSummer Drinks",
+      "subtitle": "Cool down with our\nfresh collection.",
+      "image": AssetsPath.burgerPic,
+      "colors": [Colors.pink, Color(0xffFF8080), Color(0xffFECFEF)],
+    },
+    {
+      "title": "Weekend Sale\n50% OFF",
+      "subtitle": "Grab your favorite food\nbefore it's gone!",
+      "image": AssetsPath.burgerDetailPic,
+      "colors": [Color(0xffFF8080), Color(0xffFF8080), Color(0xffFFB4B4)],
+    },
+  ];
   List<Map<String, dynamic>> itemsList = [
     {'name': 'Chicken Burger', 'price': '20', 'image': AssetsPath.burgerPic},
     {
@@ -102,7 +129,7 @@ class _ProductScreenState extends State<ProductScreen> {
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -155,72 +182,130 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                         SizedBox(height: 25),
 
-                        Container(
+                        SizedBox(
                           height: 190,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            gradient: LinearGradient(
-                              colors: [Color(0xffFF0000), Color(0xffFFB4B4)],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Special Offer\nfor March",
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(height: 6),
-                                    Text(
-                                      "We are here with the best\ndeserts intown.",
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 18,
-                                          vertical: 6,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () {},
-                                      child: Text(
-                                        "Buy Now",
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                          width: double.infinity,
+                          child: PageView.builder(
+                            padEnds: false,
+                            controller: _controller,
+                            itemCount: posters.length,
+                            itemBuilder: (context, index) {
+                              final poster = posters[index];
+                              return Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 3,
                                 ),
-                                Image.asset(AssetsPath.burgerPic, height: 120),
-                              ],
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  gradient: LinearGradient(
+                                    colors: poster["colors"],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      // Left side text + button
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            poster["title"],
+                                            style: GoogleFonts.roboto(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Text(
+                                            poster["subtitle"],
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 12),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.white,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 18,
+                                                    vertical: 6,
+                                                  ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                            onPressed: () {},
+                                            child: Text(
+                                              "Buy Now",
+                                              style: GoogleFonts.poppins(
+                                                color:
+                                                    posterButtonTextColor[index],
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      // Right side image
+                                      Image.asset(
+                                        poster["image"],
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // Smooth indicator
+                        Center(
+                          child: SmoothPageIndicator(
+                            controller: _controller,
+                            count: posters.length,
+                            effect: CustomizableEffect(
+                              activeDotDecoration: DotDecoration(
+                                width: 220,
+                                height: 8,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              dotDecoration: DotDecoration(
+                                width: 15,
+                                height: 8,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+
+                              spacing: 8,
+                              activeColorOverride: (i) => [
+                                Colors.red,
+                                Colors.pink,
+                                Color(0xffFF8080),
+                                // Colors.orange.shade900,
+                              ][i],
+                              inActiveColorOverride: (i) => Colors.grey[400]!,
+                              // dotColor: Colors.grey.shade400,
                             ),
                           ),
                         ),
 
-                        SizedBox(height: 75),
+                        SizedBox(height: 30),
 
                         SizedBox(
                           height: 45,
