@@ -1,5 +1,4 @@
-class AppUrl {
-  static final base_url = "http://192.168.1.107:3000/api/v1/";
+class AppUrl {  static final base_url = "http://192.168.1.107:3000/api/v1/";
 
   static final login_url = "${base_url}auth/login";
   static final signup_url = "${base_url}auth/register";
@@ -13,7 +12,7 @@ class AppUrl {
   static final product_by_user_id_url =
       "${base_url}product/get-products-by-user";
 
-  static final get_by_categry_id_url = "${base_url}product/get-by-category/";
+  static final get_by_categry_id_url = "$base_url /";
   static final delete_product_url = "${base_url}product/delete-product/";
   static final get_all_categories_url =
       "${base_url}category/get-all-categories";

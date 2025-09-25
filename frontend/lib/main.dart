@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/App/Widgets/common/bottomNavigation.dart';
 import 'package:frontend/Repos/auth_provider.dart';
 import 'package:frontend/Repos/product_provider.dart';
-import 'package:frontend/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => AuthProvider()),
-      ChangeNotifierProvider(create: (context) => ProductProvider(),)],
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => ProductProvider()),
+      ],
       child: MyApp(),
     ),
   );
@@ -23,10 +25,9 @@ class MyApp extends StatelessWidget {
       title: 'Food Curier',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SplashScreen(),
+      home: FoodCourierBottomNav(),  // pehla kuch code change krna ha  phr push krna ha remeber
     );
   }
 }

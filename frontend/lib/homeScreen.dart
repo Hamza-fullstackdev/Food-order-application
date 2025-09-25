@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/App/MVVM/views/mealMenu_Screen.dart';
+import 'package:frontend/App/MVVM/views/productDetailscreen.dart';
+import 'package:frontend/App/Resources/assetsPaths/assetsPath.dart';
 import 'package:frontend/Repos/product_provider.dart';
-import 'package:frontend/Resources/assetsPaths/assetsPath.dart';
 import 'package:frontend/detail_screen.dart';
-import 'package:frontend/mealMenu_Screen.dart';
-import 'package:frontend/productDetailscreen.dart';
+
 import 'package:frontend/utils/app_contants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -21,20 +22,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late final _indicatorController;
-  
+
   @override
   void initState() {
     _indicatorController = PageController();
     super.initState();
   }
 
-
-  
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
-    
-   return Scaffold(
+
+    return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -58,9 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Column(
             children: [
               Container(
-                padding: EdgeInsets.only(
-                  top: 16,
-                ),
+                padding: EdgeInsets.only(top: 16),
                 color: Colors.transparent,
                 child: AppBar(
                   backgroundColor: Colors.transparent,
@@ -179,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       style: GoogleFonts.poppins(
                                         color: Colors.white,
                                         fontSize: 8,
-                                        fontWeight: FontWeight.w500
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     SizedBox(height: 12),
@@ -214,12 +211,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         SizedBox(height: 4),
                         Center(
-                          child: SmoothPageIndicator(controller: _indicatorController, count: 3,effect: WormEffect(
-                            dotHeight: 9,
-                            dotWidth: 9,
-                            dotColor: AppContants.lightGrey,
-                            activeDotColor: AppContants.redColor
-                          ),),
+                          child: SmoothPageIndicator(
+                            controller: _indicatorController,
+                            count: 3,
+                            effect: WormEffect(
+                              dotHeight: 9,
+                              dotWidth: 9,
+                              dotColor: AppContants.lightGrey,
+                              activeDotColor: AppContants.redColor,
+                            ),
+                          ),
                         ),
                         SizedBox(height: 6),
 
@@ -230,57 +231,73 @@ class _MyHomePageState extends State<MyHomePage> {
                             builder: (context, snapshot) {
                               if (!snapshot.hasData) {
                                 return CircularProgressIndicator();
-                              }else {
-                                 return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: productProvider.categoryList.length,
-                              itemBuilder: (context, index) {
-                                // print(productProvider.categoryList[index].name);
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 6,
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: (){
-                                      productProvider.categoriesData();
-                                    },
-                                    child: ChoiceChip(
-                                      showCheckmark: false,
-                                      label: Text(
-                                        productProvider.categoryList[index].name ?? "Error",
-                                        style: GoogleFonts.poppins(
-                                          color: productProvider.selectedIndex == index
-                                              ? Colors.white
-                                              : Colors.black,
+                              } else {
+                                return ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      productProvider.categoryList.length,
+                                  itemBuilder: (context, index) {
+                                    // print(productProvider.categoryList[index].name);
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          productProvider.categoriesData();
+                                        },
+                                        child: ChoiceChip(
+                                          showCheckmark: false,
+                                          label: Text(
+                                            productProvider
+                                                    .categoryList[index]
+                                                    .name ??
+                                                "Error",
+                                            style: GoogleFonts.poppins(
+                                              color:
+                                                  productProvider
+                                                          .selectedIndex ==
+                                                      index
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            ),
+                                          ),
+                                          avatar: Icon(
+                                            Icons.fastfood,
+                                            color:
+                                                productProvider.selectedIndex ==
+                                                    index
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
+                                          selected:
+                                              productProvider.selectedIndex ==
+                                              index,
+                                          selectedColor: Color(0xffD61355),
+                                          backgroundColor: Colors.white,
+                                          side: BorderSide(
+                                            color:
+                                                productProvider.selectedIndex ==
+                                                    index
+                                                ? Colors.transparent
+                                                : Colors.red,
+                                            width: 1.5,
+                                          ),
+                                          onSelected: (value) {
+                                            //  = productProvider.categoryList[selectedIndex].sId;
+                                            productProvider.setIndex(
+                                              index,
+                                              productProvider
+                                                      .categoryList[index]
+                                                      .sId ??
+                                                  "Invalid Id",
+                                            );
+                                          },
                                         ),
                                       ),
-                                      avatar: Icon(
-                                        Icons.fastfood,
-                                        color: productProvider.selectedIndex == index
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ),
-                                      selected: productProvider.selectedIndex == index,
-                                      selectedColor: Color(0xffD61355),
-                                      backgroundColor: Colors.white,
-                                      side: BorderSide(
-                                        color: productProvider.selectedIndex == index
-                                            ? Colors.transparent
-                                            : Colors.red,
-                                        width: 1.5,
-                                      ),
-                                      onSelected: (value) {
-
-                                        //  = productProvider.categoryList[selectedIndex].sId;
-                                        productProvider.setIndex(index, productProvider.categoryList[index].sId  ?? "Invalid Id");
-                                      },
-                                    ),
-                                  ),
+                                    );
+                                  },
                                 );
-                              },
-                            );
-                              
-                            
                               }
                             },
                           ),
@@ -290,13 +307,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         SizedBox(
                           height: 237,
                           child: FutureBuilder(
-                            future: productProvider.getProducts(productProvider.categoryId
+                            future: productProvider.getProducts(
+                              productProvider.categoryId,
                             ),
                             builder: (context, snapshot) => ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              
+
                               itemCount: productProvider.productList.length,
-                            
+
                               itemBuilder: (context, index) {
                                 final data = productProvider.productList[index];
                                 return Padding(
@@ -310,9 +328,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailScreen(
-                                              ),
+                                          builder: (context) => DetailScreen(),
                                         ),
                                       );
                                     },
@@ -346,7 +362,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 SizedBox(width: 4),
                                                 Text(
                                                   "4.5",
-                                                  
+
                                                   style: GoogleFonts.poppins(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w700,
@@ -367,7 +383,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             ),
                                             SizedBox(height: 1),
                                             Text(
-                                             data.name!,
+                                              data.name!,
                                               style: GoogleFonts.poppins(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w500,
@@ -385,7 +401,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                             Spacer(),
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Text(
                                                   data.price.toString(),
@@ -529,6 +546,5 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
-   
   }
 }
