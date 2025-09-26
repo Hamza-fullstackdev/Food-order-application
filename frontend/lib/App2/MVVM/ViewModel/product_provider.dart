@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:frontend/Repos/app_url.dart';
-import 'package:frontend/helper_classes/token_refresh.dart';
-import 'package:frontend/models/categories.dart';
-import 'package:frontend/models/products.dart';
+import 'package:frontend/App2/Resources/app_url.dart';
+import 'package:frontend/App2/Repository/token_refresh.dart';
+import 'package:frontend/App2/MVVM/ViewModel/categories.dart';
+import 'package:frontend/App2/MVVM/Model/products.dart';
 
 class ProductProvider extends ChangeNotifier {
   final List<Categories> _categoryList = [];
@@ -39,7 +39,8 @@ class ProductProvider extends ChangeNotifier {
       _categoryList.clear();
       for (Map<String, dynamic> items in data["categories"]) {
         _categoryList.add(Categories.fromJson(items));
-        print(Categories.fromJson(items).sId);
+        // print(Categories.fromJson(items).name);
+        // print(Categories.fromJson(items).sId);
       }
 
       //  notifyListeners();
@@ -53,16 +54,29 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<List<Products>> getProducts(String categoryId) async {
+    print("Passes Id is $categoryId\n");
     final data = await TokenRefresh.checkToken(
       "${AppUrl.get_product_list_by_category_id}$categoryId",
     );
-
+    
+    print("Data is $data");
     if (data != null && data['products'] != null) {
+      print("After condition data is ${data['products']}");
       _productsList.clear();
       for (var currentProduct in data['products']) {
-        _productsList.add(Products.fromJson(currentProduct));
+        print("current product is $currentProduct");
+        try {
+          final product = Products.fromJson(currentProduct);
+          
+        _productsList.add(product);
+        print("After Adding product is $currentProduct");
+
+        } catch (e) {
+          print(e.toString());
+        }
+
+
       }
-      print(_productsList[2].sId);
       return productList;
     } else {
       print("No product Found!");

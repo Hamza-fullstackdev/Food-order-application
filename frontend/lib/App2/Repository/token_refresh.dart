@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:frontend/Repos/app_url.dart';
+import 'package:frontend/App2/Resources/app_url.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -18,12 +18,12 @@ static Future<dynamic> checkToken(String url, {Map<String, dynamic>? body}) asyn
   SharedPreferences pref = await SharedPreferences.getInstance();
   refreshToken = pref.getString("refreshToken");
   accessToken = pref.getString("accessToken");
-      print("$accessToken");
+      // print("$accessToken");
 
   
   if (JwtDecoder.isExpired(accessToken!)) {
     
-  print("Refresh Token: $refreshToken" );
+  // print("Refresh Token: $refreshToken" );
     final tokenResponse = await http.post(
       Uri.parse(AppUrl.refresh_url),
       headers: {"Content-Type": "application/json","Authorization": "Bearer $refreshToken"},
@@ -38,7 +38,7 @@ static Future<dynamic> checkToken(String url, {Map<String, dynamic>? body}) asyn
       await pref.setString("accessToken", accessToken!);
       await pref.setString("refreshToken", refreshToken!);
     } else {
-      print("Status code is : ${tokenResponse.statusCode} Token refresh failed: ${tokenResponse.body}");
+      // print("Status code is : ${tokenResponse.statusCode} Token refresh failed: ${tokenResponse.body}");
       return null;
     }
   }

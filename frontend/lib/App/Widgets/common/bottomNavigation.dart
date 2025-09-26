@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/App/MVVM/views/ProfileScreen.dart';
 import 'package:frontend/App/MVVM/views/cart_Screen.dart';
-import 'package:frontend/homeScreen.dart';
+import 'package:frontend/App2/MVVM/Views/homeScreen.dart';
 import 'package:frontend/App/MVVM/views/productScreen.dart';
 
 class FoodCourierBottomNav extends StatefulWidget {

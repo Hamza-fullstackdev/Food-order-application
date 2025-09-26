@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/utils/app_contants.dart';
+import 'package:frontend/App2/Widgets/Common/app_contants.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TextView extends StatelessWidget {

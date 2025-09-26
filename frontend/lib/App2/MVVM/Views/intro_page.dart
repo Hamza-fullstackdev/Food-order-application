@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/helper_widgets/tab_view.dart';
-import 'package:frontend/utils/app_contants.dart';
-import 'package:frontend/utils/common_button.dart';
-import 'package:frontend/utils/text_view.dart';
+import 'package:frontend/App2/Widgets/tab_view.dart';
+import 'package:frontend/App2/Widgets/Common/app_contants.dart';
+import 'package:frontend/App2/Widgets/Common/common_button.dart';
+import 'package:frontend/App2/Widgets/Common/text_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroPage extends StatefulWidget {

@@ -23,6 +23,7 @@ class AuthService {
       final registrationUrl = Uri.parse(url);
       final postData = http.MultipartRequest('POST', registrationUrl);
 
+      
       postData.fields['name'] = name;
       postData.fields['email'] = email;
       postData.fields['password'] = password;

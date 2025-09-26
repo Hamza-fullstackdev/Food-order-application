@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/App/MVVM/views/productScreen.dart';
-import 'package:frontend/utils/app_contants.dart';
-import 'package:frontend/utils/text_view.dart';
+import 'package:frontend/App2/Widgets/Common/app_contants.dart';
+import 'package:frontend/App2/Widgets/Common/text_view.dart';
 
 class Buttons extends StatelessWidget {
   const Buttons({super.key});

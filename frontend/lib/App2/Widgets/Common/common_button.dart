@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:frontend/utils/app_contants.dart';
+import 'package:frontend/App2/Widgets/Common/app_contants.dart';
 
 class CommonButton extends StatelessWidget{
   final Widget child ;

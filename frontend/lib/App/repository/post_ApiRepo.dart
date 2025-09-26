@@ -2,7 +2,7 @@ import 'package:frontend/App/MVVM/models/userLoginModel.dart';
 import 'package:frontend/App/Responce/api_responce.dart';
 import 'package:frontend/App/Service/authService/authService.dart';
 import 'package:frontend/App/exceptions.dart';
-import 'package:frontend/Repos/app_url.dart';
+import 'package:frontend/App2/Resources/app_url.dart';
 
 class AuthRepoo {
   AuthRepoo._private();
