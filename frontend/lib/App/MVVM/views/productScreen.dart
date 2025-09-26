@@ -7,6 +7,17 @@ import 'package:frontend/App/MVVM/views/productDetailscreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+// class MyBehavior extends ScrollBehavior {
+//   @override
+//   ScrollPhysics getScrollPhysics(BuildContext context) =>
+//       BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
+
+//   // Android کا blue glow disable کرنے کے لیے:
+//   @override
+//   Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {
+//     return child;
+//   }
+// }
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
 
@@ -33,13 +44,13 @@ class _ProductScreenState extends State<ProductScreen> {
     {
       "title": "New Arrival\nSummer Drinks",
       "subtitle": "Cool down with our\nfresh collection.",
-      "image": AssetsPath.burgerPic,
+      "image": AssetsPath.posterDrink,
       "colors": [Colors.pink, Color(0xffFF8080), Color(0xffFECFEF)],
     },
     {
       "title": "Weekend Sale\n50% OFF",
       "subtitle": "Grab your favorite food\nbefore it's gone!",
-      "image": AssetsPath.burgerDetailPic,
+      "image": AssetsPath.posterSecondBurger,
       "colors": [Color(0xffFF8080), Color(0xffFF8080), Color(0xffFFB4B4)],
     },
   ];
@@ -63,34 +74,44 @@ class _ProductScreenState extends State<ProductScreen> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // Background pattern at the top
           Positioned(
             left: 0,
-            right: -65,
-            // bottom: 0,
-            top: 39,
+            right: -25,
+            top: 35,
             child: SizedBox(
-              height: 125,
+              height: 140,
 
               child: Image.asset(
                 "assets/images/Group2.jpg",
                 filterQuality: FilterQuality.high,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
               ),
             ),
           ),
 
           Column(
             children: [
+              // SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.only(
                   top: MediaQuery.of(context).padding.top,
                 ),
                 color: Colors.transparent,
                 child: AppBar(
+                  surfaceTintColor: Colors.transparent,
                   backgroundColor: Colors.transparent,
                   elevation: 0,
-                  leading: Icon(Icons.menu, color: Colors.black),
+                  leading: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: InkWell(
+                      child: Image.asset(
+                        width: 10,
+                        height: 1,
+                        AssetsPath.menuIcon,
+                        // fit: BoxFit.,
+                      ),
+                    ),
+                  ),
                   title: Row(
                     children: [
                       Icon(Icons.location_on, color: Colors.red, size: 20),
@@ -128,6 +149,10 @@ class _ProductScreenState extends State<ProductScreen> {
 
               Expanded(
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(
+                    parent:
+                        AlwaysScrollableScrollPhysics(), // optional — chhoti content pe bhi bounce chahiye to
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18),
                     child: Column(
@@ -183,7 +208,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         SizedBox(height: 25),
 
                         SizedBox(
-                          height: 190,
+                          height: 230,
                           width: double.infinity,
                           child: PageView.builder(
                             padEnds: false,
@@ -204,12 +229,12 @@ class _ProductScreenState extends State<ProductScreen> {
                                   ),
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  padding: const EdgeInsets.only(
+                                    left: 16,
+                                    top: 20,
+                                  ),
+                                  child: Stack(
                                     children: [
-                                      // Left side text + button
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -220,7 +245,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                             poster["title"],
                                             style: GoogleFonts.roboto(
                                               color: Colors.white,
-                                              fontSize: 18,
+                                              fontSize: 23,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -229,8 +254,8 @@ class _ProductScreenState extends State<ProductScreen> {
                                             poster["subtitle"],
                                             style: GoogleFonts.poppins(
                                               color: Colors.white,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                           const SizedBox(height: 12),
@@ -260,10 +285,16 @@ class _ProductScreenState extends State<ProductScreen> {
                                         ],
                                       ),
                                       // Right side image
-                                      Image.asset(
-                                        poster["image"],
-                                        height: 100,
-                                        fit: BoxFit.cover,
+                                      Positioned.fill(
+                                        child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Image.asset(
+                                            poster["image"],
+                                            height:
+                                                145, // poster ke andar properly adjust
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -355,6 +386,10 @@ class _ProductScreenState extends State<ProductScreen> {
                         SizedBox(
                           height: 250,
                           child: ListView.builder(
+                            physics: BouncingScrollPhysics(
+                              parent:
+                                  AlwaysScrollableScrollPhysics(), // optional — chhoti content pe bhi bounce chahiye to
+                            ),
                             scrollDirection: Axis.horizontal,
                             itemCount: itemsList.length,
 
@@ -474,6 +509,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           ),
                         ),
 
+                        SizedBox(height: 6),
                         Row(
                           children: [
                             Text(

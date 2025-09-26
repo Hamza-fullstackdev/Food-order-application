@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:frontend/App/Widgets/common/bottomNavigation.dart';
 import 'package:frontend/Repos/auth_provider.dart';
@@ -24,11 +23,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Food Curier',
+      // scrollBehavior: MyBehavior(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: FoodCourierBottomNav(),  // pehla kuch code change krna ha  phr push krna ha remeber
+      home:
+          FoodCourierBottomNav(), // pehla kuch code change krna ha  phr push krna ha remeber
     );
   }
 }

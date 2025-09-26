@@ -39,12 +39,10 @@ class _FoodCourierBottomNavState extends State<FoodCourierBottomNav> {
           if (!didpop && _selectedIndex != 0) {
             setState(() {
               _selectedIndex = 0;
-              // this is help full 
-
+              // this is help full
             });
           }
         },
-
 
         child: Scaffold(
           body: _screens[_selectedIndex],
@@ -61,7 +59,7 @@ class _FoodCourierBottomNavState extends State<FoodCourierBottomNav> {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
+                icon: Icon(CupertinoIcons.person_fill),
                 label: 'Profile',
               ),
               BottomNavigationBarItem(

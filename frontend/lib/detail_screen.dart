@@ -38,7 +38,7 @@ class _DetailScreen extends State<DetailScreen> {
           builder: (context, snapshot){
             if(snapshot.connectionState == ConnectionState.waiting){
               return CircularProgressIndicator();
-            };
+            }
             return Padding(
             padding: const EdgeInsets.all(25.0),
             child: Column(
