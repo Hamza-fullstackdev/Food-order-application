@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/App/status.dart';
+import 'package:frontend/App2/MVVM/ViewModel/auth_provider.dart';
+import 'package:frontend/App2/MVVM/Views/homeScreen.dart';
 import 'package:frontend/App2/Widgets/tab_view.dart';
 import 'package:frontend/App2/Widgets/Common/app_contants.dart';
 import 'package:frontend/App2/Widgets/Common/common_button.dart';
 import 'package:frontend/App2/Widgets/Common/text_view.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroPage extends StatefulWidget {
@@ -50,7 +54,18 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Consumer<AuthProvider>(
+                builder: (context, value, child) {
+                  // ignore: unrelated_type_equality_checks
+                  if (value.apiResponse.status == Status.SUCCESS) {
+                       Navigator.push(context, MaterialPageRoute(builder: (_) => MyHomePage(title:"Hello world")));
+                      return Text('');
+                  } else if (value.apiResponse.status == Status.ERROR){
+                    return Text("${value.apiResponse.message}");
+                  } else if(value.apiResponse.status == Status.LOADING){
+                    return CircularProgressIndicator();
+                  } else{
+                    return Stack(
         children: [
           Column(
             children: [
@@ -156,8 +171,9 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
             ),
           ),
         ],
-      ),
-    );
+      );
+                  }}
+      ),);
   }
 
 PersistentBottomSheetController presistanceBottomSheet(BuildContext context) {

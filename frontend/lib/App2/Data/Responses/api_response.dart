@@ -1,16 +1,20 @@
-import 'package:frontend/App2/Data/Responses/app_enums.dart';
+import 'package:frontend/App2/Data/Responses/status.dart';
 
 class ApiResponse<T> {
-  String? message;
-  T? data;
+  String ? message ;
+  T ? data;
   Status? status;
 
-  ApiResponse([this.data, this.message, this.status]);
-  ApiResponse.loading() : status = Status.LOADING;
-  ApiResponse.success(this.data) : status = Status.SUCCESS;
-  ApiResponse.error(this.message) : status = Status.FAILED;
+  ApiResponse(this.status,this.data,this.message);
 
-  String toString() {
-    return "Status : $status \n Data : $data \n Message : $message";
+  ApiResponse.loading() : status = Status.Loading;
+  ApiResponse.success(this.data) : status = Status.Success;
+  ApiResponse.error(this.message) : status = Status.Error;
+  
+  ApiResponse.NotStarted() : status = Status.NotStarted;
+
+  @override
+  String toString(){
+    return 'Status: $status \nData: $data \n Message: $message';
   }
 }

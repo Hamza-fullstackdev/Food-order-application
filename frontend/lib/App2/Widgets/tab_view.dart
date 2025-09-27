@@ -1,8 +1,5 @@
 // ignore: must_be_immutable
-
-
 import 'package:flutter/material.dart';
-import 'package:frontend/App2/Data/Responses/app_enums.dart';
 import 'package:frontend/App2/MVVM/ViewModel/auth_provider.dart';
 import 'package:frontend/App2/MVVM/Views/homeScreen.dart';
 import 'package:frontend/App2/Widgets/Common/app_contants.dart';
@@ -59,8 +56,12 @@ class TabView extends StatelessWidget {
                   controller: nameController,
                   obscureText: false,
                   decoration: InputDecoration(
-                    hint: TextView(text: "Enter you name", size: 14, weight: 500),
-        
+                    hint: TextView(
+                      text: "Enter you name",
+                      size: 14,
+                      weight: 500,
+                    ),
+
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(7),
                       borderSide: BorderSide(color: AppContants.offWhiteColor),
@@ -92,8 +93,12 @@ class TabView extends StatelessWidget {
                 controller: emailController,
                 obscureText: false,
                 decoration: InputDecoration(
-                  hint: TextView(text: "Enter your email", size: 14, weight: 500),
-        
+                  hint: TextView(
+                    text: "Enter your email",
+                    size: 14,
+                    weight: 500,
+                  ),
+
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(7),
                     borderSide: BorderSide(color: AppContants.offWhiteColor),
@@ -131,7 +136,7 @@ class TabView extends StatelessWidget {
                     size: 14,
                     weight: 500,
                   ),
-        
+
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(7),
                     borderSide: BorderSide(color: AppContants.offWhiteColor),
@@ -163,7 +168,7 @@ class TabView extends StatelessWidget {
                     ),
                   ],
                 ),
-        
+
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8),
@@ -172,18 +177,13 @@ class TabView extends StatelessWidget {
                     width: 256,
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        value.registerUser(emailController.text, passController.text,nameController!.text);
-                       
-                        if (value.apiResponse.status == Status.LOADING) {
-                          CircularProgressIndicator();
-                        }else if(value.apiResponse.status == Status.SUCCESS){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyHomePage(title: "Hello world")));
-                        }else if(value.apiResponse.status == Status.FAILED){
-                          Text("❌ ${value.apiResponse.message}");
-                          print("errorr");
-                        }
-
-                        
+                        print("Registeration starts now");
+                        await value.registerUser(
+                          nameController!.text,
+                          emailController.text,
+                          passController.text,
+                          context
+                        );
                       }
                     },
                     isGradient: true,
@@ -196,20 +196,20 @@ class TabView extends StatelessWidget {
                             textAlignment: true,
                           )
                         : TextView(
-                          text: "Sign Up",
-                          size: 14,
-                          weight: 900,
-                          color: AppContants.whiteColor,
-                          textAlignment: true,
-                        ),
+                            text: "Sign Up",
+                            size: 14,
+                            weight: 900,
+                            color: AppContants.whiteColor,
+                            textAlignment: true,
+                          ),
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 48.0),
-                child: Divider(thickness: 1,),
+                child: Divider(thickness: 1),
               ),
-        
+
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8),

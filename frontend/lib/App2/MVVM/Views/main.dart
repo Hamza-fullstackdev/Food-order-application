@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:frontend/App/Widgets/common/bottomNavigation.dart';
 import 'package:frontend/App2/MVVM/ViewModel/auth_provider.dart';
 import 'package:frontend/App2/MVVM/ViewModel/product_provider.dart';
 import 'package:frontend/App2/MVVM/Views/splash_screen.dart';
