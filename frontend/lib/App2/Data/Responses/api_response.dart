@@ -11,7 +11,7 @@ class ApiResponse<T> {
   ApiResponse.success(this.data) : status = Status.Success;
   ApiResponse.error(this.message) : status = Status.Error;
   
-  ApiResponse.NotStarted() : status = Status.NotStarted;
+  ApiResponse.notStarted() : status = Status.NotStarted;
 
   @override
   String toString(){

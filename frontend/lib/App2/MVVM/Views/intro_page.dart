@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/App/status.dart';
+import 'package:frontend/App2/Data/Responses/status.dart';
 import 'package:frontend/App2/MVVM/ViewModel/auth_provider.dart';
 import 'package:frontend/App2/MVVM/Views/homeScreen.dart';
 import 'package:frontend/App2/Widgets/tab_view.dart';
@@ -55,128 +55,146 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<AuthProvider>(
-                builder: (context, value, child) {
-                  // ignore: unrelated_type_equality_checks
-                  if (value.apiResponse.status == Status.SUCCESS) {
-                       Navigator.push(context, MaterialPageRoute(builder: (_) => MyHomePage(title:"Hello world")));
-                      return Text('');
-                  } else if (value.apiResponse.status == Status.ERROR){
-                    return Text("${value.apiResponse.message}");
-                  } else if(value.apiResponse.status == Status.LOADING){
-                    return CircularProgressIndicator();
-                  } else{
-                    return Stack(
-        children: [
-          Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: AppContants.blackColor,
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/on_board_bg.png"),
-                  ),
+        builder: (context, value, child) {
+          // ignore: unrelated_type_equality_checks
+          if (value.apiResponse.status == Status.Success) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MyHomePage(title: "Hello world"),
+              ),
+            );
+            return Text('');
+          } else if (value.apiResponse.status == Status.Error) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SafeArea(
+                child: Text(
+                  "${value.apiResponse.message}",
+                  textAlign: TextAlign.center,
                 ),
               ),
-              Expanded(
-                child: Builder(
-                  builder: (context) {
-                    return PageView(
-                      controller: _controller,
-                      children: [
-                        pageItem(
-                          "assets/images/intro_img1.png",
-                          "Select the Favorities Menu",
-                          "Now eat well, don't leave the house,You can"
-                              "choose your favorite food only with",
-                          () => _controller.nextPage(
-                            duration: Duration(microseconds: 500),
-                            curve: Curves.linearToEaseOut,
-                          ),
-                        ),
-
-                        pageItem(
-                          "assets/images/intro_img2.png",
-                          "Good food at a\ncheap price",
-                          "You can eat at expensive\nrestaurants with\n"
-                              "affordable price",
-                          () => _controller.nextPage(
-                            duration: Duration(microseconds: 500),
-                            curve: Curves.linearToEaseOut,
-                          ),
-                        ),
-
-                        pageItem(
-                          "assets/images/intro_img1.png",
-                          "Select the\nFavorities Menu",
-                          "Now eat well, don't leave the house,You can\n"
-                              "choose your favorite food only with\n",
-                          () => presistanceBottomSheet(context),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-          Container(
-            alignment: AlignmentGeometry.xy(0, 0.95),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            );
+          } else if (value.apiResponse.status == Status.Loading) {
+            return CircularProgressIndicator();
+          } else {
+            return Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left:  16.0),
-                  child: TextButton(
-                    onPressed: () {
-                      _controller.jumpToPage(_itemCount - 1);
-                    },
-                    child: TextView(text: "skip", color: AppContants.blackColor),
-                  ),
-                ),
-                SmoothPageIndicator(
-                  controller: _controller,
-                  count: _itemCount,
-                  effect: SwapEffect(
-                    activeDotColor: AppContants.redColor,
-                    dotHeight: 10,
-                    dotWidth: 10,
-                    dotColor: AppContants.lightGrey,
-                  ),
-                ),
-
-                Builder(
-                  builder: (context) {
-                    return IconButton(
-                      onPressed: () {
-                        if (_controller.page!.round() > _itemCount - 1) {
-                          _controller.nextPage(
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.linearToEaseOut,
-                          );
-                        } else {
-                          presistanceBottomSheet(context);
-                        }
-                      },
-                      icon: Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: Icon(
-                          Icons.arrow_forward,
-                          color: AppContants.redColor,
+                Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppContants.blackColor,
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/on_board_bg.png"),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                    Expanded(
+                      child: Builder(
+                        builder: (context) {
+                          return PageView(
+                            controller: _controller,
+                            children: [
+                              pageItem(
+                                "assets/images/intro_img1.png",
+                                "Select the Favorities Menu",
+                                "Now eat well, don't leave the house,You can"
+                                    "choose your favorite food only with",
+                                () => _controller.nextPage(
+                                  duration: Duration(microseconds: 500),
+                                  curve: Curves.linearToEaseOut,
+                                ),
+                              ),
+
+                              pageItem(
+                                "assets/images/intro_img2.png",
+                                "Good food at a\ncheap price",
+                                "You can eat at expensive\nrestaurants with\n"
+                                    "affordable price",
+                                () => _controller.nextPage(
+                                  duration: Duration(microseconds: 500),
+                                  curve: Curves.linearToEaseOut,
+                                ),
+                              ),
+
+                              pageItem(
+                                "assets/images/intro_img1.png",
+                                "Select the\nFavorities Menu",
+                                "Now eat well, don't leave the house,You can\n"
+                                    "choose your favorite food only with\n",
+                                () => presistanceBottomSheet(context),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  alignment: AlignmentGeometry.xy(0, 0.95),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: TextButton(
+                          onPressed: () {
+                            _controller.jumpToPage(_itemCount - 1);
+                          },
+                          child: TextView(
+                            text: "skip",
+                            color: AppContants.blackColor,
+                          ),
+                        ),
+                      ),
+                      SmoothPageIndicator(
+                        controller: _controller,
+                        count: _itemCount,
+                        effect: SwapEffect(
+                          activeDotColor: AppContants.redColor,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                          dotColor: AppContants.lightGrey,
+                        ),
+                      ),
+
+                      Builder(
+                        builder: (context) {
+                          return IconButton(
+                            onPressed: () {
+                              if (_controller.page!.round() > _itemCount - 1) {
+                                _controller.nextPage(
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.linearToEaseOut,
+                                );
+                              } else {
+                                presistanceBottomSheet(context);
+                              }
+                            },
+                            icon: Padding(
+                              padding: const EdgeInsets.only(right: 16.0),
+                              child: Icon(
+                                Icons.arrow_forward,
+                                color: AppContants.redColor,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
-            ),
-          ),
-        ],
-      );
-                  }}
-      ),);
+            );
+          }
+        },
+      ),
+    );
   }
 
-PersistentBottomSheetController presistanceBottomSheet(BuildContext context) {
+  PersistentBottomSheetController presistanceBottomSheet(BuildContext context) {
     return showBottomSheet(
       showDragHandle: true,
       enableDrag: true,
@@ -190,73 +208,72 @@ PersistentBottomSheetController presistanceBottomSheet(BuildContext context) {
         minChildSize: 0.40,
         maxChildSize: 0.90,
         builder: (context, scrollController) {
-        return SizedBox(
-          child: DefaultTabController(
-          
-            length: 2,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TabBar(
-                  controller: _tabController,
-                  labelColor: AppContants.redColor,
-                  labelStyle: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                  ),
-                  unselectedLabelStyle: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: AppContants.blackColor,
-                    fontSize: 16,
-                  ),
-                  indicatorColor: AppContants.redColor,
-                  indicatorWeight: 1.0,
-                  tabs: [
-                    Tab(text: "Create Account"),
-                    Tab(text: "Login"),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
+          return SizedBox(
+            child: DefaultTabController(
+              length: 2,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TabBar(
                     controller: _tabController,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: SingleChildScrollView(
-                          child: TabView(
-                            nameController: _nameController,
-                            emailController: _signupEmailController,
-                            passController: _signupPassController,
-                            tabController: _tabController,
-                            login: false,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-        
-                        child: SingleChildScrollView(
-                          child: TabView(
-                            emailController: _loginEmailController,
-                            passController: _loginPassController,
-                            tabController: _tabController,
-                            login: true,
-                          ),
-                        ),
-                      ),
+                    labelColor: AppContants.redColor,
+                    labelStyle: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                    unselectedLabelStyle: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: AppContants.blackColor,
+                      fontSize: 16,
+                    ),
+                    indicatorColor: AppContants.redColor,
+                    indicatorWeight: 1.0,
+                    tabs: [
+                      Tab(text: "Create Account"),
+                      Tab(text: "Login"),
                     ],
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: SingleChildScrollView(
+                            child: TabView(
+                              nameController: _nameController,
+                              emailController: _signupEmailController,
+                              passController: _signupPassController,
+                              tabController: _tabController,
+                              login: false,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+
+                          child: SingleChildScrollView(
+                            child: TabView(
+                              emailController: _loginEmailController,
+                              passController: _loginPassController,
+                              tabController: _tabController,
+                              login: true,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-     
-        }, ),
-    
-        );
+          );
+        },
+      ),
+    );
   }
 }
+
 Column pageItem(
   imgResource,
   pageHeading,

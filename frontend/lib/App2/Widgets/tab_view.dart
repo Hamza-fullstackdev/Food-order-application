@@ -177,13 +177,26 @@ class TabView extends StatelessWidget {
                     width: 256,
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        print("Registeration starts now");
-                        await value.registerUser(
-                          nameController!.text,
-                          emailController.text,
-                          passController.text,
-                          context
-                        );
+                        if (login) {
+                          print("Registeration starts now");
+                          await value.loginUser(
+                            emailController.text,
+                            passController.text,
+                            context,
+                          );
+                          
+                        } else {
+                          print("Registeration starts now");
+                          bool isSuccess = await value.registerUser(
+                            nameController!.text,
+                            emailController.text,
+                            passController.text,
+                            context,
+                          );
+                          if (isSuccess) {
+                            tabController.animateTo(1);
+                          }
+                        }
                       }
                     },
                     isGradient: true,

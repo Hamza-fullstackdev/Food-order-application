@@ -15,11 +15,12 @@ class AuthServices implements AuthInterfaces {
   ) async {
     try {
       final uri = Uri.parse(url);
-      final header = {"Content-Type": "multipart/form-data"};
+      
+      final header = {"Content-Type": "application/json"};
       final body = {"email": email, "password": password};
 
       final response = await http
-          .post(uri, headers: header, body: body)
+          .post(uri, headers: header, body: jsonEncode(body))
           .timeout(Duration(seconds: 10));
 
         final decode = jsonDecode(response.body);
@@ -51,26 +52,13 @@ class AuthServices implements AuthInterfaces {
       final body = {"name": name, "email": email, "password": password};
       final response = await http
           .post(uri, headers: header, body: jsonEncode(body))
-          .timeout(Duration(seconds: 30));
+          .timeout(Duration(seconds: 10));
 
-      print("AuthServices starts now in try block after api call");
-      if (response.statusCode == 200 || response.statusCode == 201) {
         final decode = jsonDecode(response.body);
-
-        print(
-          "AuthServices starts now in try block after api call with statusCode",
-        );
-
         return decode is Map<String, dynamic>
             ? decode
             : {'statusCode': response.statusCode, 'body': decode};
-      } else {
-         final decode = jsonDecode(response.body);
-        return decode is Map<String, dynamic>
-            ? decode
-            : {'statusCode': response.statusCode, 'body': decode};
-
-      }
+     
     } on SocketException {
       print("SocketException with exception ");
       throw InternetException();
