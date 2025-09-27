@@ -1,11 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:frontend/App2/Data/Responses/api_response.dart';
+import 'package:frontend/App2/Data/Responses/status.dart';
+import 'package:frontend/App2/Repository/category_repo.dart';
+import 'package:frontend/App2/Repository/products_repo.dart';
 import 'package:frontend/App2/Resources/app_url.dart';
 import 'package:frontend/App2/Repository/token_refresh.dart';
-import 'package:frontend/App2/MVVM/ViewModel/categories.dart';
+import 'package:frontend/App2/MVVM/Model/categories.dart';
 import 'package:frontend/App2/MVVM/Model/products.dart';
 
 class ProductProvider extends ChangeNotifier {
+  final _categoryRepo = CategoryRepo();
+  final _productsRepo = ProductsRepo();
+  ApiResponse _productApiResponse = ApiResponse.notStarted();
+  ApiResponse _categoryApiResponse = ApiResponse.notStarted();
+
+
   final List<Categories> _categoryList = [];
   final List<Products> _productsList = [];
   Products _products = Products();
@@ -32,71 +42,92 @@ class ProductProvider extends ChangeNotifier {
     _productId = id;
     notifyListeners();
   }
+  Future<List<Categories>> categoriesData() async {
 
-  Future<dynamic> categoriesData() async {
-    final data = await TokenRefresh.checkToken(AppUrl.get_all_categories_url);
-    if (data != null && data["categories"] != null) {
-      _categoryList.clear();
-      for (Map<String, dynamic> items in data["categories"]) {
-        _categoryList.add(Categories.fromJson(items));
-        // print(Categories.fromJson(items).name);
-        // print(Categories.fromJson(items).sId);
-      }
+    _categoryList.clear();
+    _categoryApiResponse = await _categoryRepo.getCategory();
 
-      //  notifyListeners();
+    if (_categoryApiResponse.status == Status.Success) {
+      _categoryList.addAll(_categoryApiResponse.data);
       return categoryList;
     } else {
-      //  notifyListeners();
-
-      print("No data sorry");
-      return [];
+      return []; 
     }
   }
-
   Future<List<Products>> getProducts(String categoryId) async {
-    print("Passes Id is $categoryId\n");
-    final data = await TokenRefresh.checkToken(
-      "${AppUrl.get_product_list_by_category_id}$categoryId",
-    );
-    
-    print("Data is $data");
-    if (data != null && data['products'] != null) {
-      print("After condition data is ${data['products']}");
-      _productsList.clear();
-      for (var currentProduct in data['products']) {
-        print("current product is $currentProduct");
-        try {
-          final product = Products.fromJson(currentProduct);
-          
-        _productsList.add(product);
-        print("After Adding product is $currentProduct");
+    _productsList.clear();
+    _productApiResponse = await _productsRepo.getProducts(categoryId);
 
-        } catch (e) {
-          print(e.toString());
-        }
-
-
-      }
+    if (_productApiResponse.status == Status.Success) {
+      _productsList.addAll(_productApiResponse.data);
       return productList;
     } else {
-      print("No product Found!");
-      return [];
+      return []; 
     }
   }
+  // Future<dynamic> categoriesData() async {
+  //   final data = await TokenRefresh.checkToken(AppUrl.get_all_categories_url);
+  //   if (data != null && data["categories"] != null) {
+  //     _categoryList.clear();
+  //     for (Map<String, dynamic> items in data["categories"]) {
+  //       _categoryList.add(Categories.fromJson(items));
+        
+  //     }
+
+  //     //  notifyListeners();
+  //     return categoryList;
+  //   } else {
+  //     //  notifyListeners();
+
+  //     print("No data sorry");
+  //     return [];
+  //   }
+  // }
+
+  // Future<List<Products>> getProducts(String categoryId) async {
+  //   // print("Passes Id is $categoryId\n");
+  //   final data = await TokenRefresh.checkToken(
+  //     "${AppUrl.get_product_list_by_category_id}$categoryId",
+  //   );
+    
+  //   // print("Data is $data");
+  //   if (data != null && data['products'] != null) {
+  //     // print("After condition data is ${data['products']}");
+  //     _productsList.clear();
+  //     for (var currentProduct in data['products']) {
+  //       // print("current product is $currentProduct");
+  //       try {
+  //         final product = Products.fromJson(currentProduct);
+          
+  //       _productsList.add(product);
+  //       // print("After Adding product is $currentProduct");
+
+  //       } catch (e) {
+  //         // print(e.toString());
+  //       }
+
+
+  //     }
+  //     return productList;
+  //   } else {
+  //     // print("No product Found!");
+  //     return [];
+  //   }
+  // }
 
   Future<Products> getSingleProduct(String? id) async {
-    print("Id is : $id");
+    // print("Id is : $id");
     final data;
     if (id != null) {
       
-      print("Id is not null : $id");
+      // print("Id is not null : $id");
       data = await TokenRefresh.checkToken("${AppUrl.get_single_product}$id");
       
 
       if (data != null && data['product'] != null) {
-        print("data of product is : $data");
+        // print("data of product is : $data");
         _products = Products.fromJson(data['product']);
-        print(" \n \n data of _product is : $_products");
+        // print(" \n \n data of _product is : $_products");
         return products;
       } else {
         return Products();

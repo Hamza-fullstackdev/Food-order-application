@@ -1,10 +1,11 @@
 class Products {
+  
   String? sId;
   String? userId;
   String? name;
   String? shortDescription;
   String? description;
-  double? price;
+  int? price;
   String? image;
   String? createdAt;
   String? updatedAt;
