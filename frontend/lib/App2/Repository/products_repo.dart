@@ -11,15 +11,38 @@ class ProductsRepo {
   Future<ApiResponse<List<Products>>> getProducts(String Id) async {
     try {
       final List<Products> list = [];
-    final response = await _getData.getDataRequest("${AppUrl.get_product_list_by_category_id}$Id");
-    if (response != null && response['products'] != null) {
-      for(var item in response['products']){
-        var data = Products.fromJson(item);
-        list.add(data);
-      } 
-      return ApiResponse.success(list);
+      final response = await _getData.getDataRequest(
+        "${AppUrl.get_product_list_by_category_id}$Id",
+      );
+      if (response != null && response['products'] != null) {
+        for (var item in response['products']) {
+          var data = Products.fromJson(item);
+          list.add(data);
+        }
+        return ApiResponse.success(list);
+      }
+      return ApiResponse.error(response['message'] ?? 'no product found');
+    } on InternetException catch (e) {
+      return ApiResponse.error(e.toString());
+    } on RequestTimeOut catch (e) {
+      return ApiResponse.error(e.toString());
+    } on ServerException catch (e) {
+      return ApiResponse.error(e.toString());
+    } on FetchDataException catch (e) {
+      return ApiResponse.error(e.toString());
+    } catch (e) {
+      return ApiResponse.error("Something went wrong: $e");
     }
-    return ApiResponse.error(response['message'] ?? 'no product found');
+  }
+
+  Future<ApiResponse<Products>> getSingleProduct(String id) async {
+    try {
+      final response = await _getData.getDataRequest('${AppUrl.get_single_product}$id');
+      if (response != null && response['product'] != null) {
+        final data = Products.fromJson(response['product']);
+        return ApiResponse.success(data);
+      }
+      return ApiResponse.error(response['message'] ?? 'No product found!');
     } on InternetException catch (e) {
       return ApiResponse.error(e.toString());
     } on RequestTimeOut catch (e) {

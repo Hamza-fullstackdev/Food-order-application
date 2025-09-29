@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:frontend/App/exceptions.dart';
 import 'package:frontend/App2/Data/Network/interfaces/get_request_interface.dart';
 import 'package:frontend/App2/Resources/app_url.dart';
@@ -50,11 +49,8 @@ class GetRequestService implements GetRequestInterface  {
         "Authorization": "Bearer $accessToken",
       });
     } on SocketException {
-      print("SocketException with exception ");
       throw InternetException();
     } on TimeoutException {
-      print("TimeoutException with exception ");
-
       throw RequestTimeOut();
     } catch (e) {
       throw FetchDataException(e.toString());
@@ -65,14 +61,11 @@ class GetRequestService implements GetRequestInterface  {
     try {
      final response = await http.get(Uri.parse(url), headers: myHeader);
       final decoded = jsonDecode(response.body);
-      print("Hellp $decoded");
 
       return decoded ;
     } on SocketException {
-      print("SocketException with exception ");
       throw InternetException();
     } on TimeoutException {
-      print("TimeoutException with exception ");
 
       throw RequestTimeOut();
     } catch (e) {

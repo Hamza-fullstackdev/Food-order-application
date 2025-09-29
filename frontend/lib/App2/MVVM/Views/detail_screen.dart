@@ -25,9 +25,11 @@ class _DetailScreen extends State<DetailScreen> {
   }
 
   void openBottomSheet() {
-    _controller ??= _scaffoldKey.currentState!.showBottomSheet((context) {
+    _controller ??= _scaffoldKey.currentState!.showBottomSheet(enableDrag: false, (context) {
       final provider = Provider.of<ProductProvider>(context);
+      
       return Container(
+        
         height: 500,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -94,7 +96,7 @@ class _DetailScreen extends State<DetailScreen> {
                     ),
                   ],
                 ),
-          
+
                 const SizedBox(height: 20),
           
                 Text(
@@ -156,6 +158,7 @@ class _DetailScreen extends State<DetailScreen> {
                 ),
           
                 const Spacer(),
+                
           
                 ElevatedButton(
                   onPressed: () {
@@ -195,29 +198,21 @@ class _DetailScreen extends State<DetailScreen> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          FutureBuilder(
-            future: productProvider.getSingleProduct(widget.imagePath),
-            builder: (context,snap) {
-              if(snap.connectionState == ConnectionState.waiting){
-                return Center(child: CircularProgressIndicator());
+      body: SafeArea
+(
+        child: Column(
+          children: [
+            FutureBuilder(
+              future: productProvider.getSingleProduct(widget.imagePath),
+              builder: (context,snap) {
+                if(snap.connectionState == ConnectionState.waiting){
+                  return Center(child: CircularProgressIndicator());
+                }
+                return Image.network(productProvider.products.image!, fit: BoxFit.contain);
               }
-              return Container(
-              height: 400,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xffFFC1E3), Color(0xffDC8CB1)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: Image.network(productProvider.products.image!, fit: BoxFit.contain),
-            );
-            }
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

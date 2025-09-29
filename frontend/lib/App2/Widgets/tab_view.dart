@@ -178,7 +178,7 @@ class TabView extends StatelessWidget {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         if (login) {
-                          print("Registeration starts now");
+                          print("login starts now");
                           await value.loginUser(
                             emailController.text,
                             passController.text,

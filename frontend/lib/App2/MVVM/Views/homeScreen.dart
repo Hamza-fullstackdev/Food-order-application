@@ -4,6 +4,7 @@ import 'package:frontend/App/MVVM/views/mealMenu_Screen.dart';
 import 'package:frontend/App/Resources/assetsPaths/assetsPath.dart';
 import 'package:frontend/App2/MVVM/ViewModel/product_provider.dart';
 import 'package:frontend/App2/MVVM/Views/detail_screen.dart';
+import 'package:frontend/App2/MVVM/Views/product_detail.dart';
 import 'package:frontend/App2/Widgets/Common/app_contants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -327,7 +328,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              DetailScreen(
+                                              ProductDetail(
                                                 imagePath: productProvider.productList[index].sId!,
                                               ),
                                         ),
@@ -473,7 +474,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailScreen(imagePath: productProvider.productList[0].sId!,
+                                builder: (context) => ProductDetail(imagePath: productProvider.productList[0].sId!,
                                 ),
                               ),
                             );
