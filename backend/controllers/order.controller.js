@@ -1,0 +1,122 @@
+import errorHandler from "../middleware/error.middleware.js";
+import Cart from "../models/Cart.model.js";
+import CartItem from "../models/CartItem.model.js";
+import Order from "../models/Order.model.js";
+
+export const createOrder = async (req, res, next) => {
+  const userId = req.user._id;
+  if (!userId) {
+    return next(errorHandler(401, "Unauthorized"));
+  }
+  try {
+    const cart = await Cart.findOne({ userId });
+    if (!cart) {
+      return next(errorHandler(404, "Cart not found against this user"));
+    }
+    const cartItems = await CartItem.find({ cartId: cart._id })
+      .select("-cartId")
+      .populate("productId");
+    const orderItems = cartItems.map((item) => {
+      const { productId, quantity } = item;
+
+      const selectedVariants = productId.variantGroups.map((vg) => {
+        const groupSelection = item.selectedOptions.find(
+          (sel) => sel.variantGroupId.toString() === vg._id.toString()
+        );
+
+        if (!groupSelection) {
+          return {
+            groupId: vg._id,
+            groupName: vg.name,
+            options: [],
+          };
+        }
+
+        const chosenOptions = vg.options.filter((opt) =>
+          groupSelection.optionIds.some(
+            (oid) => oid.toString() === opt._id.toString()
+          )
+        );
+
+        if (chosenOptions.length === 1 && vg.options.length === 1) {
+          return {
+            groupId: vg._id,
+            groupName: vg.name,
+            option: {
+              id: chosenOptions[0]._id,
+              name: chosenOptions[0].name,
+              price: chosenOptions[0].price,
+            },
+          };
+        }
+
+        return {
+          groupId: vg._id,
+          groupName: vg.name,
+          options: chosenOptions.map((opt) => ({
+            id: opt._id,
+            name: opt.name,
+            price: opt.price,
+          })),
+        };
+      });
+
+      const basePrice =
+        selectedVariants.find((v) => v.option)?.option?.price || 0;
+      const addonsTotal = selectedVariants
+        .filter((v) => v.options)
+        .flatMap((v) => v.options || [])
+        .reduce((sum, opt) => sum + opt.price, 0);
+
+      const unitPrice = basePrice + addonsTotal;
+      const lineTotal = unitPrice * quantity;
+
+      return {
+        productId: productId._id,
+        productName: productId.name,
+        productImage: productId.image,
+        quantity,
+        selectedVariants,
+        pricing: {
+          basePrice,
+          addonsTotal,
+          unitPrice,
+          lineTotal,
+        },
+      };
+    });
+
+    const subtotal = orderItems.reduce(
+      (sum, i) => sum + i.pricing.lineTotal,
+      0
+    );
+    const tax = 0;
+    const deliveryFee = 250;
+    const grandTotal = subtotal + tax + deliveryFee;
+
+    const payment = {
+      method: req.body?.payment?.method || "COD",
+      transactionId: req.body?.payment?.transactionId || null,
+      status: req.body?.payment?.status || "pending",
+    };
+
+    const order = new Order({
+      userId,
+      items: orderItems,
+      orderSummary: { subtotal, tax, deliveryFee, grandTotal },
+      payment,
+    });
+
+    await order.save();
+
+    await Cart.findOneAndDelete({ userId });
+    await CartItem.deleteMany({ cartId: cart._id });
+    return res.status(201).json({
+      message: "Order created successfully",
+      order,
+    });
+  } catch (error) {
+    console.log(error);
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};

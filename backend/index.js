@@ -1,5 +1,4 @@
 import express from "express";
-// import { config } from "./utils/config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { connectToDatabase } from "./config/db.js";
@@ -28,6 +27,7 @@ import productRouter from "./routes/product.route.js";
 import categoryRouter from "./routes/category.route.js";
 import subCategoryRouter from "./routes/subcategory.route.js";
 import cartRouter from "./routes/cart.route.js";
+import orderRouter from "./routes/order.route.js";
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
@@ -35,6 +35,7 @@ app.use("/api/v1/product", productRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/subcategory", subCategoryRouter);
 app.use("/api/v1/cart", cartRouter);
+app.use("/api/v1/order", orderRouter);
 
 app.listen(PORT || 3000, () => {
   console.log(`Server is running on port ${PORT || 3000}`);
