@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Bike,
   Folder,
   Inbox,
   LockKeyhole,
@@ -47,6 +48,11 @@ const items = [
     title: "Products",
     url: "/dashboard/products",
     icon: Store,
+  },
+  {
+    title: "Orders",
+    url: "/dashboard/orders",
+    icon: Bike,
   },
   {
     title: "System Logs",

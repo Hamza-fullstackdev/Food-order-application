@@ -19,47 +19,53 @@ export const createOrder = async (req, res, next) => {
     const orderItems = cartItems.map((item) => {
       const { productId, quantity } = item;
 
-      const selectedVariants = productId.variantGroups.map((vg) => {
-        const groupSelection = item.selectedOptions.find(
-          (sel) => sel.variantGroupId.toString() === vg._id.toString()
-        );
-
-        if (!groupSelection) {
-          return {
-            groupId: vg._id,
-            groupName: vg.name,
-            options: [],
-          };
-        }
-
-        const chosenOptions = vg.options.filter((opt) =>
-          groupSelection.optionIds.some(
-            (oid) => oid.toString() === opt._id.toString()
+      const selectedVariants = productId.variantGroups
+        .filter((vg) =>
+          item.selectedOptions.some(
+            (sel) => sel.variantGroupId.toString() === vg._id.toString()
           )
-        );
+        )
+        .map((vg) => {
+          const groupSelection = item.selectedOptions.find(
+            (sel) => sel.variantGroupId.toString() === vg._id.toString()
+          );
 
-        if (chosenOptions.length === 1 && vg.options.length === 1) {
+          if (!groupSelection) {
+            return {
+              groupId: vg._id,
+              groupName: vg.name,
+              options: [],
+            };
+          }
+
+          const chosenOptions = vg.options.filter((opt) =>
+            groupSelection.optionIds.some(
+              (oid) => oid.toString() === opt._id.toString()
+            )
+          );
+
+          if (chosenOptions.length === 1 && vg.options.length === 1) {
+            return {
+              groupId: vg._id,
+              groupName: vg.name,
+              option: {
+                id: chosenOptions[0]._id,
+                name: chosenOptions[0].name,
+                price: chosenOptions[0].price,
+              },
+            };
+          }
+
           return {
             groupId: vg._id,
             groupName: vg.name,
-            option: {
-              id: chosenOptions[0]._id,
-              name: chosenOptions[0].name,
-              price: chosenOptions[0].price,
-            },
+            options: chosenOptions.map((opt) => ({
+              id: opt._id,
+              name: opt.name,
+              price: opt.price,
+            })),
           };
-        }
-
-        return {
-          groupId: vg._id,
-          groupName: vg.name,
-          options: chosenOptions.map((opt) => ({
-            id: opt._id,
-            name: opt.name,
-            price: opt.price,
-          })),
-        };
-      });
+        });
 
       const basePrice =
         selectedVariants.find((v) => v.option)?.option?.price || 0;
@@ -117,6 +123,25 @@ export const createOrder = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const getAllOrders = async (req, res, next) => {
+  try {
+    const orders = await Order.find({}).sort({ createdAt: -1 });
+    res.status(200).json({ status: 200, orders });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const getSingleOrder = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const order = await Order.findById(id).sort({ createdAt: -1 });
+    res.status(200).json({ status: 200, order });
+  } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };
