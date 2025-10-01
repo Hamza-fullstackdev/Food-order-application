@@ -64,7 +64,6 @@ const Order = () => {
     getAllOrders();
   }, []);
 
-
   const filteredOrders = searchTerm
     ? formData.filter((order: Order) => {
         const lowerSearch = searchTerm.toLowerCase().trim();
@@ -158,9 +157,15 @@ const Order = () => {
                         "px-3 py-1 text-xs font-medium capitalize",
                         order.status === "pending"
                           ? "bg-yellow-100 text-yellow-700 border-yellow-300"
-                          : order.status === "completed"
+                          : order.status === "confirmed"
+                          ? "bg-blue-100 text-blue-700 border-blue-300"
+                          : order.status === "shipped"
+                          ? "bg-purple-100 text-purple-700 border-purple-300"
+                          : order.status === "delivered"
                           ? "bg-green-100 text-green-700 border-green-300"
-                          : "bg-red-100 text-red-700 border-red-300"
+                          : order.status === "cancelled"
+                          ? "bg-red-100 text-red-700 border-red-300"
+                          : ""
                       )}
                     >
                       {order.status}

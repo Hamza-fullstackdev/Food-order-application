@@ -1,6 +1,8 @@
 import errorHandler from "../middleware/error.middleware.js";
 import Cart from "../models/Cart.model.js";
 import CartItem from "../models/CartItem.model.js";
+import Notification from "../models/Notification.model.js";
+import Log from "../models/Log.model.js";
 import Order from "../models/Order.model.js";
 
 export const createOrder = async (req, res, next) => {
@@ -43,19 +45,6 @@ export const createOrder = async (req, res, next) => {
               (oid) => oid.toString() === opt._id.toString()
             )
           );
-
-          if (chosenOptions.length === 1 && vg.options.length === 1) {
-            return {
-              groupId: vg._id,
-              groupName: vg.name,
-              option: {
-                id: chosenOptions[0]._id,
-                name: chosenOptions[0].name,
-                price: chosenOptions[0].price,
-              },
-            };
-          }
-
           return {
             groupId: vg._id,
             groupName: vg.name,
@@ -113,8 +102,14 @@ export const createOrder = async (req, res, next) => {
       payment,
     });
 
-    await order.save();
+    await Notification.create({
+      type: "order",
+      title: "Order created!",
+      message: `Your order has been created! Please check order section for more details.`,
+      userId,
+    });
 
+    await order.save();
     await Cart.findOneAndDelete({ userId });
     await CartItem.deleteMany({ cartId: cart._id });
     return res.status(201).json({
@@ -140,6 +135,29 @@ export const getSingleOrder = async (req, res, next) => {
   const { id } = req.params;
   try {
     const order = await Order.findById(id).sort({ createdAt: -1 });
+    res.status(200).json({ status: 200, order });
+  } catch (error) {
+    next(errorHandler(500, "Something went wrong, please try again later"));
+  }
+};
+
+export const updateOrder = async (req, res, next) => {
+  const { id } = req.params;
+  const userId = req.user._id;
+  const { status } = req.body;
+  try {
+    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+    await Notification.create({
+      userId,
+      type: "order",
+      title: "Order update!",
+      message: `Your order has been ${status}!`,
+    });
+    await Log.create({
+      type: "admin",
+      title: "Order updated",
+      message: `Order ${order._id} updated by ${req.user.name} to ${status}!`,
+    });
     res.status(200).json({ status: 200, order });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));

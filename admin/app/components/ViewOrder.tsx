@@ -80,6 +80,34 @@ export interface OrderResponse {
   order: Order;
 }
 
+const statuses = [
+  {
+    key: "pending",
+    label: "Pending",
+    color: "bg-yellow-500 hover:bg-yellow-600",
+  },
+  {
+    key: "confirmed",
+    label: "Confirmed",
+    color: "bg-blue-500 hover:bg-blue-600",
+  },
+  {
+    key: "shipped",
+    label: "Shipped",
+    color: "bg-purple-500 hover:bg-purple-600",
+  },
+  {
+    key: "delivered",
+    label: "Delivered",
+    color: "bg-green-500 hover:bg-green-600",
+  },
+  {
+    key: "cancelled",
+    label: "Cancelled",
+    color: "bg-red-500 hover:bg-red-600",
+  },
+];
+
 const ViewOrder = () => {
   const [loading, setLoading] = React.useState(false);
   const [order, setOrder] = React.useState<Order>({
@@ -117,6 +145,20 @@ const ViewOrder = () => {
     getSingleOrder();
   }, []);
 
+  const handleStatusChange = async (status: string) => {
+    try {
+      const res = await api.patch(`/api/v1/order/update-order/${param.id}`, {
+        status,
+      });
+      if (res.status === 200) {
+        getSingleOrder();
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong, please try again later");
+    }
+  };
+
   return (
     <section className='my-8'>
       {loading && (
@@ -136,22 +178,28 @@ const ViewOrder = () => {
           Go Back
         </Link>
       </div>
-      <div className='max-w-4xl mx-auto p-6 space-y-6'>
+      <div className='w-full md:max-w-4xl mx-auto space-y-6'>
         <Card className='shadow-lg border border-primary/20'>
           <CardHeader className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
-            <CardTitle className='text-xl font-bold text-primary'>
+            <CardTitle className='text-xl font-bold text-primary break-all'>
               Order #{order._id}
             </CardTitle>
             <div className='flex gap-2'>
               <Badge
                 variant='outline'
                 className={cn(
-                  "px-3 py-1 text-sm font-medium capitalize",
+                  "px-3 py-1 text-xs font-medium capitalize",
                   order.status === "pending"
                     ? "bg-yellow-100 text-yellow-700 border-yellow-300"
-                    : order.status === "completed"
+                    : order.status === "confirmed"
+                    ? "bg-blue-100 text-blue-700 border-blue-300"
+                    : order.status === "shipped"
+                    ? "bg-purple-100 text-purple-700 border-purple-300"
+                    : order.status === "delivered"
                     ? "bg-green-100 text-green-700 border-green-300"
-                    : "bg-red-100 text-red-700 border-red-300"
+                    : order.status === "cancelled"
+                    ? "bg-red-100 text-red-700 border-red-300"
+                    : ""
                 )}
               >
                 {order.status}
@@ -181,9 +229,15 @@ const ViewOrder = () => {
                             "px-3 py-1 text-xs font-medium capitalize",
                             order.status === "pending"
                               ? "bg-yellow-100 text-yellow-700 border-yellow-300"
-                              : order.status === "completed"
+                              : order.status === "confirmed"
+                              ? "bg-blue-100 text-blue-700 border-blue-300"
+                              : order.status === "shipped"
+                              ? "bg-purple-100 text-purple-700 border-purple-300"
+                              : order.status === "delivered"
                               ? "bg-green-100 text-green-700 border-green-300"
-                              : "bg-red-100 text-red-700 border-red-300"
+                              : order.status === "cancelled"
+                              ? "bg-red-100 text-red-700 border-red-300"
+                              : ""
                           )}
                         >
                           {order.status}
@@ -360,6 +414,22 @@ const ViewOrder = () => {
             </div>
           </CardContent>
         </Card>
+      </div>
+      <div className='mt-5 w-full flex flex-row flex-wrap justify-center gap-x-5 gap-y-3'>
+        {statuses.map((s) => (
+          <Button
+            key={s.key}
+            size='sm'
+            disabled={loading}
+            onClick={() => handleStatusChange(s.key)}
+            className={cn(
+              "text-white shadow-md transition font-medium cursor-pointer px-4 py-2",
+              s.color
+            )}
+          >
+            {s.label}
+          </Button>
+        ))}
       </div>
     </section>
   );
