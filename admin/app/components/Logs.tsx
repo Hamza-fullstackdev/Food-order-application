@@ -12,7 +12,6 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -113,12 +112,12 @@ const Logs = () => {
         </div>
 
         <TableWrapper>
-          <TableHeader>
+          <TableHeader className='bg-gradient-to-r from-[#d61355] to-[#ff0000] hover:!from-[#d61355] hover:!to-[#ff0000]'>
             <TableRow>
-              <TableHead>Type</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Message</TableHead>
-              <TableHead>Date & Time</TableHead>
+              <TableHead className='!text-white'>Type</TableHead>
+              <TableHead className='!text-white'>Title</TableHead>
+              <TableHead className='!text-white'>Message</TableHead>
+              <TableHead className='!text-white'>Date & Time</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

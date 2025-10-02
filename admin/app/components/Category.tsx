@@ -139,14 +139,14 @@ const Category = () => {
           <TableCaption>
             A list of your recently created categories.
           </TableCaption>
-          <TableHeader className='!bg-[#d61355]/70 hover:!bg-[#d61355]'>
+          <TableHeader className='bg-gradient-to-r from-[#d61355] to-[#ff0000] hover:!from-[#d61355] hover:!to-[#ff0000]'>
             <TableRow>
-              <TableHead className='w-[100px]'>ID</TableHead>
-              <TableHead>Image</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Time</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className='!text-white'>ID</TableHead>
+              <TableHead className='!text-white'>Image</TableHead>
+              <TableHead className='!text-white'>Category</TableHead>
+              <TableHead className='!text-white'>Date</TableHead>
+              <TableHead className='!text-white'>Time</TableHead>
+              <TableHead className='!text-white'>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

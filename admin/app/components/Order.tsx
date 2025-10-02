@@ -104,17 +104,17 @@ const Order = () => {
         </div>
         <TableWrapper>
           <TableCaption>A list of your recent orders.</TableCaption>
-          <TableHeader className='!bg-[#d61355]/70 hover:!bg-[#d61355]'>
+          <TableHeader className='bg-gradient-to-r from-[#d61355] to-[#ff0000] hover:!from-[#d61355] hover:!to-[#ff0000]'>
             <TableRow>
-              <TableHead>Date</TableHead>
-              <TableHead>Time</TableHead>
-              <TableHead>Image</TableHead>
-              <TableHead>Product</TableHead>
-              <TableHead>Quantity</TableHead>
-              <TableHead>Total</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Payment</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className='!text-white'>Date</TableHead>
+              <TableHead className='!text-white'>Time</TableHead>
+              <TableHead className='!text-white'>Image</TableHead>
+              <TableHead className='!text-white'>Product</TableHead>
+              <TableHead className='!text-white'>Quantity</TableHead>
+              <TableHead className='!text-white'>Total</TableHead>
+              <TableHead className='!text-white'>Status</TableHead>
+              <TableHead className='!text-white'>Payment</TableHead>
+              <TableHead className='!text-white'>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

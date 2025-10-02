@@ -158,13 +158,13 @@ const Subcategory = () => {
           <TableCaption>
             A list of your recently created sub-categories.
           </TableCaption>
-          <TableHeader className='!bg-[#d61355]/70 hover:!bg-[#d61355]'>
+          <TableHeader className='bg-gradient-to-r from-[#d61355] to-[#ff0000] hover:!from-[#d61355] hover:!to-[#ff0000]'>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Main Category</TableHead>
-              <TableHead>Sub Category</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className='!text-white'>ID</TableHead>
+              <TableHead className='!text-white'>Main Category</TableHead>
+              <TableHead className='!text-white'>Sub Category</TableHead>
+              <TableHead className='!text-white'>Created At</TableHead>
+              <TableHead className='!text-white'>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

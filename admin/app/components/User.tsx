@@ -108,15 +108,15 @@ const User = () => {
         </div>
         <TableWrapper>
           <TableCaption>A list of your recently created users.</TableCaption>
-          <TableHeader className='!bg-[#d61355]/70 hover:!bg-[#d61355]'>
+          <TableHeader className='bg-gradient-to-r from-[#d61355] to-[#ff0000] hover:!from-[#d61355] hover:!to-[#ff0000]'>
             <TableRow>
-              <TableHead className='w-[100px]'>ID</TableHead>
-              <TableHead>Image</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Created Date</TableHead>
-              <TableHead>Created Time</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className='!text-white'>ID</TableHead>
+              <TableHead className="!text-white">Image</TableHead>
+              <TableHead className="!text-white">Name</TableHead>
+              <TableHead className="!text-white">Email</TableHead>
+              <TableHead className="!text-white">Created Date</TableHead>
+              <TableHead className="!text-white">Created Time</TableHead>
+              <TableHead className="!text-white">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
