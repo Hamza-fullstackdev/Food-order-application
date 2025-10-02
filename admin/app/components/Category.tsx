@@ -113,7 +113,7 @@ const Category = () => {
         <div>
           <Link
             href={"/dashboard/category/create"}
-            className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
+            className='w-fit py-3 px-4 bg-gradient-to-r from-[#d61355] to-[#ff0000] cursor-pointer text-white rounded-full text-sm'
           >
             Create new Category
           </Link>
@@ -126,7 +126,7 @@ const Category = () => {
             id='search'
             name='search'
             placeholder='Start typing to search'
-            className='w-[300px] bg-transparent border border-[#fe4f70] focus-visible:ring-0'
+            className='w-[300px] bg-transparent border border-[#d61355] focus-visible:ring-0'
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -139,7 +139,7 @@ const Category = () => {
           <TableCaption>
             A list of your recently created categories.
           </TableCaption>
-          <TableHeader className='!bg-[#fe4f70]/70 hover:!bg-[#fe4f70]'>
+          <TableHeader className='!bg-[#d61355]/70 hover:!bg-[#d61355]'>
             <TableRow>
               <TableHead className='w-[100px]'>ID</TableHead>
               <TableHead>Image</TableHead>

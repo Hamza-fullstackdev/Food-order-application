@@ -103,7 +103,7 @@ const Logs = () => {
             id='search'
             name='search'
             placeholder='Start typing to search'
-            className='w-[300px] bg-transparent border border-[#fe4f70] focus-visible:ring-0'
+            className='w-[300px] bg-transparent border border-[#d61355] focus-visible:ring-0'
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);

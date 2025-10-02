@@ -173,7 +173,7 @@ const ViewOrder = () => {
         <h1 className='font-bold text-2xl text-gray-800'>Order Details</h1>
         <Link
           href={"/dashboard/orders"}
-          className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
+          className='w-fit py-3 px-4 bg-gradient-to-r from-[#d61355] to-[#ff0000] cursor-pointer text-white rounded-full text-sm'
         >
           Go Back
         </Link>
@@ -392,7 +392,7 @@ const ViewOrder = () => {
             </Card>
           ))}
         </div>
-        <Card className='shadow-lg border-t-4 border-[#fe4f70]'>
+        <Card className='shadow-lg border-t-4 border-[#d61355]'>
           <CardHeader>
             <CardTitle className='text-lg font-semibold text-primary'>
               Order Summary

@@ -97,14 +97,14 @@ const Order = () => {
             id='search'
             name='search'
             placeholder='Start typing to search'
-            className='w-[300px] bg-transparent border border-[#fe4f70] focus-visible:ring-0'
+            className='w-[300px] bg-transparent border border-[#d61355] focus-visible:ring-0'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <TableWrapper>
           <TableCaption>A list of your recent orders.</TableCaption>
-          <TableHeader className='!bg-[#fe4f70]/70 hover:!bg-[#fe4f70]'>
+          <TableHeader className='!bg-[#d61355]/70 hover:!bg-[#d61355]'>
             <TableRow>
               <TableHead>Date</TableHead>
               <TableHead>Time</TableHead>

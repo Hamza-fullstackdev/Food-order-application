@@ -11,6 +11,7 @@ import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
 import uploadUserImage from "../utils/uploadUser.js";
 import Notification from "../models/Notification.model.js";
 import Log from "../models/Log.model.js";
+import { imageTransformer } from "../utils/transformer.js";
 
 export const getAllUsers = async (req, res, next) => {
   try {
@@ -73,8 +74,8 @@ export const updateUser = async (req, res, next) => {
     if (!user) {
       return next(errorHandler(404, "User not found"));
     }
-    if(updateData.isBlocked === true) {
-      if(req.user.email !== "hamzafullstackdev1@gmail.com"){
+    if (updateData.isBlocked === true) {
+      if (req.user.email !== "hamzafullstackdev1@gmail.com") {
         return next(errorHandler(400, "You are not allowed to block users"));
       }
     }
@@ -88,7 +89,8 @@ export const updateUser = async (req, res, next) => {
       }
 
       const uploadedImg = await uploadUserImage(req.file.path);
-      updateData.profileImage = uploadedImg.secure_url;
+      const optimizedImg = imageTransformer(uploadedImg.secure_url);
+      updateData.profileImage = optimizedImg;
       updateData.profileImageId = uploadedImg.public_id;
     }
 

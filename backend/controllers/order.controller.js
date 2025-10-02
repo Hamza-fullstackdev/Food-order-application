@@ -105,7 +105,7 @@ export const createOrder = async (req, res, next) => {
     await Notification.create({
       type: "order",
       title: "Order created!",
-      message: `Your order has been created! Please check order section for more details.`,
+      message: `Your order has been created! Please check order section to track your order.`,
       userId,
     });
 

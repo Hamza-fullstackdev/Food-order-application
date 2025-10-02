@@ -88,7 +88,7 @@ const User = () => {
         <div>
           <Link
             href={"/dashboard/users/create"}
-            className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
+            className='w-fit py-3 px-4 bg-gradient-to-r from-[#d61355] to-[#ff0000] cursor-pointer text-white rounded-full text-sm'
           >
             Create Users
           </Link>
@@ -101,14 +101,14 @@ const User = () => {
             id='search'
             name='search'
             placeholder='Start typing to search'
-            className='w-[300px] bg-transparent border border-[#fe4f70] focus-visible:ring-0'
+            className='w-[300px] bg-transparent border border-[#d61355] focus-visible:ring-0'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <TableWrapper>
           <TableCaption>A list of your recently created users.</TableCaption>
-          <TableHeader className='!bg-[#fe4f70]/70 hover:!bg-[#fe4f70]'>
+          <TableHeader className='!bg-[#d61355]/70 hover:!bg-[#d61355]'>
             <TableRow>
               <TableHead className='w-[100px]'>ID</TableHead>
               <TableHead>Image</TableHead>
@@ -191,7 +191,7 @@ const User = () => {
                       </AlertDialog>
                     </div>
                     {user?.isAdmin && (
-                      <div className='absolute top-1 left-1 h-[5px] w-[5px] rounded-full bg-[#fe4f70] animate-ping' />
+                      <div className='absolute top-1 left-1 h-[5px] w-[5px] rounded-full bg-[#d61355] animate-ping' />
                     )}
                   </TableCell>
                 </TableRow>

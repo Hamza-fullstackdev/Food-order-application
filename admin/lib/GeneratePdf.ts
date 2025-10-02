@@ -70,8 +70,8 @@ export interface OrderResponse {
 }
 export const generateInvoicePDF = async (order: Order) => {
   const doc = new jsPDF("p", "pt", "a4");
-  const primary = "#fe4f70";
-  const secondary = "#ffa387";
+  const primary = "#d61355";
+  const secondary = "#ff0000";
 
   // HEADER
   doc.setFillColor(primary);

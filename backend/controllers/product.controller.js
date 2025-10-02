@@ -9,6 +9,7 @@ import User from "../models/User.model.js";
 import Category from "../models/Category.model.js";
 import Subcategory from "../models/Subcategory.model.js";
 import CartItem from "../models/CartItem.model.js";
+import { imageTransformer } from "../utils/transformer.js";
 
 export const addProduct = async (req, res, next) => {
   const {
@@ -39,6 +40,7 @@ export const addProduct = async (req, res, next) => {
       }
     }
     const uploaded_img = await uploadImage(req.file.path);
+    const optimized_img = imageTransformer(uploaded_img.secure_url);
     const product = await Product.create({
       userId,
       categoryId,
@@ -47,7 +49,7 @@ export const addProduct = async (req, res, next) => {
       shortDescription,
       description,
       price,
-      image: uploaded_img.secure_url,
+      image: optimized_img,
       imageId: uploaded_img.public_id,
       variantGroups: parsedVariants,
     });
@@ -92,8 +94,8 @@ export const updateProduct = async (req, res, next) => {
       if (product.imageId) {
         await deleteImageFromCloudinary(product.imageId);
       }
-
-      product.image = uploaded_img.secure_url;
+      const optimized_img = imageTransformer(uploaded_img.secure_url);
+      product.image = optimized_img;
       product.imageId = uploaded_img.public_id;
     }
 
@@ -254,7 +256,7 @@ export const addReview = async (req, res, next) => {
     await Log.create({
       type: "app",
       title: "Review added",
-      message: `Review added by ${req.user.name}`,
+      message: `Review added by ${req.user.email} for product ${productId}`,
     });
     res
       .status(200)
