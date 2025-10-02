@@ -3,6 +3,19 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { connectToDatabase } from "./config/db.js";
 import { config } from "./utils/config.js";
+import { rateLimit } from "express-rate-limit";
+import helmet from "helmet";
+import compression from "compression";
+
+const limiter = rateLimit({
+  windowMs: 1000,
+  limit: 5,
+  message: {
+    success: false,
+    statusCode: 429,
+    message: "Too many requests, please try again later",
+  },
+});
 
 const app = express();
 const PORT = config.PORT || 3000;
@@ -10,6 +23,13 @@ connectToDatabase();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(limiter);
+app.use(helmet());
+app.use(
+  compression({
+    level: 9,
+  })
+);
 app.use(
   cors({
     origin: [
