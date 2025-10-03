@@ -1,0 +1,869 @@
+- _id:
+    buffer: !!binary aMkHHyg+1ZScEvOi
+  userId: &ref_0
+    _id:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: Hamza Ilyas
+    email: hamzafullstackdev1@gmail.com
+    password: $2b$10$20u9VXIbGf22EyONZwZDNudMduiDMbHE6U8FtJVsLbSH9ADhI/S6m
+    profileImage: >-
+      https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758364471/users/cqccvjkvr3kchigt9dvy.png
+    phoneNumber: '03484088841'
+    isAdmin: true
+    refreshToken:
+      - token: >-
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGM5MDVkYzI4M2VkNTk0OWMxMmYzOWIiLCJpYXQiOjE3NTk0MjUyNzUsImV4cCI6MTc2MDAzMDA3NX0.MDVhK-D0K9HSrNANIbXVs-I5NYIMH1xPxoj7rLV6gww
+        expiresAt: 2025-10-09T17:14:35.180Z
+        _id:
+          buffer: !!binary aN6y+1ITkExloEvN
+    createdAt: 2025-09-16T06:38:20.909Z
+    updatedAt: 2025-10-02T17:14:35.408Z
+    __v: 68
+    profileImageId: users/cqccvjkvr3kchigt9dvy
+    isBlocked: false
+  name: Smokey Blaze
+  shortDescription: Bold, Juicy, Fiery Bite
+  description: >-
+    The Smokey Blaze Burger is crafted for those who crave adventure in every
+    bite. Juicy, flame-grilled beef patty is layered with melted cheddar, smoky
+    chipotle sauce, caramelized onions, and fresh crisp lettuce. A hint of
+    jalapeño brings a fiery kick, balanced by a toasted brioche bun that seals
+    the deal. Perfect for anyone looking to indulge in bold flavors, this burger
+    delivers both heat and satisfaction. Each bite bursts with smoky richness,
+    spice, and texture, making it unforgettable.
+  price: 500
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005022/products/eaoa0u42iaotbki9fj81.jpg
+  createdAt: 2025-09-16T06:43:43.263Z
+  updatedAt: 2025-09-24T05:52:48.786Z
+  __v: 1
+  categoryId: &ref_1
+    _id:
+      buffer: !!binary aMkrF8+MhgiFfwuW
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: burger
+    createdAt: 2025-09-16T09:17:11.092Z
+    updatedAt: 2025-09-21T10:27:50.941Z
+    __v: 0
+    image: >-
+      https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450469/category/d0fnmikcrhx6pqbkbm0u.jpg
+    imageId: category/d0fnmikcrhx6pqbkbm0u
+  subcategoryId: &ref_2
+    _id:
+      buffer: !!binary aMkwMf2ylMhlMQb4
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: chicken burgers
+    categoryId:
+      buffer: !!binary aMkrF8+MhgiFfwuW
+    createdAt: 2025-09-16T09:38:57.246Z
+    updatedAt: 2025-09-16T09:38:57.246Z
+    __v: 0
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 300
+          _id:
+            buffer: !!binary aNOHMCMwXw6P1EnY
+        - name: Large
+          price: 500
+          _id:
+            buffer: !!binary aNOHMCMwXw6P1EnZ
+      _id:
+        buffer: !!binary aNOHMCMwXw6P1EnX
+  imageId: products/eaoa0u42iaotbki9fj81
+- _id:
+    buffer: !!binary aMkHYSg+1ZScEvOm
+  userId: *ref_0
+  name: Golden Crunch
+  shortDescription: Crispy, Tender, Flavor Packed
+  description: >-
+    The Golden Crunch Burger is a true delight for crispy chicken lovers. A
+    golden, crunchy chicken fillet is double-coated for extra crispness and
+    paired with creamy garlic mayo, tangy pickles, and a slice of Swiss cheese.
+    Fresh tomatoes and lettuce add a refreshing balance, while the
+    butter-toasted potato bun keeps it soft yet sturdy. This burger combines
+    crunchy, juicy, and creamy textures to create a perfect bite every time.
+    Ideal for lunch or dinner, it satisfies cravings for comfort food while
+    delivering gourmet flavor.
+  price: 400
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005089/products/yglsdemd7v0xtwstwvfz.jpg
+  createdAt: 2025-09-16T06:44:49.921Z
+  updatedAt: 2025-09-24T05:52:11.265Z
+  __v: 1
+  categoryId: *ref_1
+  subcategoryId:
+    _id:
+      buffer: !!binary aMkw0v2ylMhlMQcg
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: grilled burgers
+    categoryId:
+      buffer: !!binary aMkrF8+MhgiFfwuW
+    createdAt: 2025-09-16T09:41:38.737Z
+    updatedAt: 2025-09-16T09:41:38.737Z
+    __v: 0
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 210
+          _id:
+            buffer: !!binary aNOHCyMwXw6P1Ekx
+        - name: Large
+          price: 400
+          _id:
+            buffer: !!binary aNOHCyMwXw6P1Eky
+      _id:
+        buffer: !!binary aNOHCyMwXw6P1Ekw
+  imageId: products/yglsdemd7v0xtwstwvfz
+- _id:
+    buffer: !!binary aMkHoig+1ZScEvOq
+  userId: *ref_0
+  name: Mighty Shroom
+  shortDescription: Earthy, Cheesy, Pure Indulgence
+  description: >-
+    The Mighty Shroom Melt celebrates the earthy richness of mushrooms combined
+    with gooey, melted cheese. A thick beef patty is topped with sautéed garlic
+    mushrooms, smothered in melted provolone and mozzarella. The addition of
+    truffle aioli takes the flavor profile to the next level, creating a
+    luxurious yet comforting burger. Nestled between lightly toasted artisan
+    buns, this burger is ideal for those who appreciate the fusion of umami and
+    creaminess. Every bite feels indulgent, hearty, and deeply satisfying,
+    making it a premium choice for true burger enthusiasts.
+  price: 600
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005153/products/jihymmclblbxlezum79t.jpg
+  createdAt: 2025-09-16T06:45:54.301Z
+  updatedAt: 2025-09-24T05:51:37.454Z
+  __v: 1
+  categoryId: *ref_1
+  subcategoryId:
+    _id:
+      buffer: !!binary aMkwxv2ylMhlMQca
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: cheese burgers
+    categoryId:
+      buffer: !!binary aMkrF8+MhgiFfwuW
+    createdAt: 2025-09-16T09:41:26.631Z
+    updatedAt: 2025-09-16T09:41:26.631Z
+    __v: 0
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 330
+          _id:
+            buffer: !!binary aNOG6SMwXw6P1EiN
+        - name: Large
+          price: 600
+          _id:
+            buffer: !!binary aNOG6SMwXw6P1EiO
+      _id:
+        buffer: !!binary aNOG6SMwXw6P1EiM
+    - name: Add-ons
+      isRequired: false
+      maxSelectable: 2
+      options:
+        - name: Extra Mushrooms
+          price: 50
+          _id:
+            buffer: !!binary aNOG6SMwXw6P1EiQ
+        - name: Extra Melted Cheeze
+          price: 30
+          _id:
+            buffer: !!binary aNOG6SMwXw6P1EiR
+      _id:
+        buffer: !!binary aNOG6SMwXw6P1EiP
+  imageId: products/jihymmclblbxlezum79t
+- _id:
+    buffer: !!binary aMkH3yg+1ZScEvOu
+  userId: *ref_0
+  name: Classic Rancher
+  shortDescription: Fresh, Simple, Always Delicious
+  description: >-
+    The Classic Rancher Burger pays homage to timeless burger traditions.
+    Featuring a perfectly seasoned beef patty, topped with crisp lettuce, juicy
+    tomato slices, crunchy onions, and tangy ranch dressing, it keeps things
+    simple yet irresistibly tasty. A slice of American cheese melts beautifully
+    over the patty, bringing a creamy finish to each bite. The burger is served
+    on a sesame seed bun, balancing nostalgia with quality ingredients. This is
+    the go-to option when you want a familiar favorite that never disappoints,
+    delivering satisfaction without overcomplicating flavors.
+  price: 500
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005215/products/kl0rvzmxaiqm3tkju8f0.jpg
+  createdAt: 2025-09-16T06:46:55.501Z
+  updatedAt: 2025-09-24T05:49:08.965Z
+  __v: 1
+  categoryId: *ref_1
+  subcategoryId: *ref_2
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 200
+          _id:
+            buffer: !!binary aNOGVCMwXw6P1Ef3
+        - name: Medium
+          price: 350
+          _id:
+            buffer: !!binary aNOGVCMwXw6P1Ef4
+        - name: Double
+          price: 500
+          _id:
+            buffer: !!binary aNOGVCMwXw6P1Ef5
+      _id:
+        buffer: !!binary aNOGVCMwXw6P1Ef2
+  imageId: products/kl0rvzmxaiqm3tkju8f0
+- _id:
+    buffer: !!binary aMkISyg+1ZScEvOy
+  userId: *ref_0
+  name: Spicy Inferno
+  shortDescription: Hot, Zesty, Flavor Explosion
+  description: >-
+    The Spicy Inferno Wrap is a fiery delight for spice lovers. Juicy grilled
+    chicken is tossed in a bold chili-lime sauce, paired with crunchy lettuce,
+    diced tomatoes, and jalapeños. A drizzle of creamy sriracha mayo brings
+    balance, while the soft tortilla keeps everything tightly wrapped. Each bite
+    delivers the perfect mix of heat, zest, and freshness. Ideal for quick meals
+    or on-the-go cravings, it’s packed with flavor that satisfies your
+    adventurous side. This wrap proves that bold can also be deliciously
+    balanced, leaving you wanting more.
+  price: 230
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005322/products/b41qfwtnd8himdrtfgpp.jpg
+  createdAt: 2025-09-16T06:48:43.335Z
+  updatedAt: 2025-09-24T05:46:09.918Z
+  __v: 2
+  categoryId: &ref_3
+    _id:
+      buffer: !!binary aMkrUs+MhgiFfwue
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: shawarma
+    createdAt: 2025-09-16T09:18:10.719Z
+    updatedAt: 2025-09-21T10:33:00.403Z
+    __v: 0
+    image: >-
+      https://res.cloudinary.com/doobnnrrs/image/upload/v1758450779/category/tqqnn4oxcvdpcu0tsz9c.jpg
+    imageId: category/tqqnn4oxcvdpcu0tsz9c
+  subcategoryId:
+    _id:
+      buffer: !!binary aMkyYYXV+kLuirMy
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: chicken shawarma
+    categoryId:
+      buffer: !!binary aMkrUs+MhgiFfwue
+    createdAt: 2025-09-16T09:48:17.160Z
+    updatedAt: 2025-09-16T09:48:17.160Z
+    __v: 0
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 160
+          _id:
+            buffer: !!binary aNOFoSMwXw6P1EZC
+        - name: Large
+          price: 230
+          _id:
+            buffer: !!binary aNOFoSMwXw6P1EZD
+      _id:
+        buffer: !!binary aNOFoSMwXw6P1EZB
+  imageId: products/b41qfwtnd8himdrtfgpp
+- _id:
+    buffer: !!binary aMkIfCg+1ZScEvO2
+  userId: *ref_0
+  name: Mediterranean Bliss
+  shortDescription: Fresh, Light, Flavorful Bite
+  description: >-
+    The Mediterranean Bliss Wrap brings sunny coastal flavors to your plate.
+    Tender grilled chicken or falafel is paired with cucumbers, cherry tomatoes,
+    red onions, and Kalamata olives, all drizzled with tangy tzatziki sauce.
+    Wrapped in a soft flatbread, it’s a refreshing mix of creamy, crunchy, and
+    savory textures. Each bite feels wholesome and light yet incredibly
+    satisfying. This wrap is perfect for anyone who loves clean, healthy flavors
+    without sacrificing taste. It’s a burst of Mediterranean goodness that
+    transports you straight to the seaside with every bite.
+  price: 300
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005371/products/lnrrxn5cjrktexkyndql.jpg
+  createdAt: 2025-09-16T06:49:32.539Z
+  updatedAt: 2025-09-24T05:46:19.999Z
+  __v: 2
+  categoryId: *ref_3
+  subcategoryId:
+    _id:
+      buffer: !!binary aMkymIXV+kLuirM4
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: beef shawarma
+    categoryId:
+      buffer: !!binary aMkrUs+MhgiFfwue
+    createdAt: 2025-09-16T09:49:12.375Z
+    updatedAt: 2025-09-16T09:49:12.375Z
+    __v: 0
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 200
+          _id:
+            buffer: !!binary aNOFZiMwXw6P1EUx
+        - name: Large
+          price: 300
+          _id:
+            buffer: !!binary aNOFZiMwXw6P1EUy
+      _id:
+        buffer: !!binary aNOFZiMwXw6P1EUw
+    - name: Extra Topping
+      isRequired: false
+      maxSelectable: 1
+      options:
+        - name: Extra Everything
+          price: 50
+          _id:
+            buffer: !!binary aNOFZiMwXw6P1EU0
+      _id:
+        buffer: !!binary aNOFZiMwXw6P1EUz
+  imageId: products/lnrrxn5cjrktexkyndql
+- _id:
+    buffer: !!binary aMkIxSg+1ZScEvO6
+  userId: *ref_0
+  name: BBQ Ranch
+  shortDescription: Sweet, Smoky, Crispy Perfection
+  description: >-
+    The BBQ Ranch Crunch Wrap is a bold, hearty choice for flavor seekers. Smoky
+    grilled chicken is coated in tangy barbecue sauce and layered with shredded
+    lettuce, cheddar cheese, diced onions, and tortilla strips for extra crunch.
+    A generous drizzle of ranch dressing ties everything together inside a warm
+    tortilla. The combination of sweet, smoky, creamy, and crispy flavors makes
+    it truly irresistible. This wrap is perfect for lunch breaks or casual
+    dinners, delivering comfort food vibes with a gourmet twist that satisfies
+    cravings instantly.
+  price: 250
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005444/products/dvlwgqr6qkump4h1rinf.jpg
+  createdAt: 2025-09-16T06:50:45.286Z
+  updatedAt: 2025-09-24T05:43:51.246Z
+  __v: 1
+  categoryId: *ref_3
+  subcategoryId: &ref_4
+    _id:
+      buffer: !!binary aMkypIXV+kLuirM+
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: bbq shawarma
+    categoryId:
+      buffer: !!binary aMkrUs+MhgiFfwue
+    createdAt: 2025-09-16T09:49:24.708Z
+    updatedAt: 2025-09-16T09:49:24.708Z
+    __v: 0
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 180
+          _id:
+            buffer: !!binary aNOFFyMwXw6P1ES0
+        - name: Large
+          price: 250
+          _id:
+            buffer: !!binary aNOFFyMwXw6P1ES1
+      _id:
+        buffer: !!binary aNOFFyMwXw6P1ESz
+  imageId: products/dvlwgqr6qkump4h1rinf
+- _id:
+    buffer: !!binary aMkI/ig+1ZScEvO+
+  userId: *ref_0
+  name: Veggie Power
+  shortDescription: Colorful, Wholesome, Fresh Energy
+  description: >-
+    The Veggie Power Wrap is designed for those who want a healthy yet filling
+    option. Packed with roasted bell peppers, zucchini, carrots, spinach, and
+    hummus, it delivers a rainbow of fresh flavors in every bite. A light
+    sprinkle of feta cheese adds creaminess, while the soft tortilla holds it
+    all together. This wrap isn’t just delicious—it’s nourishing and energizing,
+    perfect for a quick lunch or post-workout meal. The mix of crunchy
+    vegetables and smooth hummus creates a satisfying texture balance, making it
+    a wholesome favorite.
+  price: 200
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005502/products/mjfpxmkiyhwcvfinggem.jpg
+  createdAt: 2025-09-16T06:51:42.958Z
+  updatedAt: 2025-09-24T05:43:04.349Z
+  __v: 1
+  categoryId: *ref_3
+  subcategoryId: *ref_4
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 150
+          _id:
+            buffer: !!binary aNOE6CMwXw6P1EQ6
+        - name: Large
+          price: 200
+          _id:
+            buffer: !!binary aNOE6CMwXw6P1EQ7
+      _id:
+        buffer: !!binary aNOE6CMwXw6P1EQ5
+    - name: Topping
+      isRequired: false
+      maxSelectable: 2
+      options:
+        - name: Extra Mayonaise
+          price: 15
+          _id:
+            buffer: !!binary aNOE6CMwXw6P1EQ9
+        - name: Extra Vegitables
+          price: 25
+          _id:
+            buffer: !!binary aNOE6CMwXw6P1EQ+
+      _id:
+        buffer: !!binary aNOE6CMwXw6P1EQ8
+  imageId: products/mjfpxmkiyhwcvfinggem
+- _id:
+    buffer: !!binary aMkJRCg+1ZScEvPC
+  userId: *ref_0
+  name: Fiery Pepperoni
+  shortDescription: Spicy, Cheesy, Bold Flavor
+  description: >-
+    The Fiery Pepperoni Blaze is a pizza crafted for those who love a kick of
+    spice with every bite. It features a thin, hand-tossed crust layered with
+    zesty tomato sauce, gooey mozzarella, and a generous topping of spicy
+    pepperoni slices. To turn up the heat, chili flakes and jalapeños are
+    sprinkled across the top, perfectly balanced by the richness of melted
+    cheese. The crust is crisp on the outside yet soft inside, ensuring every
+    bite is both crunchy and chewy. This pizza delivers the ultimate spicy,
+    cheesy indulgence.
+  price: 1600
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758310853/products/vbm7ssqck2de6w0rkqse.jpg
+  createdAt: 2025-09-16T06:52:52.448Z
+  updatedAt: 2025-09-24T05:57:23.813Z
+  __v: 2
+  categoryId: &ref_5
+    _id:
+      buffer: !!binary aMkrPs+MhgiFfwua
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: pizza
+    createdAt: 2025-09-16T09:17:50.336Z
+    updatedAt: 2025-09-21T10:29:46.966Z
+    __v: 0
+    image: >-
+      https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450585/category/ozrpsuv8zrpcxh7iogsf.jpg
+    imageId: category/ozrpsuv8zrpcxh7iogsf
+  subcategoryId:
+    _id:
+      buffer: !!binary aMkxGf2ylMhlMQcm
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: margherita
+    categoryId:
+      buffer: !!binary aMkrPs+MhgiFfwua
+    createdAt: 2025-09-16T09:42:49.631Z
+    updatedAt: 2025-09-16T09:42:49.631Z
+    __v: 0
+  imageId: products/vbm7ssqck2de6w0rkqse
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 800
+          _id:
+            buffer: !!binary aNOEjiMwXw6P1EPL
+        - name: Medium
+          price: 1250
+          _id:
+            buffer: !!binary aNOEjiMwXw6P1EPM
+        - name: Large
+          price: 1600
+          _id:
+            buffer: !!binary aNOEjiMwXw6P1EPN
+      _id:
+        buffer: !!binary aNOEjiMwXw6P1EPK
+    - name: Extra Topping
+      isRequired: false
+      maxSelectable: 2
+      options:
+        - name: Extra Cheeze
+          price: 150
+          _id:
+            buffer: !!binary aNOEjiMwXw6P1EPP
+        - name: Extra Sauces
+          price: 200
+          _id:
+            buffer: !!binary aNOEjiMwXw6P1EPQ
+      _id:
+        buffer: !!binary aNOEjiMwXw6P1EPO
+- _id:
+    buffer: !!binary aM/YuL6wAeXvBCvD
+  userId: &ref_6
+    _id:
+      buffer: !!binary aM6F5lVDWpTJnfou
+    name: Fiaz Zafar
+    email: fiazzafar430@gmail.com
+    password: $2b$10$csAYd2uVX62AGF0Pp5TbFeGkN5mNUdSjVW9j.EK.DoTPnRngx3AMq
+    profileImage: >-
+      https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452724/users/rxwivtp6c2dl2xrtkjz9.jpg
+    profileImageId: users/rxwivtp6c2dl2xrtkjz9
+    phoneNumber: '03193800058'
+    isAdmin: true
+    refreshToken:
+      - token: >-
+          eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGNlODVlNjU1NDM1YTk0Yzk5ZGZhMmUiLCJpYXQiOjE3NTkzMTY3MjMsImV4cCI6MTc1OTkyMTUyM30.tYuc-gF_WDH3Q0eQf-qTH8ZVOl2spdqK6mgWPg8dR_w
+        expiresAt: 2025-10-08T11:05:23.807Z
+        _id:
+          buffer: !!binary aN0K84M2yhI+1BvO
+    createdAt: 2025-09-20T10:45:58.044Z
+    updatedAt: 2025-10-01T11:05:24.018Z
+    __v: 2
+    isBlocked: false
+  categoryId: *ref_5
+  subcategoryId:
+    _id:
+      buffer: !!binary aMkyAoXV+kLuirMo
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: milai boti
+    categoryId:
+      buffer: !!binary aMkrPs+MhgiFfwua
+    createdAt: 2025-09-16T09:46:42.632Z
+    updatedAt: 2025-09-16T09:46:42.632Z
+    __v: 0
+  name: Milai Boti
+  shortDescription: Juicy beef patty pizza
+  description: >-
+    Our Classic Beef Burger is made with a freshly grilled beef patty, topped
+    with melted cheddar cheese, crisp lettuce, ripe tomato slices, onions, and
+    our signature house-made burger sauce. Served on a soft, toasted sesame bun
+    for the ultimate comfort bite.
+  price: 1150
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758451894/products/pt2orh1prl0nedf1p77l.jpg
+  imageId: products/pt2orh1prl0nedf1p77l
+  createdAt: 2025-09-21T10:51:36.031Z
+  updatedAt: 2025-09-24T05:35:52.513Z
+  __v: 1
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 600
+          _id:
+            buffer: !!binary aNODOCMwXw6P1ENq
+        - name: Medium
+          price: 900
+          _id:
+            buffer: !!binary aNODOCMwXw6P1ENr
+        - name: Large
+          price: 1150
+          _id:
+            buffer: !!binary aNODOCMwXw6P1ENs
+      _id:
+        buffer: !!binary aNODOCMwXw6P1ENp
+    - name: Extra Topping
+      isRequired: false
+      maxSelectable: 2
+      options:
+        - name: Extra Cheeze
+          price: 100
+          _id:
+            buffer: !!binary aNODOCMwXw6P1ENu
+        - name: Extra Milai Boti
+          price: 200
+          _id:
+            buffer: !!binary aNODOCMwXw6P1ENv
+      _id:
+        buffer: !!binary aNODOCMwXw6P1ENt
+- _id:
+    buffer: !!binary aM/ZV76wAeXvBCvs
+  userId: *ref_6
+  categoryId: *ref_5
+  subcategoryId:
+    _id:
+      buffer: !!binary aMkxPv2ylMhlMQc+
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: bbq chicken
+    categoryId:
+      buffer: !!binary aMkrPs+MhgiFfwua
+    createdAt: 2025-09-16T09:43:26.947Z
+    updatedAt: 2025-09-16T09:43:26.947Z
+    __v: 0
+  name: Hot & Spicy
+  shortDescription: Spice on full blow
+  description: >-
+    A golden, crispy chicken fillet coated with a blend of spices, layered with
+    tangy pickles, fresh lettuce, and a fiery sriracha mayo. Perfect for spice
+    lovers who want a crunchy kick with every bite.
+  price: 1200
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452053/products/xawr6fa8yy6djstivxwj.jpg
+  imageId: products/xawr6fa8yy6djstivxwj
+  createdAt: 2025-09-21T10:54:15.030Z
+  updatedAt: 2025-09-24T05:34:10.084Z
+  __v: 1
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 700
+          _id:
+            buffer: !!binary aNOCxiMwXw6P1EK+
+        - name: Medium
+          price: 950
+          _id:
+            buffer: !!binary aNOCxiMwXw6P1EK/
+        - name: Large
+          price: 1200
+          _id:
+            buffer: !!binary aNOCxiMwXw6P1ELA
+      _id:
+        buffer: !!binary aNOCxiMwXw6P1EK9
+- _id:
+    buffer: !!binary aM/Zvb6wAeXvBCwF
+  userId: *ref_6
+  categoryId: *ref_5
+  subcategoryId:
+    _id:
+      buffer: !!binary aMkx7oXV+kLuirMi
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: crown crust
+    categoryId:
+      buffer: !!binary aMkrPs+MhgiFfwua
+    createdAt: 2025-09-16T09:46:22.630Z
+    updatedAt: 2025-09-16T09:46:22.630Z
+    __v: 0
+  name: Cheese Overload
+  shortDescription: Two beef patties stacked
+  description: >-
+    For the true cheese lovers, this burger comes with two flame-grilled beef
+    patties stacked high with gooey cheddar and mozzarella cheese. Finished with
+    fresh lettuce, tomato, onion, and our creamy burger sauce for a rich,
+    indulgent bite.
+  price: 1100
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452156/products/iedpw3uotuzitmtm8gsk.jpg
+  imageId: products/iedpw3uotuzitmtm8gsk
+  createdAt: 2025-09-21T10:55:57.873Z
+  updatedAt: 2025-09-23T08:52:55.731Z
+  __v: 1
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small
+          price: 550
+          _id:
+            buffer: !!binary aNJf5/iEQ1EhFAQs
+        - name: Medium
+          price: 890
+          _id:
+            buffer: !!binary aNJf5/iEQ1EhFAQt
+        - name: Large
+          price: 1100
+          _id:
+            buffer: !!binary aNJf5/iEQ1EhFAQu
+      _id:
+        buffer: !!binary aNJf5/iEQ1EhFAQr
+    - name: Crust
+      isRequired: false
+      maxSelectable: 1
+      options:
+        - name: Thick
+          price: 50
+          _id:
+            buffer: !!binary aNJf5/iEQ1EhFAQw
+        - name: Thin
+          price: 100
+          _id:
+            buffer: !!binary aNJf5/iEQ1EhFAQx
+      _id:
+        buffer: !!binary aNJf5/iEQ1EhFAQv
+    - name: Extra Topping
+      isRequired: false
+      maxSelectable: 2
+      options:
+        - name: Extra Cheeze
+          price: 150
+          _id:
+            buffer: !!binary aNJf5/iEQ1EhFAQz
+        - name: Extra Chicken
+          price: 200
+          _id:
+            buffer: !!binary aNJf5/iEQ1EhFAQ0
+      _id:
+        buffer: !!binary aNJf5/iEQ1EhFAQy
+- _id:
+    buffer: !!binary aM/dMr6wAeXvBC4o
+  userId: *ref_6
+  categoryId: &ref_7
+    _id:
+      buffer: !!binary aMkriM+MhgiFfwuq
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: fries
+    createdAt: 2025-09-16T09:19:04.592Z
+    updatedAt: 2025-09-21T10:23:45.380Z
+    __v: 0
+    image: >-
+      https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450224/category/jwhbmnhpjxdsonc9cnz2.jpg
+    imageId: category/jwhbmnhpjxdsonc9cnz2
+  subcategoryId:
+    _id:
+      buffer: !!binary aMk17byaKRny14Sk
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: golden classics
+    categoryId:
+      buffer: !!binary aMkriM+MhgiFfwuq
+    createdAt: 2025-09-16T10:03:25.279Z
+    updatedAt: 2025-09-16T10:03:25.279Z
+    __v: 0
+  name: Salted Fries
+  shortDescription: Golden, crispy fries of sea salt.
+  description: >-
+    Freshly cut potatoes, fried to a golden crisp and lightly sprinkled with sea
+    salt for the perfect balance of crunch and flavor. A timeless favorite,
+    simple yet satisfying, best enjoyed with your favorite dip.
+  price: 500
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758453041/products/xagyyzhfdacijmmbf99l.jpg
+  imageId: products/xagyyzhfdacijmmbf99l
+  createdAt: 2025-09-21T11:10:42.569Z
+  updatedAt: 2025-09-24T05:33:12.304Z
+  __v: 1
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small pack
+          price: 300
+          _id:
+            buffer: !!binary aNOCmCMwXw6P1EJ3
+        - name: Large pack
+          price: 500
+          _id:
+            buffer: !!binary aNOCmCMwXw6P1EJ4
+      _id:
+        buffer: !!binary aNOCmCMwXw6P1EJ2
+- _id:
+    buffer: !!binary aM/dfL6wAeXvBC5R
+  userId: *ref_6
+  categoryId: *ref_7
+  subcategoryId:
+    _id:
+      buffer: !!binary aMk2D7yaKRny14Sw
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: fully loaded
+    categoryId:
+      buffer: !!binary aMkriM+MhgiFfwuq
+    createdAt: 2025-09-16T10:03:59.526Z
+    updatedAt: 2025-09-19T06:26:27.211Z
+    __v: 0
+  name: Loaded Fries
+  shortDescription: Fries topped with melted cheddar cheese.
+  description: >-
+    Crispy fries smothered in gooey melted cheddar cheese, creating a rich and
+    savory bite in every mouthful. Perfect for cheese lovers who crave that
+    irresistible combination of crunch and creaminess.
+  price: 750
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758453115/products/e9cyrjqrviq0ro0mxx68.jpg
+  imageId: products/e9cyrjqrviq0ro0mxx68
+  createdAt: 2025-09-21T11:11:56.111Z
+  updatedAt: 2025-09-24T05:32:34.842Z
+  __v: 1
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small pack
+          price: 500
+          _id:
+            buffer: !!binary aNOCciMwXw6P1EI2
+        - name: Large pack
+          price: 750
+          _id:
+            buffer: !!binary aNOCciMwXw6P1EI3
+      _id:
+        buffer: !!binary aNOCciMwXw6P1EI1
+- _id:
+    buffer: !!binary aM/d776wAeXvBC5q
+  userId: *ref_6
+  categoryId: *ref_7
+  subcategoryId:
+    _id:
+      buffer: !!binary aMk1+ryaKRny14Sq
+    userId:
+      buffer: !!binary aMkF3Cg+1ZScEvOb
+    name: flavour blast
+    categoryId:
+      buffer: !!binary aMkriM+MhgiFfwuq
+    createdAt: 2025-09-16T10:03:38.100Z
+    updatedAt: 2025-09-16T10:03:38.100Z
+    __v: 0
+  name: BBQ Ranch
+  shortDescription: Fries with smoky BBQ sauce & ranch drizzle.
+  description: >-
+    Golden fries drizzled with smoky barbecue sauce and creamy ranch dressing,
+    topped with herbs for an extra zing. A perfect mix of tangy, smoky, and
+    savory flavors that keep you coming back for more.
+  price: 600
+  image: >-
+    https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758453230/products/dxcyrmbjnv1cq6zltjdb.jpg
+  imageId: products/dxcyrmbjnv1cq6zltjdb
+  createdAt: 2025-09-21T11:13:51.710Z
+  updatedAt: 2025-09-24T05:31:50.463Z
+  __v: 1
+  variantGroups:
+    - name: Size
+      isRequired: true
+      maxSelectable: 1
+      options:
+        - name: Small pack
+          price: 300
+          _id:
+            buffer: !!binary aNOCRiMwXw6P1EH7
+        - name: Large pack
+          price: 600
+          _id:
+            buffer: !!binary aNOCRiMwXw6P1EH8
+      _id:
+        buffer: !!binary aNOCRiMwXw6P1EH6

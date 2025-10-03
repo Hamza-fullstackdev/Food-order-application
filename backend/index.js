@@ -6,6 +6,7 @@ import { config } from "./utils/config.js";
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
 import compression from "compression";
+import { startBackup } from "./jobs/run.job.js";
 
 const limiter = rateLimit({
   windowMs: 1000,
@@ -20,7 +21,7 @@ const limiter = rateLimit({
 const app = express();
 const PORT = config.PORT || 3000;
 connectToDatabase();
-
+startBackup();
 app.use(express.json());
 app.use(cookieParser());
 app.use(limiter);
