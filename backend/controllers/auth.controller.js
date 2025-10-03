@@ -11,6 +11,7 @@ import uploadUserImage from "../utils/uploadUser.js";
 import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
 import Notification from "../models/Notification.model.js";
 import Log from "../models/Log.model.js";
+import cache from "../utils/cache.js";
 
 export const register = async (req, res, next) => {
   const { name, email, password, phoneNumber, isAdmin } = req.body;
@@ -286,6 +287,7 @@ export const deleteUser = async (req, res, next) => {
     if (deletedImage) {
       await User.findByIdAndDelete(user._id);
     }
+    cache.del("users");
     res.status(200).json({ status: 200, message: "User deleted successfully" });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));

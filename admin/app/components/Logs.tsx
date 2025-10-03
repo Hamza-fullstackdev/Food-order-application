@@ -32,7 +32,7 @@ const Logs = () => {
   const [logs, setLogs] = React.useState<Log[]>([]);
   const [searchTerm, setSearchTerm] = React.useState("");
   const [currentPage, setCurrentPage] = React.useState(1);
-  const logsPerPage = 8;
+  const logsPerPage = 20;
 
   const getAllLogs = async () => {
     setLoading(true);

@@ -10,6 +10,7 @@ import Category from "../models/Category.model.js";
 import Subcategory from "../models/Subcategory.model.js";
 import CartItem from "../models/CartItem.model.js";
 import { imageTransformer } from "../utils/transformer.js";
+import cache from "../utils/cache.js";
 
 export const addProduct = async (req, res, next) => {
   const {
@@ -53,6 +54,7 @@ export const addProduct = async (req, res, next) => {
       imageId: uploaded_img.public_id,
       variantGroups: parsedVariants,
     });
+    cache.del("products");
     await Log.create({
       type: "admin",
       title: "Product added",
@@ -125,6 +127,7 @@ export const updateProduct = async (req, res, next) => {
     }
 
     const updatedProduct = await product.save();
+    cache.del("products");
     await Log.create({
       type: "admin",
       title: "Product updated",
@@ -169,12 +172,22 @@ export const getBySubCategory = async (req, res, next) => {
 };
 export const getAllProducts = async (req, res, next) => {
   try {
+    const cacheKey = "products";
+    if (cache.has(cacheKey)) {
+      const cachedData = cache.get(cacheKey);
+      return res
+        .status(200)
+        .json({ status: 200, products: cachedData, cached: true });
+    }
     const products = await Product.find({})
       .sort({ createdAt: -1 })
       .populate("subcategoryId")
-      .populate("categoryId");
-    res.status(200).json({ status: 200, products });
+      .populate("categoryId")
+      .lean();
+    cache.set(cacheKey, products);
+    res.status(200).json({ status: 200, products, cached: false });
   } catch (error) {
+    console.log(error);
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };
@@ -221,6 +234,7 @@ export const deleteProduct = async (req, res, next) => {
     await Product.findByIdAndDelete(id);
     await Rating.deleteMany({ productId: id });
     await CartItem.deleteMany({ productId: id });
+    cache.del("products");
     await Log.create({
       type: "admin",
       title: "Product deleted",
@@ -268,6 +282,13 @@ export const addReview = async (req, res, next) => {
 
 export const getStatistics = async (req, res, next) => {
   try {
+    const cacheKey = "statistics";
+    if (cache.has(cacheKey)) {
+      const cachedData = cache.get(cacheKey);
+      return res
+        .status(200)
+        .json({ status: 200, data: cachedData, cached: true });
+    }
     const products = await Product.find({}).countDocuments();
     const users = await User.find({}).countDocuments();
     const category = await Category.find({}).countDocuments();
@@ -278,7 +299,8 @@ export const getStatistics = async (req, res, next) => {
       category,
       subcategory,
     };
-    res.status(200).json({ status: 200, data });
+    cache.set(cacheKey, data);
+    res.status(200).json({ status: 200, data, cached: false });
   } catch (error) {
     console.log(error);
     next(errorHandler(500, "Something went wrong, please try again later"));

@@ -7,6 +7,7 @@ import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
 import { v2 as cloudinary } from "cloudinary";
 import Log from "../models/Log.model.js";
 import { imageTransformer } from "../utils/transformer.js";
+import cache from "../utils/cache.js";
 
 export const addCategory = async (req, res, next) => {
   const { name } = req.body;
@@ -35,6 +36,7 @@ export const addCategory = async (req, res, next) => {
       title: "Category added",
       message: `Category ${category.name} added by ${req.user.name}`,
     });
+    cache.del("categories");
     res
       .status(200)
       .json({ status: 200, message: "Category added successfully", category });
@@ -73,6 +75,7 @@ export const updateCategory = async (req, res, next) => {
     }
 
     await category.save();
+    cache.del("categories");
     await Log.create({
       type: "admin",
       title: "Category updated",
@@ -97,8 +100,16 @@ export const updateCategory = async (req, res, next) => {
 
 export const getAllCategories = async (req, res, next) => {
   try {
+    const cacheKey = "categories";
+    if (cache.has(cacheKey)) {
+      const cachedData = cache.get(cacheKey);
+      return res
+        .status(200)
+        .json({ status: 200, categories: cachedData, cached: true });
+    }
     const categories = await Category.find({}).sort({ createdAt: -1 });
-    res.status(200).json({ status: 200, categories });
+    cache.set(cacheKey, categories);
+    res.status(200).json({ status: 200, categories, cached: false });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
@@ -126,6 +137,7 @@ export const deleteCategory = async (req, res, next) => {
     await Category.findByIdAndDelete(id);
     await Subcategory.deleteMany({ categoryId: id });
     await Product.deleteMany({ categoryId: id });
+    cache.del("categories");
     await Log.create({
       type: "admin",
       title: "Category deleted",

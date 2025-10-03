@@ -12,13 +12,20 @@ import uploadUserImage from "../utils/uploadUser.js";
 import Notification from "../models/Notification.model.js";
 import Log from "../models/Log.model.js";
 import { imageTransformer } from "../utils/transformer.js";
+import cache from "../utils/cache.js";
 
 export const getAllUsers = async (req, res, next) => {
   try {
+    const cacheKey = "users";
+    if (cache.has(cacheKey)) {
+      const cachedData = cache.get(cacheKey);
+      return res.status(200).json({ status: 200, users: cachedData, cached: true });
+    }
     const users = await User.find({})
       .sort({ createdAt: -1 })
       .select("-password");
-    res.status(200).json({ status: 200, users });
+    cache.set(cacheKey, users);
+    res.status(200).json({ status: 200, users, cached: false });
   } catch (error) {
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
@@ -104,6 +111,7 @@ export const updateUser = async (req, res, next) => {
       title: `Profile updated!`,
       message: "Your profile changes have been saved",
     });
+    cache.del("users");
     res.status(200).json({
       status: 200,
       message: "User updated successfully",
@@ -125,6 +133,7 @@ export const deleteUser = async (req, res, next) => {
     await deleteImageFromCloudinary(isUserExist.profileImageId);
     await Notification.deleteMany({ userId: id });
     await User.findByIdAndDelete(id);
+    cache.del("users");
     await Log.create({
       type: "app",
       title: "User deleted",
