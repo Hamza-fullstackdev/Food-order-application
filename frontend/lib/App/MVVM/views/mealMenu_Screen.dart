@@ -226,7 +226,14 @@ class _MealMenuScreenState extends State<MealMenuScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ProductDetailScreen(
+                                        pId: '0',
+                                        shortDetail:  'data is data and should meat chicken bottle',
                                         imagePath: meal["image"],
+                                        productPrice: meal['price'],
+                                        name: meal['title'],
+                                        variants: [],
+                                        detail:
+                                            'burger is a patty of ground meat, ideally a mix of 80% lean and 20% fat, served between two halves of a bun, with toppings like lettuce, tomato, cheese, and sauces. Key components for a great',
                                       ),
                                     ),
                                   );
@@ -301,7 +308,15 @@ class _MealMenuScreenState extends State<MealMenuScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ProductDetailScreen(
+                                        pId: '0',
+                                        shortDetail:  'data is data and should meat chicken bottle',
                                         imagePath: meal["image"],
+                                        name: meal['tittle'],
+                                        productPrice: meal['price'],
+                                        detail:
+                                            'burger is a patty of ground meat, ideally a mix of 80% lean and 20% fat, served between two halves of a bun, with toppings like lettuce, tomato, cheese, and sauces. Key components for a great',
+
+                                            variants: [],
                                       ),
                                     ),
                                   );

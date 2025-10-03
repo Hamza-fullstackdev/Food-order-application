@@ -24,6 +24,15 @@ class AssetsPath {
   static const String mealMenuTopPattren =
       '${baseUrl}mealMenu_pattren.jpg'; // image to show on the top header  of mealMenuScreen
 }
+
+class AnimationPaths
+{
+
+    static const String baseUrl = 'assets/animations/';
+      static const String loading = '${baseUrl}loading.json';
+        static const String loading2 = '${baseUrl}loading2.json';
+
+}
 /*   
 
 import 'package:flutter/cupertino.dart';

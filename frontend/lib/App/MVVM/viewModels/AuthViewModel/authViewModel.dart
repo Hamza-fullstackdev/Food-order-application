@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:frontend/App/Responce/api_responce.dart';
-import 'package:frontend/App/repository/post_ApiRepo.dart';
+import 'package:frontend/App/Core/Responce/api_responce.dart';
+import 'package:frontend/App/DataLAYER/repository/authRepo/authRepo.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final _authRepo = AuthRepoo();
