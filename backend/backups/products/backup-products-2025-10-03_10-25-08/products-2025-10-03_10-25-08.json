@@ -1,0 +1,1228 @@
+[
+  {
+    "_id": "68c9071f283ed5949c12f3a2",
+    "userId": {
+      "_id": "68c905dc283ed5949c12f39b",
+      "name": "Hamza Ilyas",
+      "email": "hamzafullstackdev1@gmail.com",
+      "password": "$2b$10$20u9VXIbGf22EyONZwZDNudMduiDMbHE6U8FtJVsLbSH9ADhI/S6m",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758364471/users/cqccvjkvr3kchigt9dvy.png",
+      "phoneNumber": "03484088841",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGM5MDVkYzI4M2VkNTk0OWMxMmYzOWIiLCJpYXQiOjE3NTk0MjUyNzUsImV4cCI6MTc2MDAzMDA3NX0.MDVhK-D0K9HSrNANIbXVs-I5NYIMH1xPxoj7rLV6gww",
+          "expiresAt": "2025-10-09T17:14:35.180Z",
+          "_id": "68deb2fb5213904c65a04bcd"
+        }
+      ],
+      "createdAt": "2025-09-16T06:38:20.909Z",
+      "updatedAt": "2025-10-02T17:14:35.408Z",
+      "__v": 68,
+      "profileImageId": "users/cqccvjkvr3kchigt9dvy",
+      "isBlocked": false
+    },
+    "name": "Smokey Blaze",
+    "shortDescription": "Bold, Juicy, Fiery Bite",
+    "description": "The Smokey Blaze Burger is crafted for those who crave adventure in every bite. Juicy, flame-grilled beef patty is layered with melted cheddar, smoky chipotle sauce, caramelized onions, and fresh crisp lettuce. A hint of jalapeño brings a fiery kick, balanced by a toasted brioche bun that seals the deal. Perfect for anyone looking to indulge in bold flavors, this burger delivers both heat and satisfaction. Each bite bursts with smoky richness, spice, and texture, making it unforgettable.",
+    "price": 500,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005022/products/eaoa0u42iaotbki9fj81.jpg",
+    "createdAt": "2025-09-16T06:43:43.263Z",
+    "updatedAt": "2025-09-24T05:52:48.786Z",
+    "__v": 1,
+    "categoryId": {
+      "_id": "68c92b17cf8c8608857f0b96",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "burger",
+      "createdAt": "2025-09-16T09:17:11.092Z",
+      "updatedAt": "2025-09-21T10:27:50.941Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450469/category/d0fnmikcrhx6pqbkbm0u.jpg",
+      "imageId": "category/d0fnmikcrhx6pqbkbm0u"
+    },
+    "subcategoryId": {
+      "_id": "68c93031fdb294c8653106f8",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "chicken burgers",
+      "categoryId": "68c92b17cf8c8608857f0b96",
+      "createdAt": "2025-09-16T09:38:57.246Z",
+      "updatedAt": "2025-09-16T09:38:57.246Z",
+      "__v": 0
+    },
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 300,
+            "_id": "68d3873023305f0e8fd449d8"
+          },
+          {
+            "name": "Large",
+            "price": 500,
+            "_id": "68d3873023305f0e8fd449d9"
+          }
+        ],
+        "_id": "68d3873023305f0e8fd449d7"
+      }
+    ],
+    "imageId": "products/eaoa0u42iaotbki9fj81"
+  },
+  {
+    "_id": "68c90761283ed5949c12f3a6",
+    "userId": {
+      "_id": "68c905dc283ed5949c12f39b",
+      "name": "Hamza Ilyas",
+      "email": "hamzafullstackdev1@gmail.com",
+      "password": "$2b$10$20u9VXIbGf22EyONZwZDNudMduiDMbHE6U8FtJVsLbSH9ADhI/S6m",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758364471/users/cqccvjkvr3kchigt9dvy.png",
+      "phoneNumber": "03484088841",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGM5MDVkYzI4M2VkNTk0OWMxMmYzOWIiLCJpYXQiOjE3NTk0MjUyNzUsImV4cCI6MTc2MDAzMDA3NX0.MDVhK-D0K9HSrNANIbXVs-I5NYIMH1xPxoj7rLV6gww",
+          "expiresAt": "2025-10-09T17:14:35.180Z",
+          "_id": "68deb2fb5213904c65a04bcd"
+        }
+      ],
+      "createdAt": "2025-09-16T06:38:20.909Z",
+      "updatedAt": "2025-10-02T17:14:35.408Z",
+      "__v": 68,
+      "profileImageId": "users/cqccvjkvr3kchigt9dvy",
+      "isBlocked": false
+    },
+    "name": "Golden Crunch",
+    "shortDescription": "Crispy, Tender, Flavor Packed",
+    "description": "The Golden Crunch Burger is a true delight for crispy chicken lovers. A golden, crunchy chicken fillet is double-coated for extra crispness and paired with creamy garlic mayo, tangy pickles, and a slice of Swiss cheese. Fresh tomatoes and lettuce add a refreshing balance, while the butter-toasted potato bun keeps it soft yet sturdy. This burger combines crunchy, juicy, and creamy textures to create a perfect bite every time. Ideal for lunch or dinner, it satisfies cravings for comfort food while delivering gourmet flavor.",
+    "price": 400,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005089/products/yglsdemd7v0xtwstwvfz.jpg",
+    "createdAt": "2025-09-16T06:44:49.921Z",
+    "updatedAt": "2025-09-24T05:52:11.265Z",
+    "__v": 1,
+    "categoryId": {
+      "_id": "68c92b17cf8c8608857f0b96",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "burger",
+      "createdAt": "2025-09-16T09:17:11.092Z",
+      "updatedAt": "2025-09-21T10:27:50.941Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450469/category/d0fnmikcrhx6pqbkbm0u.jpg",
+      "imageId": "category/d0fnmikcrhx6pqbkbm0u"
+    },
+    "subcategoryId": {
+      "_id": "68c930d2fdb294c865310720",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "grilled burgers",
+      "categoryId": "68c92b17cf8c8608857f0b96",
+      "createdAt": "2025-09-16T09:41:38.737Z",
+      "updatedAt": "2025-09-16T09:41:38.737Z",
+      "__v": 0
+    },
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 210,
+            "_id": "68d3870b23305f0e8fd44931"
+          },
+          {
+            "name": "Large",
+            "price": 400,
+            "_id": "68d3870b23305f0e8fd44932"
+          }
+        ],
+        "_id": "68d3870b23305f0e8fd44930"
+      }
+    ],
+    "imageId": "products/yglsdemd7v0xtwstwvfz"
+  },
+  {
+    "_id": "68c907a2283ed5949c12f3aa",
+    "userId": {
+      "_id": "68c905dc283ed5949c12f39b",
+      "name": "Hamza Ilyas",
+      "email": "hamzafullstackdev1@gmail.com",
+      "password": "$2b$10$20u9VXIbGf22EyONZwZDNudMduiDMbHE6U8FtJVsLbSH9ADhI/S6m",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758364471/users/cqccvjkvr3kchigt9dvy.png",
+      "phoneNumber": "03484088841",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGM5MDVkYzI4M2VkNTk0OWMxMmYzOWIiLCJpYXQiOjE3NTk0MjUyNzUsImV4cCI6MTc2MDAzMDA3NX0.MDVhK-D0K9HSrNANIbXVs-I5NYIMH1xPxoj7rLV6gww",
+          "expiresAt": "2025-10-09T17:14:35.180Z",
+          "_id": "68deb2fb5213904c65a04bcd"
+        }
+      ],
+      "createdAt": "2025-09-16T06:38:20.909Z",
+      "updatedAt": "2025-10-02T17:14:35.408Z",
+      "__v": 68,
+      "profileImageId": "users/cqccvjkvr3kchigt9dvy",
+      "isBlocked": false
+    },
+    "name": "Mighty Shroom",
+    "shortDescription": "Earthy, Cheesy, Pure Indulgence",
+    "description": "The Mighty Shroom Melt celebrates the earthy richness of mushrooms combined with gooey, melted cheese. A thick beef patty is topped with sautéed garlic mushrooms, smothered in melted provolone and mozzarella. The addition of truffle aioli takes the flavor profile to the next level, creating a luxurious yet comforting burger. Nestled between lightly toasted artisan buns, this burger is ideal for those who appreciate the fusion of umami and creaminess. Every bite feels indulgent, hearty, and deeply satisfying, making it a premium choice for true burger enthusiasts.",
+    "price": 600,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005153/products/jihymmclblbxlezum79t.jpg",
+    "createdAt": "2025-09-16T06:45:54.301Z",
+    "updatedAt": "2025-09-24T05:51:37.454Z",
+    "__v": 1,
+    "categoryId": {
+      "_id": "68c92b17cf8c8608857f0b96",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "burger",
+      "createdAt": "2025-09-16T09:17:11.092Z",
+      "updatedAt": "2025-09-21T10:27:50.941Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450469/category/d0fnmikcrhx6pqbkbm0u.jpg",
+      "imageId": "category/d0fnmikcrhx6pqbkbm0u"
+    },
+    "subcategoryId": {
+      "_id": "68c930c6fdb294c86531071a",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "cheese burgers",
+      "categoryId": "68c92b17cf8c8608857f0b96",
+      "createdAt": "2025-09-16T09:41:26.631Z",
+      "updatedAt": "2025-09-16T09:41:26.631Z",
+      "__v": 0
+    },
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 330,
+            "_id": "68d386e923305f0e8fd4488d"
+          },
+          {
+            "name": "Large",
+            "price": 600,
+            "_id": "68d386e923305f0e8fd4488e"
+          }
+        ],
+        "_id": "68d386e923305f0e8fd4488c"
+      },
+      {
+        "name": "Add-ons",
+        "isRequired": false,
+        "maxSelectable": 2,
+        "options": [
+          {
+            "name": "Extra Mushrooms",
+            "price": 50,
+            "_id": "68d386e923305f0e8fd44890"
+          },
+          {
+            "name": "Extra Melted Cheeze",
+            "price": 30,
+            "_id": "68d386e923305f0e8fd44891"
+          }
+        ],
+        "_id": "68d386e923305f0e8fd4488f"
+      }
+    ],
+    "imageId": "products/jihymmclblbxlezum79t"
+  },
+  {
+    "_id": "68c907df283ed5949c12f3ae",
+    "userId": {
+      "_id": "68c905dc283ed5949c12f39b",
+      "name": "Hamza Ilyas",
+      "email": "hamzafullstackdev1@gmail.com",
+      "password": "$2b$10$20u9VXIbGf22EyONZwZDNudMduiDMbHE6U8FtJVsLbSH9ADhI/S6m",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758364471/users/cqccvjkvr3kchigt9dvy.png",
+      "phoneNumber": "03484088841",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGM5MDVkYzI4M2VkNTk0OWMxMmYzOWIiLCJpYXQiOjE3NTk0MjUyNzUsImV4cCI6MTc2MDAzMDA3NX0.MDVhK-D0K9HSrNANIbXVs-I5NYIMH1xPxoj7rLV6gww",
+          "expiresAt": "2025-10-09T17:14:35.180Z",
+          "_id": "68deb2fb5213904c65a04bcd"
+        }
+      ],
+      "createdAt": "2025-09-16T06:38:20.909Z",
+      "updatedAt": "2025-10-02T17:14:35.408Z",
+      "__v": 68,
+      "profileImageId": "users/cqccvjkvr3kchigt9dvy",
+      "isBlocked": false
+    },
+    "name": "Classic Rancher",
+    "shortDescription": "Fresh, Simple, Always Delicious",
+    "description": "The Classic Rancher Burger pays homage to timeless burger traditions. Featuring a perfectly seasoned beef patty, topped with crisp lettuce, juicy tomato slices, crunchy onions, and tangy ranch dressing, it keeps things simple yet irresistibly tasty. A slice of American cheese melts beautifully over the patty, bringing a creamy finish to each bite. The burger is served on a sesame seed bun, balancing nostalgia with quality ingredients. This is the go-to option when you want a familiar favorite that never disappoints, delivering satisfaction without overcomplicating flavors.",
+    "price": 500,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005215/products/kl0rvzmxaiqm3tkju8f0.jpg",
+    "createdAt": "2025-09-16T06:46:55.501Z",
+    "updatedAt": "2025-09-24T05:49:08.965Z",
+    "__v": 1,
+    "categoryId": {
+      "_id": "68c92b17cf8c8608857f0b96",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "burger",
+      "createdAt": "2025-09-16T09:17:11.092Z",
+      "updatedAt": "2025-09-21T10:27:50.941Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450469/category/d0fnmikcrhx6pqbkbm0u.jpg",
+      "imageId": "category/d0fnmikcrhx6pqbkbm0u"
+    },
+    "subcategoryId": {
+      "_id": "68c93031fdb294c8653106f8",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "chicken burgers",
+      "categoryId": "68c92b17cf8c8608857f0b96",
+      "createdAt": "2025-09-16T09:38:57.246Z",
+      "updatedAt": "2025-09-16T09:38:57.246Z",
+      "__v": 0
+    },
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 200,
+            "_id": "68d3865423305f0e8fd447f7"
+          },
+          {
+            "name": "Medium",
+            "price": 350,
+            "_id": "68d3865423305f0e8fd447f8"
+          },
+          {
+            "name": "Double",
+            "price": 500,
+            "_id": "68d3865423305f0e8fd447f9"
+          }
+        ],
+        "_id": "68d3865423305f0e8fd447f6"
+      }
+    ],
+    "imageId": "products/kl0rvzmxaiqm3tkju8f0"
+  },
+  {
+    "_id": "68c9084b283ed5949c12f3b2",
+    "userId": {
+      "_id": "68c905dc283ed5949c12f39b",
+      "name": "Hamza Ilyas",
+      "email": "hamzafullstackdev1@gmail.com",
+      "password": "$2b$10$20u9VXIbGf22EyONZwZDNudMduiDMbHE6U8FtJVsLbSH9ADhI/S6m",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758364471/users/cqccvjkvr3kchigt9dvy.png",
+      "phoneNumber": "03484088841",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGM5MDVkYzI4M2VkNTk0OWMxMmYzOWIiLCJpYXQiOjE3NTk0MjUyNzUsImV4cCI6MTc2MDAzMDA3NX0.MDVhK-D0K9HSrNANIbXVs-I5NYIMH1xPxoj7rLV6gww",
+          "expiresAt": "2025-10-09T17:14:35.180Z",
+          "_id": "68deb2fb5213904c65a04bcd"
+        }
+      ],
+      "createdAt": "2025-09-16T06:38:20.909Z",
+      "updatedAt": "2025-10-02T17:14:35.408Z",
+      "__v": 68,
+      "profileImageId": "users/cqccvjkvr3kchigt9dvy",
+      "isBlocked": false
+    },
+    "name": "Spicy Inferno",
+    "shortDescription": "Hot, Zesty, Flavor Explosion",
+    "description": "The Spicy Inferno Wrap is a fiery delight for spice lovers. Juicy grilled chicken is tossed in a bold chili-lime sauce, paired with crunchy lettuce, diced tomatoes, and jalapeños. A drizzle of creamy sriracha mayo brings balance, while the soft tortilla keeps everything tightly wrapped. Each bite delivers the perfect mix of heat, zest, and freshness. Ideal for quick meals or on-the-go cravings, it’s packed with flavor that satisfies your adventurous side. This wrap proves that bold can also be deliciously balanced, leaving you wanting more.",
+    "price": 230,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005322/products/b41qfwtnd8himdrtfgpp.jpg",
+    "createdAt": "2025-09-16T06:48:43.335Z",
+    "updatedAt": "2025-09-24T05:46:09.918Z",
+    "__v": 2,
+    "categoryId": {
+      "_id": "68c92b52cf8c8608857f0b9e",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "shawarma",
+      "createdAt": "2025-09-16T09:18:10.719Z",
+      "updatedAt": "2025-09-21T10:33:00.403Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/v1758450779/category/tqqnn4oxcvdpcu0tsz9c.jpg",
+      "imageId": "category/tqqnn4oxcvdpcu0tsz9c"
+    },
+    "subcategoryId": {
+      "_id": "68c9326185d5fa42ee8ab332",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "chicken shawarma",
+      "categoryId": "68c92b52cf8c8608857f0b9e",
+      "createdAt": "2025-09-16T09:48:17.160Z",
+      "updatedAt": "2025-09-16T09:48:17.160Z",
+      "__v": 0
+    },
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 160,
+            "_id": "68d385a123305f0e8fd44642"
+          },
+          {
+            "name": "Large",
+            "price": 230,
+            "_id": "68d385a123305f0e8fd44643"
+          }
+        ],
+        "_id": "68d385a123305f0e8fd44641"
+      }
+    ],
+    "imageId": "products/b41qfwtnd8himdrtfgpp"
+  },
+  {
+    "_id": "68c9087c283ed5949c12f3b6",
+    "userId": {
+      "_id": "68c905dc283ed5949c12f39b",
+      "name": "Hamza Ilyas",
+      "email": "hamzafullstackdev1@gmail.com",
+      "password": "$2b$10$20u9VXIbGf22EyONZwZDNudMduiDMbHE6U8FtJVsLbSH9ADhI/S6m",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758364471/users/cqccvjkvr3kchigt9dvy.png",
+      "phoneNumber": "03484088841",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGM5MDVkYzI4M2VkNTk0OWMxMmYzOWIiLCJpYXQiOjE3NTk0MjUyNzUsImV4cCI6MTc2MDAzMDA3NX0.MDVhK-D0K9HSrNANIbXVs-I5NYIMH1xPxoj7rLV6gww",
+          "expiresAt": "2025-10-09T17:14:35.180Z",
+          "_id": "68deb2fb5213904c65a04bcd"
+        }
+      ],
+      "createdAt": "2025-09-16T06:38:20.909Z",
+      "updatedAt": "2025-10-02T17:14:35.408Z",
+      "__v": 68,
+      "profileImageId": "users/cqccvjkvr3kchigt9dvy",
+      "isBlocked": false
+    },
+    "name": "Mediterranean Bliss",
+    "shortDescription": "Fresh, Light, Flavorful Bite",
+    "description": "The Mediterranean Bliss Wrap brings sunny coastal flavors to your plate. Tender grilled chicken or falafel is paired with cucumbers, cherry tomatoes, red onions, and Kalamata olives, all drizzled with tangy tzatziki sauce. Wrapped in a soft flatbread, it’s a refreshing mix of creamy, crunchy, and savory textures. Each bite feels wholesome and light yet incredibly satisfying. This wrap is perfect for anyone who loves clean, healthy flavors without sacrificing taste. It’s a burst of Mediterranean goodness that transports you straight to the seaside with every bite.",
+    "price": 300,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005371/products/lnrrxn5cjrktexkyndql.jpg",
+    "createdAt": "2025-09-16T06:49:32.539Z",
+    "updatedAt": "2025-09-24T05:46:19.999Z",
+    "__v": 2,
+    "categoryId": {
+      "_id": "68c92b52cf8c8608857f0b9e",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "shawarma",
+      "createdAt": "2025-09-16T09:18:10.719Z",
+      "updatedAt": "2025-09-21T10:33:00.403Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/v1758450779/category/tqqnn4oxcvdpcu0tsz9c.jpg",
+      "imageId": "category/tqqnn4oxcvdpcu0tsz9c"
+    },
+    "subcategoryId": {
+      "_id": "68c9329885d5fa42ee8ab338",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "beef shawarma",
+      "categoryId": "68c92b52cf8c8608857f0b9e",
+      "createdAt": "2025-09-16T09:49:12.375Z",
+      "updatedAt": "2025-09-16T09:49:12.375Z",
+      "__v": 0
+    },
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 200,
+            "_id": "68d3856623305f0e8fd44531"
+          },
+          {
+            "name": "Large",
+            "price": 300,
+            "_id": "68d3856623305f0e8fd44532"
+          }
+        ],
+        "_id": "68d3856623305f0e8fd44530"
+      },
+      {
+        "name": "Extra Topping",
+        "isRequired": false,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Extra Everything",
+            "price": 50,
+            "_id": "68d3856623305f0e8fd44534"
+          }
+        ],
+        "_id": "68d3856623305f0e8fd44533"
+      }
+    ],
+    "imageId": "products/lnrrxn5cjrktexkyndql"
+  },
+  {
+    "_id": "68c908c5283ed5949c12f3ba",
+    "userId": {
+      "_id": "68c905dc283ed5949c12f39b",
+      "name": "Hamza Ilyas",
+      "email": "hamzafullstackdev1@gmail.com",
+      "password": "$2b$10$20u9VXIbGf22EyONZwZDNudMduiDMbHE6U8FtJVsLbSH9ADhI/S6m",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758364471/users/cqccvjkvr3kchigt9dvy.png",
+      "phoneNumber": "03484088841",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGM5MDVkYzI4M2VkNTk0OWMxMmYzOWIiLCJpYXQiOjE3NTk0MjUyNzUsImV4cCI6MTc2MDAzMDA3NX0.MDVhK-D0K9HSrNANIbXVs-I5NYIMH1xPxoj7rLV6gww",
+          "expiresAt": "2025-10-09T17:14:35.180Z",
+          "_id": "68deb2fb5213904c65a04bcd"
+        }
+      ],
+      "createdAt": "2025-09-16T06:38:20.909Z",
+      "updatedAt": "2025-10-02T17:14:35.408Z",
+      "__v": 68,
+      "profileImageId": "users/cqccvjkvr3kchigt9dvy",
+      "isBlocked": false
+    },
+    "name": "BBQ Ranch",
+    "shortDescription": "Sweet, Smoky, Crispy Perfection",
+    "description": "The BBQ Ranch Crunch Wrap is a bold, hearty choice for flavor seekers. Smoky grilled chicken is coated in tangy barbecue sauce and layered with shredded lettuce, cheddar cheese, diced onions, and tortilla strips for extra crunch. A generous drizzle of ranch dressing ties everything together inside a warm tortilla. The combination of sweet, smoky, creamy, and crispy flavors makes it truly irresistible. This wrap is perfect for lunch breaks or casual dinners, delivering comfort food vibes with a gourmet twist that satisfies cravings instantly.",
+    "price": 250,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005444/products/dvlwgqr6qkump4h1rinf.jpg",
+    "createdAt": "2025-09-16T06:50:45.286Z",
+    "updatedAt": "2025-09-24T05:43:51.246Z",
+    "__v": 1,
+    "categoryId": {
+      "_id": "68c92b52cf8c8608857f0b9e",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "shawarma",
+      "createdAt": "2025-09-16T09:18:10.719Z",
+      "updatedAt": "2025-09-21T10:33:00.403Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/v1758450779/category/tqqnn4oxcvdpcu0tsz9c.jpg",
+      "imageId": "category/tqqnn4oxcvdpcu0tsz9c"
+    },
+    "subcategoryId": {
+      "_id": "68c932a485d5fa42ee8ab33e",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "bbq shawarma",
+      "categoryId": "68c92b52cf8c8608857f0b9e",
+      "createdAt": "2025-09-16T09:49:24.708Z",
+      "updatedAt": "2025-09-16T09:49:24.708Z",
+      "__v": 0
+    },
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 180,
+            "_id": "68d3851723305f0e8fd444b4"
+          },
+          {
+            "name": "Large",
+            "price": 250,
+            "_id": "68d3851723305f0e8fd444b5"
+          }
+        ],
+        "_id": "68d3851723305f0e8fd444b3"
+      }
+    ],
+    "imageId": "products/dvlwgqr6qkump4h1rinf"
+  },
+  {
+    "_id": "68c908fe283ed5949c12f3be",
+    "userId": {
+      "_id": "68c905dc283ed5949c12f39b",
+      "name": "Hamza Ilyas",
+      "email": "hamzafullstackdev1@gmail.com",
+      "password": "$2b$10$20u9VXIbGf22EyONZwZDNudMduiDMbHE6U8FtJVsLbSH9ADhI/S6m",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758364471/users/cqccvjkvr3kchigt9dvy.png",
+      "phoneNumber": "03484088841",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGM5MDVkYzI4M2VkNTk0OWMxMmYzOWIiLCJpYXQiOjE3NTk0MjUyNzUsImV4cCI6MTc2MDAzMDA3NX0.MDVhK-D0K9HSrNANIbXVs-I5NYIMH1xPxoj7rLV6gww",
+          "expiresAt": "2025-10-09T17:14:35.180Z",
+          "_id": "68deb2fb5213904c65a04bcd"
+        }
+      ],
+      "createdAt": "2025-09-16T06:38:20.909Z",
+      "updatedAt": "2025-10-02T17:14:35.408Z",
+      "__v": 68,
+      "profileImageId": "users/cqccvjkvr3kchigt9dvy",
+      "isBlocked": false
+    },
+    "name": "Veggie Power",
+    "shortDescription": "Colorful, Wholesome, Fresh Energy",
+    "description": "The Veggie Power Wrap is designed for those who want a healthy yet filling option. Packed with roasted bell peppers, zucchini, carrots, spinach, and hummus, it delivers a rainbow of fresh flavors in every bite. A light sprinkle of feta cheese adds creaminess, while the soft tortilla holds it all together. This wrap isn’t just delicious—it’s nourishing and energizing, perfect for a quick lunch or post-workout meal. The mix of crunchy vegetables and smooth hummus creates a satisfying texture balance, making it a wholesome favorite.",
+    "price": 200,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758005502/products/mjfpxmkiyhwcvfinggem.jpg",
+    "createdAt": "2025-09-16T06:51:42.958Z",
+    "updatedAt": "2025-09-24T05:43:04.349Z",
+    "__v": 1,
+    "categoryId": {
+      "_id": "68c92b52cf8c8608857f0b9e",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "shawarma",
+      "createdAt": "2025-09-16T09:18:10.719Z",
+      "updatedAt": "2025-09-21T10:33:00.403Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/v1758450779/category/tqqnn4oxcvdpcu0tsz9c.jpg",
+      "imageId": "category/tqqnn4oxcvdpcu0tsz9c"
+    },
+    "subcategoryId": {
+      "_id": "68c932a485d5fa42ee8ab33e",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "bbq shawarma",
+      "categoryId": "68c92b52cf8c8608857f0b9e",
+      "createdAt": "2025-09-16T09:49:24.708Z",
+      "updatedAt": "2025-09-16T09:49:24.708Z",
+      "__v": 0
+    },
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 150,
+            "_id": "68d384e823305f0e8fd4443a"
+          },
+          {
+            "name": "Large",
+            "price": 200,
+            "_id": "68d384e823305f0e8fd4443b"
+          }
+        ],
+        "_id": "68d384e823305f0e8fd44439"
+      },
+      {
+        "name": "Topping",
+        "isRequired": false,
+        "maxSelectable": 2,
+        "options": [
+          {
+            "name": "Extra Mayonaise",
+            "price": 15,
+            "_id": "68d384e823305f0e8fd4443d"
+          },
+          {
+            "name": "Extra Vegitables",
+            "price": 25,
+            "_id": "68d384e823305f0e8fd4443e"
+          }
+        ],
+        "_id": "68d384e823305f0e8fd4443c"
+      }
+    ],
+    "imageId": "products/mjfpxmkiyhwcvfinggem"
+  },
+  {
+    "_id": "68c90944283ed5949c12f3c2",
+    "userId": {
+      "_id": "68c905dc283ed5949c12f39b",
+      "name": "Hamza Ilyas",
+      "email": "hamzafullstackdev1@gmail.com",
+      "password": "$2b$10$20u9VXIbGf22EyONZwZDNudMduiDMbHE6U8FtJVsLbSH9ADhI/S6m",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758364471/users/cqccvjkvr3kchigt9dvy.png",
+      "phoneNumber": "03484088841",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGM5MDVkYzI4M2VkNTk0OWMxMmYzOWIiLCJpYXQiOjE3NTk0MjUyNzUsImV4cCI6MTc2MDAzMDA3NX0.MDVhK-D0K9HSrNANIbXVs-I5NYIMH1xPxoj7rLV6gww",
+          "expiresAt": "2025-10-09T17:14:35.180Z",
+          "_id": "68deb2fb5213904c65a04bcd"
+        }
+      ],
+      "createdAt": "2025-09-16T06:38:20.909Z",
+      "updatedAt": "2025-10-02T17:14:35.408Z",
+      "__v": 68,
+      "profileImageId": "users/cqccvjkvr3kchigt9dvy",
+      "isBlocked": false
+    },
+    "name": "Fiery Pepperoni",
+    "shortDescription": "Spicy, Cheesy, Bold Flavor",
+    "description": "The Fiery Pepperoni Blaze is a pizza crafted for those who love a kick of spice with every bite. It features a thin, hand-tossed crust layered with zesty tomato sauce, gooey mozzarella, and a generous topping of spicy pepperoni slices. To turn up the heat, chili flakes and jalapeños are sprinkled across the top, perfectly balanced by the richness of melted cheese. The crust is crisp on the outside yet soft inside, ensuring every bite is both crunchy and chewy. This pizza delivers the ultimate spicy, cheesy indulgence.",
+    "price": 1600,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758310853/products/vbm7ssqck2de6w0rkqse.jpg",
+    "createdAt": "2025-09-16T06:52:52.448Z",
+    "updatedAt": "2025-09-24T05:57:23.813Z",
+    "__v": 2,
+    "categoryId": {
+      "_id": "68c92b3ecf8c8608857f0b9a",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "pizza",
+      "createdAt": "2025-09-16T09:17:50.336Z",
+      "updatedAt": "2025-09-21T10:29:46.966Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450585/category/ozrpsuv8zrpcxh7iogsf.jpg",
+      "imageId": "category/ozrpsuv8zrpcxh7iogsf"
+    },
+    "subcategoryId": {
+      "_id": "68c93119fdb294c865310726",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "margherita",
+      "categoryId": "68c92b3ecf8c8608857f0b9a",
+      "createdAt": "2025-09-16T09:42:49.631Z",
+      "updatedAt": "2025-09-16T09:42:49.631Z",
+      "__v": 0
+    },
+    "imageId": "products/vbm7ssqck2de6w0rkqse",
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 800,
+            "_id": "68d3848e23305f0e8fd443cb"
+          },
+          {
+            "name": "Medium",
+            "price": 1250,
+            "_id": "68d3848e23305f0e8fd443cc"
+          },
+          {
+            "name": "Large",
+            "price": 1600,
+            "_id": "68d3848e23305f0e8fd443cd"
+          }
+        ],
+        "_id": "68d3848e23305f0e8fd443ca"
+      },
+      {
+        "name": "Extra Topping",
+        "isRequired": false,
+        "maxSelectable": 2,
+        "options": [
+          {
+            "name": "Extra Cheeze",
+            "price": 150,
+            "_id": "68d3848e23305f0e8fd443cf"
+          },
+          {
+            "name": "Extra Sauces",
+            "price": 200,
+            "_id": "68d3848e23305f0e8fd443d0"
+          }
+        ],
+        "_id": "68d3848e23305f0e8fd443ce"
+      }
+    ]
+  },
+  {
+    "_id": "68cfd8b8beb001e5ef042bc3",
+    "userId": {
+      "_id": "68ce85e655435a94c99dfa2e",
+      "name": "Fiaz Zafar",
+      "email": "fiazzafar430@gmail.com",
+      "password": "$2b$10$csAYd2uVX62AGF0Pp5TbFeGkN5mNUdSjVW9j.EK.DoTPnRngx3AMq",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452724/users/rxwivtp6c2dl2xrtkjz9.jpg",
+      "profileImageId": "users/rxwivtp6c2dl2xrtkjz9",
+      "phoneNumber": "03193800058",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGNlODVlNjU1NDM1YTk0Yzk5ZGZhMmUiLCJpYXQiOjE3NTkzMTY3MjMsImV4cCI6MTc1OTkyMTUyM30.tYuc-gF_WDH3Q0eQf-qTH8ZVOl2spdqK6mgWPg8dR_w",
+          "expiresAt": "2025-10-08T11:05:23.807Z",
+          "_id": "68dd0af38336ca123ed41bce"
+        }
+      ],
+      "createdAt": "2025-09-20T10:45:58.044Z",
+      "updatedAt": "2025-10-01T11:05:24.018Z",
+      "__v": 2,
+      "isBlocked": false
+    },
+    "categoryId": {
+      "_id": "68c92b3ecf8c8608857f0b9a",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "pizza",
+      "createdAt": "2025-09-16T09:17:50.336Z",
+      "updatedAt": "2025-09-21T10:29:46.966Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450585/category/ozrpsuv8zrpcxh7iogsf.jpg",
+      "imageId": "category/ozrpsuv8zrpcxh7iogsf"
+    },
+    "subcategoryId": {
+      "_id": "68c9320285d5fa42ee8ab328",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "milai boti",
+      "categoryId": "68c92b3ecf8c8608857f0b9a",
+      "createdAt": "2025-09-16T09:46:42.632Z",
+      "updatedAt": "2025-09-16T09:46:42.632Z",
+      "__v": 0
+    },
+    "name": "Milai Boti",
+    "shortDescription": "Juicy beef patty pizza",
+    "description": "Our Classic Beef Burger is made with a freshly grilled beef patty, topped with melted cheddar cheese, crisp lettuce, ripe tomato slices, onions, and our signature house-made burger sauce. Served on a soft, toasted sesame bun for the ultimate comfort bite.",
+    "price": 1150,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758451894/products/pt2orh1prl0nedf1p77l.jpg",
+    "imageId": "products/pt2orh1prl0nedf1p77l",
+    "createdAt": "2025-09-21T10:51:36.031Z",
+    "updatedAt": "2025-09-24T05:35:52.513Z",
+    "__v": 1,
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 600,
+            "_id": "68d3833823305f0e8fd4436a"
+          },
+          {
+            "name": "Medium",
+            "price": 900,
+            "_id": "68d3833823305f0e8fd4436b"
+          },
+          {
+            "name": "Large",
+            "price": 1150,
+            "_id": "68d3833823305f0e8fd4436c"
+          }
+        ],
+        "_id": "68d3833823305f0e8fd44369"
+      },
+      {
+        "name": "Extra Topping",
+        "isRequired": false,
+        "maxSelectable": 2,
+        "options": [
+          {
+            "name": "Extra Cheeze",
+            "price": 100,
+            "_id": "68d3833823305f0e8fd4436e"
+          },
+          {
+            "name": "Extra Milai Boti",
+            "price": 200,
+            "_id": "68d3833823305f0e8fd4436f"
+          }
+        ],
+        "_id": "68d3833823305f0e8fd4436d"
+      }
+    ]
+  },
+  {
+    "_id": "68cfd957beb001e5ef042bec",
+    "userId": {
+      "_id": "68ce85e655435a94c99dfa2e",
+      "name": "Fiaz Zafar",
+      "email": "fiazzafar430@gmail.com",
+      "password": "$2b$10$csAYd2uVX62AGF0Pp5TbFeGkN5mNUdSjVW9j.EK.DoTPnRngx3AMq",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452724/users/rxwivtp6c2dl2xrtkjz9.jpg",
+      "profileImageId": "users/rxwivtp6c2dl2xrtkjz9",
+      "phoneNumber": "03193800058",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGNlODVlNjU1NDM1YTk0Yzk5ZGZhMmUiLCJpYXQiOjE3NTkzMTY3MjMsImV4cCI6MTc1OTkyMTUyM30.tYuc-gF_WDH3Q0eQf-qTH8ZVOl2spdqK6mgWPg8dR_w",
+          "expiresAt": "2025-10-08T11:05:23.807Z",
+          "_id": "68dd0af38336ca123ed41bce"
+        }
+      ],
+      "createdAt": "2025-09-20T10:45:58.044Z",
+      "updatedAt": "2025-10-01T11:05:24.018Z",
+      "__v": 2,
+      "isBlocked": false
+    },
+    "categoryId": {
+      "_id": "68c92b3ecf8c8608857f0b9a",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "pizza",
+      "createdAt": "2025-09-16T09:17:50.336Z",
+      "updatedAt": "2025-09-21T10:29:46.966Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450585/category/ozrpsuv8zrpcxh7iogsf.jpg",
+      "imageId": "category/ozrpsuv8zrpcxh7iogsf"
+    },
+    "subcategoryId": {
+      "_id": "68c9313efdb294c86531073e",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "bbq chicken",
+      "categoryId": "68c92b3ecf8c8608857f0b9a",
+      "createdAt": "2025-09-16T09:43:26.947Z",
+      "updatedAt": "2025-09-16T09:43:26.947Z",
+      "__v": 0
+    },
+    "name": "Hot & Spicy",
+    "shortDescription": "Spice on full blow",
+    "description": "A golden, crispy chicken fillet coated with a blend of spices, layered with tangy pickles, fresh lettuce, and a fiery sriracha mayo. Perfect for spice lovers who want a crunchy kick with every bite.",
+    "price": 1200,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452053/products/xawr6fa8yy6djstivxwj.jpg",
+    "imageId": "products/xawr6fa8yy6djstivxwj",
+    "createdAt": "2025-09-21T10:54:15.030Z",
+    "updatedAt": "2025-09-24T05:34:10.084Z",
+    "__v": 1,
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 700,
+            "_id": "68d382c623305f0e8fd442be"
+          },
+          {
+            "name": "Medium",
+            "price": 950,
+            "_id": "68d382c623305f0e8fd442bf"
+          },
+          {
+            "name": "Large",
+            "price": 1200,
+            "_id": "68d382c623305f0e8fd442c0"
+          }
+        ],
+        "_id": "68d382c623305f0e8fd442bd"
+      }
+    ]
+  },
+  {
+    "_id": "68cfd9bdbeb001e5ef042c05",
+    "userId": {
+      "_id": "68ce85e655435a94c99dfa2e",
+      "name": "Fiaz Zafar",
+      "email": "fiazzafar430@gmail.com",
+      "password": "$2b$10$csAYd2uVX62AGF0Pp5TbFeGkN5mNUdSjVW9j.EK.DoTPnRngx3AMq",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452724/users/rxwivtp6c2dl2xrtkjz9.jpg",
+      "profileImageId": "users/rxwivtp6c2dl2xrtkjz9",
+      "phoneNumber": "03193800058",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGNlODVlNjU1NDM1YTk0Yzk5ZGZhMmUiLCJpYXQiOjE3NTkzMTY3MjMsImV4cCI6MTc1OTkyMTUyM30.tYuc-gF_WDH3Q0eQf-qTH8ZVOl2spdqK6mgWPg8dR_w",
+          "expiresAt": "2025-10-08T11:05:23.807Z",
+          "_id": "68dd0af38336ca123ed41bce"
+        }
+      ],
+      "createdAt": "2025-09-20T10:45:58.044Z",
+      "updatedAt": "2025-10-01T11:05:24.018Z",
+      "__v": 2,
+      "isBlocked": false
+    },
+    "categoryId": {
+      "_id": "68c92b3ecf8c8608857f0b9a",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "pizza",
+      "createdAt": "2025-09-16T09:17:50.336Z",
+      "updatedAt": "2025-09-21T10:29:46.966Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450585/category/ozrpsuv8zrpcxh7iogsf.jpg",
+      "imageId": "category/ozrpsuv8zrpcxh7iogsf"
+    },
+    "subcategoryId": {
+      "_id": "68c931ee85d5fa42ee8ab322",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "crown crust",
+      "categoryId": "68c92b3ecf8c8608857f0b9a",
+      "createdAt": "2025-09-16T09:46:22.630Z",
+      "updatedAt": "2025-09-16T09:46:22.630Z",
+      "__v": 0
+    },
+    "name": "Cheese Overload",
+    "shortDescription": "Two beef patties stacked",
+    "description": "For the true cheese lovers, this burger comes with two flame-grilled beef patties stacked high with gooey cheddar and mozzarella cheese. Finished with fresh lettuce, tomato, onion, and our creamy burger sauce for a rich, indulgent bite.",
+    "price": 1100,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452156/products/iedpw3uotuzitmtm8gsk.jpg",
+    "imageId": "products/iedpw3uotuzitmtm8gsk",
+    "createdAt": "2025-09-21T10:55:57.873Z",
+    "updatedAt": "2025-09-23T08:52:55.731Z",
+    "__v": 1,
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small",
+            "price": 550,
+            "_id": "68d25fe7f88443512114042c"
+          },
+          {
+            "name": "Medium",
+            "price": 890,
+            "_id": "68d25fe7f88443512114042d"
+          },
+          {
+            "name": "Large",
+            "price": 1100,
+            "_id": "68d25fe7f88443512114042e"
+          }
+        ],
+        "_id": "68d25fe7f88443512114042b"
+      },
+      {
+        "name": "Crust",
+        "isRequired": false,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Thick",
+            "price": 50,
+            "_id": "68d25fe7f884435121140430"
+          },
+          {
+            "name": "Thin",
+            "price": 100,
+            "_id": "68d25fe7f884435121140431"
+          }
+        ],
+        "_id": "68d25fe7f88443512114042f"
+      },
+      {
+        "name": "Extra Topping",
+        "isRequired": false,
+        "maxSelectable": 2,
+        "options": [
+          {
+            "name": "Extra Cheeze",
+            "price": 150,
+            "_id": "68d25fe7f884435121140433"
+          },
+          {
+            "name": "Extra Chicken",
+            "price": 200,
+            "_id": "68d25fe7f884435121140434"
+          }
+        ],
+        "_id": "68d25fe7f884435121140432"
+      }
+    ]
+  },
+  {
+    "_id": "68cfdd32beb001e5ef042e28",
+    "userId": {
+      "_id": "68ce85e655435a94c99dfa2e",
+      "name": "Fiaz Zafar",
+      "email": "fiazzafar430@gmail.com",
+      "password": "$2b$10$csAYd2uVX62AGF0Pp5TbFeGkN5mNUdSjVW9j.EK.DoTPnRngx3AMq",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452724/users/rxwivtp6c2dl2xrtkjz9.jpg",
+      "profileImageId": "users/rxwivtp6c2dl2xrtkjz9",
+      "phoneNumber": "03193800058",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGNlODVlNjU1NDM1YTk0Yzk5ZGZhMmUiLCJpYXQiOjE3NTkzMTY3MjMsImV4cCI6MTc1OTkyMTUyM30.tYuc-gF_WDH3Q0eQf-qTH8ZVOl2spdqK6mgWPg8dR_w",
+          "expiresAt": "2025-10-08T11:05:23.807Z",
+          "_id": "68dd0af38336ca123ed41bce"
+        }
+      ],
+      "createdAt": "2025-09-20T10:45:58.044Z",
+      "updatedAt": "2025-10-01T11:05:24.018Z",
+      "__v": 2,
+      "isBlocked": false
+    },
+    "categoryId": {
+      "_id": "68c92b88cf8c8608857f0baa",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "fries",
+      "createdAt": "2025-09-16T09:19:04.592Z",
+      "updatedAt": "2025-09-21T10:23:45.380Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450224/category/jwhbmnhpjxdsonc9cnz2.jpg",
+      "imageId": "category/jwhbmnhpjxdsonc9cnz2"
+    },
+    "subcategoryId": {
+      "_id": "68c935edbc9a2919f2d784a4",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "golden classics",
+      "categoryId": "68c92b88cf8c8608857f0baa",
+      "createdAt": "2025-09-16T10:03:25.279Z",
+      "updatedAt": "2025-09-16T10:03:25.279Z",
+      "__v": 0
+    },
+    "name": "Salted Fries",
+    "shortDescription": "Golden, crispy fries of sea salt.",
+    "description": "Freshly cut potatoes, fried to a golden crisp and lightly sprinkled with sea salt for the perfect balance of crunch and flavor. A timeless favorite, simple yet satisfying, best enjoyed with your favorite dip.",
+    "price": 500,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758453041/products/xagyyzhfdacijmmbf99l.jpg",
+    "imageId": "products/xagyyzhfdacijmmbf99l",
+    "createdAt": "2025-09-21T11:10:42.569Z",
+    "updatedAt": "2025-09-24T05:33:12.304Z",
+    "__v": 1,
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small pack",
+            "price": 300,
+            "_id": "68d3829823305f0e8fd44277"
+          },
+          {
+            "name": "Large pack",
+            "price": 500,
+            "_id": "68d3829823305f0e8fd44278"
+          }
+        ],
+        "_id": "68d3829823305f0e8fd44276"
+      }
+    ]
+  },
+  {
+    "_id": "68cfdd7cbeb001e5ef042e51",
+    "userId": {
+      "_id": "68ce85e655435a94c99dfa2e",
+      "name": "Fiaz Zafar",
+      "email": "fiazzafar430@gmail.com",
+      "password": "$2b$10$csAYd2uVX62AGF0Pp5TbFeGkN5mNUdSjVW9j.EK.DoTPnRngx3AMq",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452724/users/rxwivtp6c2dl2xrtkjz9.jpg",
+      "profileImageId": "users/rxwivtp6c2dl2xrtkjz9",
+      "phoneNumber": "03193800058",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGNlODVlNjU1NDM1YTk0Yzk5ZGZhMmUiLCJpYXQiOjE3NTkzMTY3MjMsImV4cCI6MTc1OTkyMTUyM30.tYuc-gF_WDH3Q0eQf-qTH8ZVOl2spdqK6mgWPg8dR_w",
+          "expiresAt": "2025-10-08T11:05:23.807Z",
+          "_id": "68dd0af38336ca123ed41bce"
+        }
+      ],
+      "createdAt": "2025-09-20T10:45:58.044Z",
+      "updatedAt": "2025-10-01T11:05:24.018Z",
+      "__v": 2,
+      "isBlocked": false
+    },
+    "categoryId": {
+      "_id": "68c92b88cf8c8608857f0baa",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "fries",
+      "createdAt": "2025-09-16T09:19:04.592Z",
+      "updatedAt": "2025-09-21T10:23:45.380Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450224/category/jwhbmnhpjxdsonc9cnz2.jpg",
+      "imageId": "category/jwhbmnhpjxdsonc9cnz2"
+    },
+    "subcategoryId": {
+      "_id": "68c9360fbc9a2919f2d784b0",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "fully loaded",
+      "categoryId": "68c92b88cf8c8608857f0baa",
+      "createdAt": "2025-09-16T10:03:59.526Z",
+      "updatedAt": "2025-09-19T06:26:27.211Z",
+      "__v": 0
+    },
+    "name": "Loaded Fries",
+    "shortDescription": "Fries topped with melted cheddar cheese.",
+    "description": "Crispy fries smothered in gooey melted cheddar cheese, creating a rich and savory bite in every mouthful. Perfect for cheese lovers who crave that irresistible combination of crunch and creaminess.",
+    "price": 750,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758453115/products/e9cyrjqrviq0ro0mxx68.jpg",
+    "imageId": "products/e9cyrjqrviq0ro0mxx68",
+    "createdAt": "2025-09-21T11:11:56.111Z",
+    "updatedAt": "2025-09-24T05:32:34.842Z",
+    "__v": 1,
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small pack",
+            "price": 500,
+            "_id": "68d3827223305f0e8fd44236"
+          },
+          {
+            "name": "Large pack",
+            "price": 750,
+            "_id": "68d3827223305f0e8fd44237"
+          }
+        ],
+        "_id": "68d3827223305f0e8fd44235"
+      }
+    ]
+  },
+  {
+    "_id": "68cfddefbeb001e5ef042e6a",
+    "userId": {
+      "_id": "68ce85e655435a94c99dfa2e",
+      "name": "Fiaz Zafar",
+      "email": "fiazzafar430@gmail.com",
+      "password": "$2b$10$csAYd2uVX62AGF0Pp5TbFeGkN5mNUdSjVW9j.EK.DoTPnRngx3AMq",
+      "profileImage": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758452724/users/rxwivtp6c2dl2xrtkjz9.jpg",
+      "profileImageId": "users/rxwivtp6c2dl2xrtkjz9",
+      "phoneNumber": "03193800058",
+      "isAdmin": true,
+      "refreshToken": [
+        {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGNlODVlNjU1NDM1YTk0Yzk5ZGZhMmUiLCJpYXQiOjE3NTkzMTY3MjMsImV4cCI6MTc1OTkyMTUyM30.tYuc-gF_WDH3Q0eQf-qTH8ZVOl2spdqK6mgWPg8dR_w",
+          "expiresAt": "2025-10-08T11:05:23.807Z",
+          "_id": "68dd0af38336ca123ed41bce"
+        }
+      ],
+      "createdAt": "2025-09-20T10:45:58.044Z",
+      "updatedAt": "2025-10-01T11:05:24.018Z",
+      "__v": 2,
+      "isBlocked": false
+    },
+    "categoryId": {
+      "_id": "68c92b88cf8c8608857f0baa",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "fries",
+      "createdAt": "2025-09-16T09:19:04.592Z",
+      "updatedAt": "2025-09-21T10:23:45.380Z",
+      "__v": 0,
+      "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758450224/category/jwhbmnhpjxdsonc9cnz2.jpg",
+      "imageId": "category/jwhbmnhpjxdsonc9cnz2"
+    },
+    "subcategoryId": {
+      "_id": "68c935fabc9a2919f2d784aa",
+      "userId": "68c905dc283ed5949c12f39b",
+      "name": "flavour blast",
+      "categoryId": "68c92b88cf8c8608857f0baa",
+      "createdAt": "2025-09-16T10:03:38.100Z",
+      "updatedAt": "2025-09-16T10:03:38.100Z",
+      "__v": 0
+    },
+    "name": "BBQ Ranch",
+    "shortDescription": "Fries with smoky BBQ sauce & ranch drizzle.",
+    "description": "Golden fries drizzled with smoky barbecue sauce and creamy ranch dressing, topped with herbs for an extra zing. A perfect mix of tangy, smoky, and savory flavors that keep you coming back for more.",
+    "price": 600,
+    "image": "https://res.cloudinary.com/doobnnrrs/image/upload/f_auto,q_auto/v1758453230/products/dxcyrmbjnv1cq6zltjdb.jpg",
+    "imageId": "products/dxcyrmbjnv1cq6zltjdb",
+    "createdAt": "2025-09-21T11:13:51.710Z",
+    "updatedAt": "2025-09-24T05:31:50.463Z",
+    "__v": 1,
+    "variantGroups": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "maxSelectable": 1,
+        "options": [
+          {
+            "name": "Small pack",
+            "price": 300,
+            "_id": "68d3824623305f0e8fd441fb"
+          },
+          {
+            "name": "Large pack",
+            "price": 600,
+            "_id": "68d3824623305f0e8fd441fc"
+          }
+        ],
+        "_id": "68d3824623305f0e8fd441fa"
+      }
+    ]
+  }
+]

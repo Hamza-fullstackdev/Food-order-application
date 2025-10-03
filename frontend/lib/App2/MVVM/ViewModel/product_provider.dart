@@ -1,11 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:frontend/App2/Resources/app_url.dart';
-import 'package:frontend/App2/Repository/token_refresh.dart';
-import 'package:frontend/App2/MVVM/ViewModel/categories.dart';
+import 'package:frontend/App2/Data/Responses/api_response.dart';
+import 'package:frontend/App2/Data/Responses/status.dart';
+import 'package:frontend/App2/Repository/category_repo.dart';
+import 'package:frontend/App2/Repository/products_repo.dart';
+import 'package:frontend/App2/MVVM/Model/categories.dart';
 import 'package:frontend/App2/MVVM/Model/products.dart';
 
 class ProductProvider extends ChangeNotifier {
+  final _categoryRepo = CategoryRepo();
+  final _productsRepo = ProductsRepo();
+  ApiResponse _productApiResponse = ApiResponse.notStarted();
+  ApiResponse _categoryApiResponse = ApiResponse.notStarted();
+  ApiResponse _singleProductApiResponse = ApiResponse.notStarted();
+
   final List<Categories> _categoryList = [];
   final List<Products> _productsList = [];
   Products _products = Products();
@@ -22,6 +30,24 @@ class ProductProvider extends ChangeNotifier {
   List<Categories> get categoryList => _categoryList;
   List<Products> get productList => _productsList;
 
+   Map<String, String> selectedOptions = {}; // for radio (single choice)
+  Map<String, Set<String>> multiSelectedOptions = {}; // for checkboxes (multi-choice)
+
+  void selectSingleOption(String groupId, String optionId) {
+    selectedOptions[groupId] = optionId;
+    notifyListeners();
+  }
+
+  void toggleMultiOption(String groupId, String optionId) {
+    multiSelectedOptions.putIfAbsent(groupId, () => {});
+    if (multiSelectedOptions[groupId]!.contains(optionId)) {
+      multiSelectedOptions[groupId]!.remove(optionId);
+    } else {
+      multiSelectedOptions[groupId]!.add(optionId);
+    }
+    notifyListeners();
+  }
+
   void setIndex(int i, String name) {
     _selectedIndex = i;
     _categoryId = name;
@@ -33,76 +59,42 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> categoriesData() async {
-    final data = await TokenRefresh.checkToken(AppUrl.get_all_categories_url);
-    if (data != null && data["categories"] != null) {
-      _categoryList.clear();
-      for (Map<String, dynamic> items in data["categories"]) {
-        _categoryList.add(Categories.fromJson(items));
-        // print(Categories.fromJson(items).name);
-        // print(Categories.fromJson(items).sId);
-      }
+  Future<List<Categories>> categoriesData() async {
+    _categoryList.clear();
+    _categoryApiResponse = await _categoryRepo.getCategory();
 
-      //  notifyListeners();
+    if (_categoryApiResponse.status == Status.Success) {
+      _categoryList.addAll(_categoryApiResponse.data);
       return categoryList;
     } else {
-      //  notifyListeners();
-
-      print("No data sorry");
       return [];
     }
   }
 
   Future<List<Products>> getProducts(String categoryId) async {
-    print("Passes Id is $categoryId\n");
-    final data = await TokenRefresh.checkToken(
-      "${AppUrl.get_product_list_by_category_id}$categoryId",
-    );
-    
-    print("Data is $data");
-    if (data != null && data['products'] != null) {
-      print("After condition data is ${data['products']}");
-      _productsList.clear();
-      for (var currentProduct in data['products']) {
-        print("current product is $currentProduct");
-        try {
-          final product = Products.fromJson(currentProduct);
-          
-        _productsList.add(product);
-        print("After Adding product is $currentProduct");
+    _productApiResponse = ApiResponse.loading();
+    _productsList.clear();
 
-        } catch (e) {
-          print(e.toString());
-        }
+    _productApiResponse = await _productsRepo.getProducts(categoryId);
 
-
-      }
+    if (_productApiResponse.status == Status.Success) {
+      _productsList.addAll(_productApiResponse.data);
       return productList;
-    } else {
-      print("No product Found!");
-      return [];
     }
+    return [];
   }
 
   Future<Products> getSingleProduct(String? id) async {
-    print("Id is : $id");
-    final data;
+    _singleProductApiResponse = ApiResponse.loading();
     if (id != null) {
-      
-      print("Id is not null : $id");
-      data = await TokenRefresh.checkToken("${AppUrl.get_single_product}$id");
-      
 
-      if (data != null && data['product'] != null) {
-        print("data of product is : $data");
-        _products = Products.fromJson(data['product']);
-        print(" \n \n data of _product is : $_products");
+      _singleProductApiResponse = await _productsRepo.getSingleProduct(id);
+      if (_singleProductApiResponse.status == Status.Success) {
+        _products = _singleProductApiResponse.data;
+        
         return products;
-      } else {
-        return Products();
       }
-    } else {
-      return Products();
     }
+    return Products();
   }
 }

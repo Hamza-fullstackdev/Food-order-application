@@ -6,6 +6,7 @@ import uploadCategoryImage from "../utils/uploadCategory.js";
 import { deleteImageFromCloudinary } from "../utils/deleteImage.js";
 import { v2 as cloudinary } from "cloudinary";
 import Log from "../models/Log.model.js";
+import { imageTransformer } from "../utils/transformer.js";
 
 export const addCategory = async (req, res, next) => {
   const { name } = req.body;
@@ -22,9 +23,10 @@ export const addCategory = async (req, res, next) => {
       return next(errorHandler(400, "Category already exists"));
     }
     const uploaded_img = await uploadCategoryImage(req.file.path);
+    const optimized_img = imageTransformer(uploaded_img.secure_url);
     const category = await Category.create({
       name: name.toLowerCase(),
-      image: uploaded_img.secure_url,
+      image: optimized_img,
       imageId: uploaded_img.public_id,
       userId,
     });
@@ -65,7 +67,8 @@ export const updateCategory = async (req, res, next) => {
       }
 
       const uploaded_img = await uploadCategoryImage(req.file.path);
-      category.image = uploaded_img.secure_url;
+      const optimized_img = imageTransformer(uploaded_img.secure_url);
+      category.image = optimized_img;
       category.imageId = uploaded_img.public_id;
     }
 

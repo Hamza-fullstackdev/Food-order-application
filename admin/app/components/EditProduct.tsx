@@ -236,7 +236,7 @@ const EditProduct = () => {
         <h1 className="font-bold text-2xl text-gray-800">Edit Product</h1>
         <Link
           href={"/dashboard/products"}
-          className="w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm"
+          className="w-fit py-3 px-4 bg-gradient-to-r from-[#d61355] to-[#ff0000] cursor-pointer text-white rounded-full text-sm"
         >
           Go Back
         </Link>
@@ -490,7 +490,7 @@ const EditProduct = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm"
+            className="w-full py-3 px-4 bg-gradient-to-r from-[#d61355] to-[#ff0000] cursor-pointer text-white rounded-full text-sm"
           >
             {loading ? "Updating..." : "Update Product"}
           </button>

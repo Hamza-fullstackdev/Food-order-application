@@ -136,7 +136,7 @@ const Subcategory = () => {
         <div>
           <Link
             href={"/dashboard/sub-category/create"}
-            className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
+            className='w-fit py-3 px-4 bg-gradient-to-r from-[#d61355] to-[#ff0000] cursor-pointer text-white rounded-full text-sm'
           >
             Create new
           </Link>
@@ -149,7 +149,7 @@ const Subcategory = () => {
             id='search'
             name='search'
             placeholder='Start typing to search'
-            className='w-[300px] bg-transparent border border-[#fe4f70] focus-visible:ring-0'
+            className='w-[300px] bg-transparent border border-[#d61355] focus-visible:ring-0'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -158,13 +158,13 @@ const Subcategory = () => {
           <TableCaption>
             A list of your recently created sub-categories.
           </TableCaption>
-          <TableHeader className='!bg-[#fe4f70]/70 hover:!bg-[#fe4f70]'>
+          <TableHeader className='bg-gradient-to-r from-[#d61355] to-[#ff0000] hover:!from-[#d61355] hover:!to-[#ff0000]'>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Main Category</TableHead>
-              <TableHead>Sub Category</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className='!text-white'>ID</TableHead>
+              <TableHead className='!text-white'>Main Category</TableHead>
+              <TableHead className='!text-white'>Sub Category</TableHead>
+              <TableHead className='!text-white'>Created At</TableHead>
+              <TableHead className='!text-white'>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

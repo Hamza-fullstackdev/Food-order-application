@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 
 [data-slot="sidebar-content"] {
-  background-image: linear-gradient(to right, #fe4f70, #ffa387) !important;
+  background-image: linear-gradient(to right, #d61355, #ff0000) !important;
 }
 
 @custom-variant dark (&:is(.dark *));

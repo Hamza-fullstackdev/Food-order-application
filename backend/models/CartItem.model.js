@@ -12,6 +12,20 @@ const cartItemScheama = new mongoose.Schema(
       ref: "Product",
       required: [true, "Product is required"],
     },
+    selectedOptions: [
+      {
+        variantGroupId: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+        },
+        optionIds: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+          },
+        ],
+      },
+    ],
     quantity: {
       type: Number,
       required: [true, "Quantity is required"],

@@ -113,7 +113,7 @@ const Category = () => {
         <div>
           <Link
             href={"/dashboard/category/create"}
-            className='w-fit py-3 px-4 bg-gradient-to-r from-[#FE4F70] to-[#FFA387] cursor-pointer text-white rounded-full text-sm'
+            className='w-fit py-3 px-4 bg-gradient-to-r from-[#d61355] to-[#ff0000] cursor-pointer text-white rounded-full text-sm'
           >
             Create new Category
           </Link>
@@ -126,7 +126,7 @@ const Category = () => {
             id='search'
             name='search'
             placeholder='Start typing to search'
-            className='w-[300px] bg-transparent border border-[#fe4f70] focus-visible:ring-0'
+            className='w-[300px] bg-transparent border border-[#d61355] focus-visible:ring-0'
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -139,14 +139,14 @@ const Category = () => {
           <TableCaption>
             A list of your recently created categories.
           </TableCaption>
-          <TableHeader className='!bg-[#fe4f70]/70 hover:!bg-[#fe4f70]'>
+          <TableHeader className='bg-gradient-to-r from-[#d61355] to-[#ff0000] hover:!from-[#d61355] hover:!to-[#ff0000]'>
             <TableRow>
-              <TableHead className='w-[100px]'>ID</TableHead>
-              <TableHead>Image</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Time</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className='!text-white'>ID</TableHead>
+              <TableHead className='!text-white'>Image</TableHead>
+              <TableHead className='!text-white'>Category</TableHead>
+              <TableHead className='!text-white'>Date</TableHead>
+              <TableHead className='!text-white'>Time</TableHead>
+              <TableHead className='!text-white'>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

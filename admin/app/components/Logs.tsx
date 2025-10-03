@@ -12,7 +12,6 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -103,7 +102,7 @@ const Logs = () => {
             id='search'
             name='search'
             placeholder='Start typing to search'
-            className='w-[300px] bg-transparent border border-[#fe4f70] focus-visible:ring-0'
+            className='w-[300px] bg-transparent border border-[#d61355] focus-visible:ring-0'
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -113,12 +112,12 @@ const Logs = () => {
         </div>
 
         <TableWrapper>
-          <TableHeader>
+          <TableHeader className='bg-gradient-to-r from-[#d61355] to-[#ff0000] hover:!from-[#d61355] hover:!to-[#ff0000]'>
             <TableRow>
-              <TableHead>Type</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Message</TableHead>
-              <TableHead>Date & Time</TableHead>
+              <TableHead className='!text-white'>Type</TableHead>
+              <TableHead className='!text-white'>Title</TableHead>
+              <TableHead className='!text-white'>Message</TableHead>
+              <TableHead className='!text-white'>Date & Time</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

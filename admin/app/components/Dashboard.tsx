@@ -41,11 +41,11 @@ const Dashboard = () => {
     <section className='my-8'>
       <div className='mb-6 text-center'>
         <h1 className='font-bold text-2xl text-gray-800 capitalize'>
-          Welcome <span className='text-[#fe4f70]'>{name}!</span> to Dashboard
+          Welcome <span className='text-[#d61355]'>{name}!</span> to Dashboard
         </h1>
         <p className='mt-1 text-gray-600'>
           A full stack food ordering flutter app project by{" "}
-          <span className='text-[#fe4f70]'>Hamza, Fiaz and Saadullah</span>.
+          <span className='text-[#d61355]'>Hamza, Fiaz and Saadullah</span>.
         </p>
       </div>
       <div className='mt-8'>
@@ -54,7 +54,7 @@ const Dashboard = () => {
           {statsData.map((stat: any, index: number) => (
             <div
               key={index}
-              className='bg-gradient-to-r from-[#fe4f70] to-[#ffa387] rounded'
+              className='bg-gradient-to-r from-[#d61355] to-[#ff0000] rounded'
             >
               <div className='text-center py-14'>
                 <h2 className='text-xl font-semibold text-white'>

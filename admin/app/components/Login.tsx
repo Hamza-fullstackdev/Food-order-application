@@ -63,8 +63,8 @@ const Login = () => {
             <svg width='33' height='6' xmlns='https://www.w3.org/2000/svg'>
               <defs>
                 <linearGradient id='gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                  <stop offset='0%' stopColor='#FE4F70'></stop>
-                  <stop offset='100%' stopColor='#FFA387'></stop>
+                  <stop offset='0%' stopColor='#d61355'></stop>
+                  <stop offset='100%' stopColor='#ff0000'></stop>
                 </linearGradient>
               </defs>
               <path
@@ -109,7 +109,7 @@ const Login = () => {
           <button
             disabled={loading}
             type='submit'
-            className='w-full from-[#FE4F70] to-[#FFA387] bg-gradient-to-r py-2 px-4 rounded-md text-white hover:bg-gradient-to-r hover:from-[#FE4F70] hover:to-[#FFA387] cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-50'
+            className='w-full from-[#d61355] to-[#ff0000] bg-gradient-to-r py-2 px-4 rounded-md text-white hover:bg-gradient-to-r hover:from-[#d61355] hover:to-[#ff0000] cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-50'
           >
             Login
           </button>
