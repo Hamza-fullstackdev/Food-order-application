@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:frontend/App/exceptions.dart';
 import 'package:frontend/App2/Data/Network/interfaces/get_request_interface.dart';
+import 'package:frontend/App2/Data/api_exceptions.dart';
 import 'package:frontend/App2/Resources/app_url.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -30,7 +30,7 @@ class GetRequestService implements GetRequestInterface  {
             "Content-Type": "application/json",
             "Authorization": "Bearer $refreshToken",
           },
-        );
+        ).timeout(Duration(seconds: 10));
 
         if (tokenResponse.statusCode == 200) {
           final data = jsonDecode(tokenResponse.body);
@@ -49,6 +49,7 @@ class GetRequestService implements GetRequestInterface  {
         "Authorization": "Bearer $accessToken",
       });
     } on SocketException {
+      print("its a Socket Exceptions on token refresh");
       throw InternetException();
     } on TimeoutException {
       throw RequestTimeOut();
@@ -59,16 +60,15 @@ class GetRequestService implements GetRequestInterface  {
 
   static dynamic hitActualApi(String url, Map<String, String> myHeader) async {
     try {
-     final response = await http.get(Uri.parse(url), headers: myHeader);
+     final response = await http.get(Uri.parse(url), headers: myHeader).timeout(Duration(seconds: 10));
       final decoded = jsonDecode(response.body);
 
       return decoded ;
     } on SocketException {
       throw InternetException();
     } on TimeoutException {
-
       throw RequestTimeOut();
-    } catch (e) {
+    } catch (e) {      
       throw FetchDataException(e.toString());
     }
   }

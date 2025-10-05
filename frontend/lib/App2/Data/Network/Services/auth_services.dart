@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:frontend/App/Responce/api_responce.dart';
-import 'package:frontend/App/exceptions.dart';
 import 'package:frontend/App2/Data/Network/interfaces/auth_interfaces.dart';
+import 'package:frontend/App2/Data/api_exceptions.dart';
 import 'package:http/http.dart' as http;
 
 class AuthServices implements AuthInterfaces {

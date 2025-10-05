@@ -8,8 +8,16 @@ import 'package:frontend/App2/MVVM/Model/categories.dart';
 import 'package:frontend/App2/MVVM/Model/products.dart';
 
 class ProductProvider extends ChangeNotifier {
+  final _sleectedItemIndex = false;
+  String? _selectedOption;
+  
+  Map<String, String?> selectedVariants = {};
+  Map<String, Set<String>> selectedCheckboxes = {};
+  // final _selectedVariationItemIndex;
+
   final _categoryRepo = CategoryRepo();
   final _productsRepo = ProductsRepo();
+
   ApiResponse _productApiResponse = ApiResponse.notStarted();
   ApiResponse _categoryApiResponse = ApiResponse.notStarted();
   ApiResponse _singleProductApiResponse = ApiResponse.notStarted();
@@ -30,22 +38,32 @@ class ProductProvider extends ChangeNotifier {
   List<Categories> get categoryList => _categoryList;
   List<Products> get productList => _productsList;
 
-   Map<String, String> selectedOptions = {}; // for radio (single choice)
-  Map<String, Set<String>> multiSelectedOptions = {}; // for checkboxes (multi-choice)
+  ApiResponse get productApiResponse => _productApiResponse;
+  ApiResponse get categoryApiResponse => _categoryApiResponse;
+  ApiResponse get singleProductApiResponse => _singleProductApiResponse;
 
-  void selectSingleOption(String groupId, String optionId) {
-    selectedOptions[groupId] = optionId;
+
+  void selectSingleOption(String groupName, String optionId) {
+    selectedVariants[groupName] = optionId;
     notifyListeners();
   }
 
-  void toggleMultiOption(String groupId, String optionId) {
-    multiSelectedOptions.putIfAbsent(groupId, () => {});
-    if (multiSelectedOptions[groupId]!.contains(optionId)) {
-      multiSelectedOptions[groupId]!.remove(optionId);
+  String? getSelectedOption(String groupName) {
+    return selectedVariants[groupName];
+  }
+
+  void toggleCheckbox(String groupName, String optionId, bool checked) {
+    selectedCheckboxes[groupName] ??= {};
+    if (checked) {
+      selectedCheckboxes[groupName]!.add(optionId);
     } else {
-      multiSelectedOptions[groupId]!.add(optionId);
+      selectedCheckboxes[groupName]!.remove(optionId);
     }
     notifyListeners();
+  }
+
+  bool isChecked(String groupName, String optionId) {
+    return selectedCheckboxes[groupName]?.contains(optionId) ?? false;
   }
 
   void setIndex(int i, String name) {
@@ -59,19 +77,18 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Categories>> categoriesData() async {
+  Future<void> categoriesData() async {
+    _categoryApiResponse = ApiResponse.loading();
     _categoryList.clear();
     _categoryApiResponse = await _categoryRepo.getCategory();
 
     if (_categoryApiResponse.status == Status.Success) {
       _categoryList.addAll(_categoryApiResponse.data);
-      return categoryList;
-    } else {
-      return [];
     }
+    notifyListeners();
   }
 
-  Future<List<Products>> getProducts(String categoryId) async {
+  Future<void> getProducts(String categoryId) async {
     _productApiResponse = ApiResponse.loading();
     _productsList.clear();
 
@@ -79,22 +96,17 @@ class ProductProvider extends ChangeNotifier {
 
     if (_productApiResponse.status == Status.Success) {
       _productsList.addAll(_productApiResponse.data);
-      return productList;
     }
-    return [];
+    notifyListeners();
   }
 
-  Future<Products> getSingleProduct(String? id) async {
+  Future<void> getSingleProduct({required String id}) async {
     _singleProductApiResponse = ApiResponse.loading();
-    if (id != null) {
 
-      _singleProductApiResponse = await _productsRepo.getSingleProduct(id);
-      if (_singleProductApiResponse.status == Status.Success) {
-        _products = _singleProductApiResponse.data;
-        
-        return products;
-      }
+    _singleProductApiResponse = await _productsRepo.getSingleProduct(id);
+    if (_singleProductApiResponse.status == Status.Success) {
+      _products = _singleProductApiResponse.data;
     }
-    return Products();
+    notifyListeners();
   }
 }

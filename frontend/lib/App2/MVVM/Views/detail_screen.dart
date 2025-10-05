@@ -36,7 +36,7 @@ class _DetailScreen extends State<DetailScreen> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         ),
         child: FutureBuilder(
-          future: provider.getSingleProduct(widget.imagePath),
+          future: provider.getSingleProduct(id: widget.imagePath),
           builder: (context, snapshot){
             if(snapshot.connectionState == ConnectionState.waiting){
               return CircularProgressIndicator();
@@ -203,7 +203,7 @@ class _DetailScreen extends State<DetailScreen> {
         child: Column(
           children: [
             FutureBuilder(
-              future: productProvider.getSingleProduct(widget.imagePath),
+              future: productProvider.getSingleProduct(id: widget.imagePath),
               builder: (context,snap) {
                 if(snap.connectionState == ConnectionState.waiting){
                   return Center(child: CircularProgressIndicator());

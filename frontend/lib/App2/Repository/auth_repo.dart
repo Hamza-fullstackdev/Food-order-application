@@ -1,4 +1,4 @@
-import 'package:frontend/App/exceptions.dart';
+import 'package:frontend/App/Core/Exceptions/exceptions.dart';
 import 'package:frontend/App2/Data/Network/Services/auth_services.dart';
 import 'package:frontend/App2/Data/Network/interfaces/auth_interfaces.dart';
 import 'package:frontend/App2/Data/Responses/api_response.dart';

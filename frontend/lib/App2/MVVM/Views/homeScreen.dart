@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/App/MVVM/views/mealMenu_Screen.dart';
 import 'package:frontend/App/Resources/assetsPaths/assetsPath.dart';
+import 'package:frontend/App2/Data/Responses/status.dart';
 import 'package:frontend/App2/MVVM/ViewModel/product_provider.dart';
-import 'package:frontend/App2/MVVM/Views/detail_screen.dart';
 import 'package:frontend/App2/MVVM/Views/product_detail.dart';
 import 'package:frontend/App2/Widgets/Common/app_contants.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,7 +30,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductProvider>(context);
+    final productProvider = Provider.of<ProductProvider>(
+      context,
+      listen: false,
+    );
+    productProvider.categoriesData();
+    productProvider.getProducts(productProvider.categoryId);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -225,323 +230,325 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         SizedBox(
                           height: 43,
-                          child: FutureBuilder(
-                            future: productProvider.categoriesData(),
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return CircularProgressIndicator();
-                              } else {
-                                return ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount:
-                                      productProvider.categoryList.length,
-                                  itemBuilder: (context, index) {
-                                    // print(productProvider.categoryList[index].name);
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          productProvider.categoriesData();
-                                        },
-                                        child: ChoiceChip(
-                                          showCheckmark: false,
-                                          label: Text(
-                                            productProvider
-                                                    .categoryList[index]
-                                                    .name ??
-                                                "Error",
-                                            style: GoogleFonts.poppins(
-                                              color:
-                                                  productProvider
-                                                          .selectedIndex ==
-                                                      index
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                            ),
-                                          ),
-                                          avatar: Icon(
-                                            Icons.fastfood,
-                                            color:
-                                                productProvider.selectedIndex ==
-                                                    index
-                                                ? Colors.white
-                                                : Colors.black,
-                                          ),
-                                          selected:
-                                              productProvider.selectedIndex ==
-                                              index,
-                                          selectedColor: Color(0xffD61355),
-                                          backgroundColor: Colors.white,
-                                          side: BorderSide(
-                                            color:
-                                                productProvider.selectedIndex ==
-                                                    index
-                                                ? Colors.transparent
-                                                : Colors.red,
-                                            width: 1.5,
-                                          ),
-                                          onSelected: (value) {
-                                            //  = productProvider.categoryList[selectedIndex].sId;
-                                            productProvider.setIndex(
-                                              index,
-                                              productProvider
-                                                      .categoryList[index]
-                                                      .sId ??
-                                                  "Invalid Id",
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  },
+                          child: Consumer<ProductProvider>(
+                            builder: (context, value, child) {
+                              if (value.categoryApiResponse.status ==
+                                  Status.Loading || value.categoryApiResponse.status ==
+                                  Status.NotStarted) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (value.categoryApiResponse.status ==
+                                  Status.Error) {
+                                return Center(
+                                  child: Text(
+                                    value.categoryApiResponse.message ?? "Error!!",
+                                  ),
                                 );
                               }
+                              return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: value.categoryList.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                    ),
+                                    child: ChoiceChip(
+                                      showCheckmark: false,
+                                      label: Text(
+                                        value.categoryList[index].name ??
+                                            "Error",
+                                        style: GoogleFonts.poppins(
+                                          color: value.selectedIndex == index
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                      avatar: Icon(
+                                        Icons.fastfood,
+                                        color: value.selectedIndex == index
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                      selected: value.selectedIndex == index,
+                                      selectedColor: Color(0xffD61355),
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(
+                                        color: value.selectedIndex == index
+                                            ? Colors.transparent
+                                            : Colors.red,
+                                        width: 1.5,
+                                      ),
+                                      onSelected: (values) {
+                                        value.setIndex(
+                                          index,
+                                          productProvider
+                                                  .categoryList[index]
+                                                  .sId ??
+                                              "Invalid Id",
+                                        );
+
+                                        value.getProducts(value.categoryId);
+                                      },
+                                    ),
+                                  );
+                                },
+                              );
                             },
                           ),
                         ),
-
-                        SizedBox(height: 0),
-                        SizedBox(
-                          height: 237,
-                          child: FutureBuilder(
-                            future: productProvider.getProducts(
-                              productProvider.categoryId,
-                            ),
-                            builder: (context, snapshot) => ListView.builder(
-                              scrollDirection: Axis.horizontal,
-
-                              itemCount: productProvider.productList.length,
-
-                              itemBuilder: (context, index) {
-                                final data = productProvider.productList[index];
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 8.0,
-                                    bottom: 8,
-                                    left: 4,
-                                  ),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProductDetail(
-                                                imagePath: productProvider.productList[index].sId!,
-                                              ),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      width: 155,
-                                      margin: EdgeInsets.only(right: 12),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.shade200,
-                                            blurRadius: 6,
-                                            spreadRadius: 2,
-                                          ),
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Color(0xffFF9F06),
-                                                  size: 16,
-                                                ),
-                                                SizedBox(width: 4),
-                                                Text(
-                                                  "4.5",
-
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 0),
-                                            Center(
-                                              child: SizedBox(
-                                                height: 76,
-                                                child: Image.network(
-                                                  data.image!,
-                                                  // height: 90,
-                                                  // fit: BoxFit.fill,
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(height: 1),
-                                            Text(
-                                              data.name!,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Text(
-                                              data.shortDescription!,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 10,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  data.price.toString(),
-                                                  style: GoogleFonts.poppins(
-                                                    color: Color(0xffD61355),
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                InkWell(
-                                                  onTap: () {},
-                                                  child: Icon(
-                                                    size: 32,
-                                                    Icons.add_circle,
-                                                    color: Color(0xffD61355),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-
-                        Row(
-                          children: [
-                            Text(
-                              "Popular Meal Menu",
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              "See All",
-                              style: GoogleFonts.poppins(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MealMenuScreen(),
-                                  ),
-                                );
-                              },
-                              child: Icon(
-                                Icons.play_arrow,
-                                size: 18,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductDetail(imagePath: productProvider.productList[0].sId!,
-                                ),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            elevation: 2,
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    child: Image.asset(
-                                      AssetsPath.burgerDetailPic,
-                                      height: 60,
-                                      width: 80,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  SizedBox(width: 12),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Pepper Pizza",
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text(
-                                        "5kg box of Pizza",
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 12,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Spacer(),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "\$15",
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 16,
-                                        color: Color(0xffD61355),
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(height: 20),
                       ],
                     ),
                   ),
                 ),
               ),
+              SizedBox(height: 0),
+              SizedBox(
+                height: 237,
+                
+                child: Consumer<ProductProvider>(
+                  builder: (context, value, child) {
+                    if (value.productApiResponse.status == Status.Loading ||
+                        value.productApiResponse.status == Status.NotStarted) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (value.productApiResponse.status ==
+                        Status.Error) {
+                      return Center(
+                        child: Text(value.productApiResponse.message!),
+                      );
+                    } else {
+                      if (value.productList.isEmpty ||
+                          value.productList == null) {
+                        return Center(child: Text("No product found"));
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: value.productList.length,
+                            itemBuilder: (context, index) {
+                              final data = value.productList[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 8.0,
+                                  bottom: 8,
+                                  left: 4,
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProductDetail(
+                                          imagePath:
+                                              value.productList[index].sId!,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 155,
+                                    margin: EdgeInsets.only(right: 12),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.shade200,
+                                          blurRadius: 6,
+                                          spreadRadius: 2,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                Icons.star,
+                                                color: Color(0xffFF9F06),
+                                                size: 16,
+                                              ),
+                                              SizedBox(width: 4),
+                                              Text(
+                                                "4.5",
+                          
+                                                style: GoogleFonts.poppins(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 0),
+                                          Center(
+                                            child: SizedBox(
+                                              height: 76,
+                                              child: Image.network(
+                                                data.image!,
+                                                // height: 90,
+                                                // fit: BoxFit.fill,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 1),
+                                          Text(
+                                            data.name!,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            data.shortDescription!,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 10,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                data.price.toString(),
+                                                style: GoogleFonts.poppins(
+                                                  color: Color(0xffD61355),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {},
+                                                child: Icon(
+                                                  size: 32,
+                                                  Icons.add_circle,
+                                                  color: Color(0xffD61355),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }
+                    }
+                  },
+                ),
+              ),
+
+              Row(
+                children: [
+                  Text(
+                    "Popular Meal Menu",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Spacer(),
+                  Text(
+                    "See All",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MealMenuScreen(),
+                        ),
+                      );
+                    },
+                    child: Icon(Icons.play_arrow, size: 18, color: Colors.grey),
+                  ),
+                ],
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetail(
+                        imagePath: productProvider.productList[0].sId!,
+                      ),
+                    ),
+                  );
+                },
+                child: Card(
+                  elevation: 2,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: Image.asset(
+                            AssetsPath.burgerDetailPic,
+                            height: 60,
+                            width: 80,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Pepper Pizza",
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              "5kg box of Pizza",
+                              style: GoogleFonts.poppins(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "\$15",
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              color: Color(0xffD61355),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 20),
             ],
           ),
         ],

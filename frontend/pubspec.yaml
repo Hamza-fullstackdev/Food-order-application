@@ -38,6 +38,8 @@ dependencies:
   animations:
   flutter_animate:
   font_awesome_flutter:
+  readmore: ^3.0.0
+
   
   google_fonts: 
   lottie:
