@@ -11,6 +11,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Admin - Food Order App",
   description: "Admin - Food Order App",
+  icons: {
+    icon: "/favicon-32x32.png",
+  }
 };
 
 export default function RootLayout({
