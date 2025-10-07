@@ -6,9 +6,10 @@ import 'package:frontend/App2/MVVM/Model/products.dart';
 import 'package:frontend/App2/Resources/app_url.dart';
 
 class ProductsRepo {
-  final GetRequestInterface _getData = GetRequestService();
+  final ApiRequestInterface _getData = ApiRequestService();
 
   Future<ApiResponse<List<Products>>> getProducts(String Id) async {
+    
     try {
       final List<Products> list = [];
       final response = await _getData.getDataRequest(

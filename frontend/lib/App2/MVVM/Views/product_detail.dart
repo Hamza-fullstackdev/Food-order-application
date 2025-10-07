@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/App2/Data/Responses/status.dart';
-import 'package:frontend/App2/MVVM/ViewModel/product_provider.dart';
+import 'package:frontend/App2/MVVM/ViewModel/product_detail_view_model.dart';
+import 'package:frontend/App2/MVVM/Views/cart_screen.dart';
 import 'package:frontend/App2/Widgets/Common/app_contants.dart';
 import 'package:frontend/App2/Widgets/Common/common_button.dart';
 import 'package:frontend/App2/Widgets/Common/text_view.dart';
@@ -18,76 +19,52 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  PersistentBottomSheetController? _controller;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ProductProvider>(
-        context,
-        listen: false,
-      ).getSingleProduct(id: widget.imagePath);
-      // openBottomSheet();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<ProductDetailViewModel>(
+      context,
+      listen: false,
+    ).getSingleProduct(id: widget.imagePath);
     return Scaffold(
       key: _scaffoldKey,
       body: SafeArea(
         child: Stack(
-          alignment: AlignmentGeometry.directional(0, 0.9),
+          alignment: AlignmentGeometry.directional(0, 0.98),
           children: [
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 100),
-                child: Column(
-                  children: [
-                    Consumer<ProductProvider>(
-                      builder: (context, value, child) {
-                        if (value.singleProductApiResponse.status ==
-                                Status.Loading ||
-                            value.singleProductApiResponse.status ==
-                                Status.NotStarted) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (value.singleProductApiResponse.status ==
-                            Status.Error) {
-                          return Center(
-                            child: Text(value.singleProductApiResponse.message!),
-                          );
-                        }
-                        return Image.network(
+                child: Consumer<ProductDetailViewModel>(
+                  builder: (context, value, child) {
+                    if (value.singleProductApiResponse.status ==
+                            Status.Loading ||
+                        value.singleProductApiResponse.status ==
+                            Status.NotStarted) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (value.singleProductApiResponse.status ==
+                        Status.Error) {
+                      return Center(
+                        child: Text(value.singleProductApiResponse.message!),
+                      );
+                    }
+                    return Column(
+                      children: [
+                        Image.network(
                           width: MediaQuery.of(context).size.width,
                           value.products.image!,
                           fit: BoxFit.fitWidth,
-                        );
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(25.0),
-                      child: Consumer<ProductProvider>(
-                        builder: (context, value, child) {
-                          if (value.singleProductApiResponse.status ==
-                                  Status.Loading ||
-                              value.singleProductApiResponse.status ==
-                                  Status.NotStarted) {
-                            return Center(child: CircularProgressIndicator());
-                          } else if (value.singleProductApiResponse.status ==
-                              Status.Error) {
-                            return Center(
-                              child: Text(
-                                value.singleProductApiResponse.message!,
-                              ),
-                            );
-                          }
-                          return Column(
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container1(
                                     width: 90.0,
@@ -160,13 +137,15 @@ class _ProductDetailState extends State<ProductDetail> {
                               SizedBox(height: 16),
                               ListView.builder(
                                 shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
                                 itemCount:
                                     value.products.variantGroups?.length ?? 0,
                                 itemBuilder: (context, index) {
                                   final variations =
                                       value.products.variantGroups![index];
                                   return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       TextView(
                                         text: variations.name ?? "N/A",
@@ -191,18 +170,20 @@ class _ProductDetailState extends State<ProductDetail> {
                                                   title: TextView(
                                                     text:
                                                         "${variations.options![i].name} (${variations.options![i].price})",
-                                                    color: AppContants.blackColor,
+                                                    color:
+                                                        AppContants.blackColor,
                                                     size: 16,
                                                     weight: 400,
                                                   ),
-                                                  value:
-                                                      variations.options![i].sId,
+                                                  value: variations
+                                                      .options![i]
+                                                      .sId,
                                                   groupValue: selectedValue,
                                                   onChanged: (selectedId) {
                                                     value.selectSingleOption(
                                                       variations.name!,
                                                       selectedId!,
-                                                    ); // ✅ update provider
+                                                    );
                                                   },
                                                 )
                                               : CheckboxListTile(
@@ -211,11 +192,12 @@ class _ProductDetailState extends State<ProductDetail> {
                                                   title: TextView(
                                                     text:
                                                         "${variations.options![i].name} (${variations.options![i].price})",
-                                                    color: AppContants.blackColor,
+                                                    color:
+                                                        AppContants.blackColor,
                                                     size: 16,
                                                     weight: 400,
                                                   ),
-                        
+
                                                   value: value.isChecked(
                                                     variations.name!,
                                                     variations.options![i].sId!,
@@ -223,7 +205,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                                   onChanged: (checked) {
                                                     value.toggleCheckbox(
                                                       variations.name!,
-                                                      variations.options![i].sId!,
+                                                      variations
+                                                          .options![i]
+                                                          .sId!,
                                                       checked!,
                                                     );
                                                   },
@@ -235,32 +219,75 @@ class _ProductDetailState extends State<ProductDetail> {
                                 },
                               ),
                             ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+                Positioned(
+                  left: 16,
+                  right: 16,
+                  bottom: 0,
+                  child: Consumer<ProductDetailViewModel>(builder: (context, value, child) =>  CommonButton(
+                      color: AppContants.redColor,
+                      width: 326,
+                      height: 57,
+                      onPressed: () {
+                        final valid = value.validateSelections(
+                          value.products.variantGroups!,
+                        );
+                        if (!valid) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: TextView(
+                                text: "Please select all required options.",
+                                color: AppContants.whiteColor,
+                                weight: 700,
+                              ),
+                              backgroundColor: AppContants.redColor,
+                            ),
+                          );
+                          return;
+                        }
+                        value.selectOption(
+                          value.products.variantGroups!,
+                          value.products.sId!,
+                        );
+                      },
+                      child: Consumer<ProductDetailViewModel>(
+                        builder: (context, value, child) {
+                          if (value.cartApiResponse.status == Status.Success) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CartScreen(),
+                              ),
+                            );
+                          } else if (value.cartApiResponse.status ==
+                              Status.Error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('${value.cartApiResponse.message}'),
+                              ),
+                            );
+                          } else if (value.cartApiResponse.status ==
+                              Status.Loading) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return TextView(
+                            text: "Check out",
+                            color: AppContants.whiteColor,
+                            weight: 500,
+                            textAlignment: true,
                           );
                         },
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              left: 16,
-              right: 16,
-              bottom: 0,
-              child: CommonButton(
-                color: AppContants.redColor,
-                width: 326,
-                height: 57,
-                onPressed: () {
-                  
-                },
-                child: TextView(
-                  text: "Check out",
-                  color: AppContants.whiteColor,
-                  weight: 500,
-                  textAlignment: true,
-                ),
-              ),
+                  )
+                
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/App/MVVM/views/mealMenu_Screen.dart';
 import 'package:frontend/App/Resources/assetsPaths/assetsPath.dart';
 import 'package:frontend/App2/Data/Responses/status.dart';
+import 'package:frontend/App2/MVVM/ViewModel/category_view_model.dart';
 import 'package:frontend/App2/MVVM/ViewModel/product_provider.dart';
 import 'package:frontend/App2/MVVM/Views/product_detail.dart';
 import 'package:frontend/App2/Widgets/Common/app_contants.dart';
@@ -30,13 +31,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductProvider>(
-      context,
-      listen: false,
-    );
-    productProvider.categoriesData();
-    productProvider.getProducts(productProvider.categoryId);
+    Provider.of<CategoryViewModel>(context, listen: false).categoriesData();
 
+    Provider.of<ProductProvider>(context, listen: false).getProducts(
+      Provider.of<CategoryViewModel>(context, listen: false).categoryId,
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -230,11 +229,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         SizedBox(
                           height: 43,
-                          child: Consumer<ProductProvider>(
+                          child: Consumer<CategoryViewModel>(
                             builder: (context, value, child) {
                               if (value.categoryApiResponse.status ==
-                                  Status.Loading || value.categoryApiResponse.status ==
-                                  Status.NotStarted) {
+                                      Status.Loading ||
+                                  value.categoryApiResponse.status ==
+                                      Status.NotStarted) {
                                 return Center(
                                   child: CircularProgressIndicator(),
                                 );
@@ -242,7 +242,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   Status.Error) {
                                 return Center(
                                   child: Text(
-                                    value.categoryApiResponse.message ?? "Error!!",
+                                    value.categoryApiResponse.message ??
+                                        "Error!!",
                                   ),
                                 );
                               }
@@ -283,13 +284,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                       onSelected: (values) {
                                         value.setIndex(
                                           index,
-                                          productProvider
-                                                  .categoryList[index]
-                                                  .sId ??
+                                          value.categoryList[index].sId ??
                                               "Invalid Id",
                                         );
 
-                                        value.getProducts(value.categoryId);
+                                        Provider.of<ProductProvider>(
+                                          context,
+                                          listen: false,
+                                        ).getProducts(value.categoryId);
                                       },
                                     ),
                                   );
@@ -306,7 +308,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(height: 0),
               SizedBox(
                 height: 237,
-                
+
                 child: Consumer<ProductProvider>(
                   builder: (context, value, child) {
                     if (value.productApiResponse.status == Status.Loading ||
@@ -377,7 +379,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               SizedBox(width: 4),
                                               Text(
                                                 "4.5",
-                          
+
                                                 style: GoogleFonts.poppins(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w700,
@@ -487,7 +489,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProductDetail(
-                        imagePath: productProvider.productList[0].sId!,
+                        imagePath: Provider.of<ProductProvider>(
+                          context,
+                          listen: false,
+                        ).productList[0].sId!,
                       ),
                     ),
                   );

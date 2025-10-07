@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/App/MVVM/views/cart_Screen.dart';
+import 'package:frontend/App2/MVVM/ViewModel/product_detail_view_model.dart';
 import 'package:frontend/App2/MVVM/ViewModel/product_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class _DetailScreen extends State<DetailScreen> {
 
   void openBottomSheet() {
     _controller ??= _scaffoldKey.currentState!.showBottomSheet(enableDrag: false, (context) {
-      final provider = Provider.of<ProductProvider>(context);
+      final provider = Provider.of<ProductDetailViewModel>(context);
       
       return Container(
         
@@ -193,7 +194,7 @@ class _DetailScreen extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final productProvider = Provider.of<ProductProvider>(context);
+    final productProvider = Provider.of<ProductDetailViewModel>(context,listen: false);
 
     return Scaffold(
       key: _scaffoldKey,

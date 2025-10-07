@@ -1,55 +1,36 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:frontend/App2/Data/Network/Services/token_refresh.dart';
 import 'package:frontend/App2/Data/Network/interfaces/get_request_interface.dart';
 import 'package:frontend/App2/Data/api_exceptions.dart';
-import 'package:frontend/App2/Resources/app_url.dart';
 import 'package:http/http.dart' as http;
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class GetRequestService implements GetRequestInterface  {
-  static String? accessToken;
-  static String? refreshToken;
-  static dynamic tokenResponse;
-
+class ApiRequestService implements ApiRequestInterface {
+  @override
   Future<dynamic> getDataRequest(
     String url, {
     Map<String, dynamic>? body,
   }) async {
     try {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      refreshToken = pref.getString("refreshToken");
-      accessToken = pref.getString("accessToken");
-      print(accessToken);
-
-      if (JwtDecoder.isExpired(accessToken!)) {
-        final tokenResponse = await http.post(
-          Uri.parse(AppUrl.refresh_url),
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $refreshToken",
-          },
-        ).timeout(Duration(seconds: 10));
-
-        if (tokenResponse.statusCode == 200) {
-          final data = jsonDecode(tokenResponse.body);
-          accessToken = data["user"]["accessToken"];
-          refreshToken = data["user"]["refreshToken"];
-
-          await pref.setString("accessToken", accessToken!);
-          await pref.setString("refreshToken", refreshToken!);
-        } else {
-          return null;
-        }
-      }
-
-      return hitActualApi(url, {
+      final accessToken = await TokenRefresh.tokenValidation();
+      final myHeader = {
         "Content-Type": "application/json",
         "Authorization": "Bearer $accessToken",
-      });
+      };
+      final response = await http
+          .get(Uri.parse(url), headers: myHeader)
+          .timeout(Duration(seconds: 10));
+
+      if (response.statusCode == 200 || response.statusCode == 400) {
+        final decoded = jsonDecode(response.body);
+        return decoded;
+      } else if (response.statusCode == 401) {
+        throw ServerException("Unauthorized! Token expired or invalid");
+      } else {
+        throw ServerException("Status: ${response.statusCode}");
+      }
     } on SocketException {
-      print("its a Socket Exceptions on token refresh");
       throw InternetException();
     } on TimeoutException {
       throw RequestTimeOut();
@@ -58,17 +39,33 @@ class GetRequestService implements GetRequestInterface  {
     }
   }
 
-  static dynamic hitActualApi(String url, Map<String, String> myHeader) async {
+  @override
+  Future<dynamic> postDataService(String url, Map<String, dynamic> body) async {
     try {
-     final response = await http.get(Uri.parse(url), headers: myHeader).timeout(Duration(seconds: 10));
-      final decoded = jsonDecode(response.body);
+      final accessToken = await TokenRefresh.tokenValidation();
+      final myHeader = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $accessToken",
+      };
 
-      return decoded ;
+      final response = await http
+          .post(Uri.parse(url), headers: myHeader, body: jsonEncode(body))
+          .timeout(Duration(seconds: 10));
+
+      if (response.statusCode == 200 || response.statusCode == 400) {
+        final decoded = jsonDecode(response.body);
+
+        return decoded;
+      } else if (response.statusCode == 401) {
+        throw ServerException("Unauthorized! Token expired or invalid");
+      } else {
+        throw ServerException("Status: ${response.statusCode}");
+      }
     } on SocketException {
       throw InternetException();
     } on TimeoutException {
       throw RequestTimeOut();
-    } catch (e) {      
+    } catch (e) {
       throw FetchDataException(e.toString());
     }
   }

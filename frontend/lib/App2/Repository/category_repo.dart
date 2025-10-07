@@ -6,7 +6,7 @@ import 'package:frontend/App2/MVVM/Model/categories.dart';
 import 'package:frontend/App2/Resources/app_url.dart';
 
 class CategoryRepo {
-  final GetRequestInterface _categoryInterface = GetRequestService();
+  final ApiRequestInterface _categoryInterface = ApiRequestService();
   Future<ApiResponse<List<Categories>>> getCategory() async {
     try {
       final List<Categories> list = [];

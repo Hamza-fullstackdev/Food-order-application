@@ -9,6 +9,8 @@ class AppUrl {
       "${base_url}product/get-by-category/";
   static final get_all_categories_url =
       "${base_url}category/get-all-categories";
+      
+  static final post_add_to_cart = "${base_url}cart/add-to-cart";
 }
 
 class AppStrings {
