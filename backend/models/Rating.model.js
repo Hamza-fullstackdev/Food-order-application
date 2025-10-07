@@ -11,6 +11,7 @@ const ratingSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: [true, "Product is required"],
+      index: true,
     },
     rating: {
       type: Number,
@@ -26,5 +27,6 @@ const ratingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+ratingSchema.index({ productId: 1, createdAt: -1 });
 const Rating = mongoose.models.Rating || mongoose.model("Rating", ratingSchema);
 export default Rating;

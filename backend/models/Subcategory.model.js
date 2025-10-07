@@ -11,6 +11,7 @@ const subcategorySchema = new mongoose.Schema(
       type: String,
       required: [true, "Name is required"],
       trim: true,
+      unique: [true, "Subcategory name already exists"],
     },
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -20,6 +21,8 @@ const subcategorySchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+subcategorySchema.index({ createdAt: -1 });
 
 const Subcategory = mongoose.model("Subcategory", subcategorySchema);
 export default Subcategory;

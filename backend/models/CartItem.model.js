@@ -6,6 +6,7 @@ const cartItemScheama = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Cart",
       required: [true, "Cart is required"],
+      index: true,
     },
     productId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -38,6 +39,7 @@ const cartItemScheama = new mongoose.Schema(
   }
 );
 
+cartItemScheama.index({ cartId: 1, createdAt: -1 });
 const CartItem =
   mongoose.models.CartItem || mongoose.model("CartItem", cartItemScheama);
 export default CartItem;

@@ -11,6 +11,7 @@ const categorySchema = new mongoose.Schema(
       type: String,
       required: [true, "Name is required"],
       trim: true,
+      unique: [true, "Category name already exists"],
     },
     image: {
       type: String,
@@ -24,5 +25,6 @@ const categorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+categorySchema.index({ createdAt: -1 });
 const Category = mongoose.model("Category", categorySchema);
 export default Category;

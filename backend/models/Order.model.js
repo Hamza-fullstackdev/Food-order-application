@@ -2,7 +2,12 @@ import mongoose, { Schema } from "mongoose";
 
 const OrderSchema = new mongoose.Schema(
   {
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
     items: [
       {
         productId: { type: String, required: true },
@@ -47,7 +52,12 @@ const OrderSchema = new mongoose.Schema(
       default: "pending",
     },
     payment: {
-      method: { type: String, enum: ["COD", "Card"], required: true, default: "COD" },
+      method: {
+        type: String,
+        enum: ["COD", "Card"],
+        required: true,
+        default: "COD",
+      },
       transactionId: { type: String },
       status: {
         type: String,
@@ -59,6 +69,7 @@ const OrderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+OrderSchema.index({ userId: 1, createdAt: -1 });
 const Order = mongoose.models.Order || mongoose.model("Order", OrderSchema);
 
 export default Order;
