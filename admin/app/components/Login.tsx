@@ -40,8 +40,18 @@ const Login = () => {
       setLoading(false);
       if (res.ok) {
         dispatch(loginUser(data.user));
-        setCookie("accessToken", data.user.accessToken);
-        setCookie("refreshToken", data.user.refreshToken);
+        setCookie("accessToken", data.user.accessToken, {
+          maxAge: 15 * 60,
+          path: "/",
+          sameSite: "strict",
+          secure: true,
+        });
+        setCookie("refreshToken", data.user.refreshToken, {
+          maxAge: 7 * 24 * 60 * 60,
+          path: "/",
+          sameSite: "strict",
+          secure: true,
+        });
         router.push("/dashboard");
       } else {
         setErrorMessage(data.message);
