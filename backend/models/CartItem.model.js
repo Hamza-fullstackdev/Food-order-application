@@ -31,6 +31,7 @@ const cartItemScheama = new mongoose.Schema(
       required: [true, "Quantity is required"],
       min: [1, "Quantity must be at least 1"],
     },
+    comboKey: { type: String, required: true, index: true },
   },
   {
     timestamps: true,

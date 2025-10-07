@@ -9,36 +9,63 @@ export const addToCart = async (req, res, next) => {
   const userId = req.user._id;
 
   try {
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).lean();
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      return next(errorHandler(404, "Product not found"));
     }
 
-    for (const selection of selectedOptions) {
-      const group = product.variantGroups.find(
-        (g) => g._id.toString() === selection.variantGroupId.toString()
-      );
+    const groupMap = new Map(
+      product.variantGroups.map((g) => [g._id.toString(), g])
+    );
+
+    for (const sel of selectedOptions) {
+      const group = groupMap.get(sel.variantGroupId.toString());
       if (!group) {
-        return res.status(400).json({
-          message: `Invalid variant group: ${selection.variantGroupId}`,
-        });
+        return next(
+          errorHandler(400, `Invalid variant group: ${sel.variantGroupId}`)
+        );
       }
 
-      for (const optId of selection.optionIds) {
-        const option = group.options.find(
-          (o) => o._id.toString() === optId.toString()
-        );
-        if (!option) {
-          return res.status(400).json({
-            message: `Invalid option ${optId} for group ${group.name}`,
-          });
+      const validOptionIds = new Set(
+        group.options.map((o) => o._id.toString())
+      );
+      for (const optId of sel.optionIds) {
+        if (!validOptionIds.has(optId.toString())) {
+          return next(
+            errorHandler(400, `Invalid option ${optId} for group ${group.name}`)
+          );
         }
       }
     }
 
     let cart = await Cart.findOne({ userId });
-    if (!cart) {
-      cart = await Cart.create({ userId });
+    if (!cart) cart = await Cart.create({ userId });
+
+    const comboKey = [
+      productId,
+      ...selectedOptions
+        .map(
+          (s) =>
+            `${s.variantGroupId}:${s.optionIds
+              .map((id) => id.toString())
+              .sort()
+              .join(",")}`
+        )
+        .sort(),
+    ].join("|");
+
+    const existingItem = await CartItem.findOne({
+      cartId: cart._id,
+      comboKey,
+    }).lean();
+
+    if (existingItem) {
+      return next(
+        errorHandler(
+          400,
+          "You already added this combination to your cart. Please update the quantity."
+        )
+      );
     }
 
     const cartItem = await CartItem.create({
@@ -46,6 +73,7 @@ export const addToCart = async (req, res, next) => {
       productId,
       quantity,
       selectedOptions,
+      comboKey,
     });
 
     res.status(200).json({
@@ -54,11 +82,13 @@ export const addToCart = async (req, res, next) => {
       cartItem,
     });
   } catch (error) {
-    if (error.code === 11000) {
-      return next(errorHandler(400, "Product already added to cart"));
-    } else {
-      next(errorHandler(500, "Something went wrong, please try again later"));
-    }
+    console.error(error);
+    next(
+      errorHandler(
+        500,
+        "Something went wrong while adding to cart, please try again later"
+      )
+    );
   }
 };
 
