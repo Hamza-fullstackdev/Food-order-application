@@ -6,11 +6,13 @@ const productScheama = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: [true, "User is required"],
+      index: true,
     },
     categoryId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       required: [true, "Category is required"],
+      index: true,
     },
     subcategoryId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -44,7 +46,7 @@ const productScheama = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    variantGroups:[
+    variantGroups: [
       {
         name: {
           type: String,
@@ -52,11 +54,11 @@ const productScheama = new mongoose.Schema(
         },
         isRequired: {
           type: Boolean,
-          default: true
+          default: true,
         },
-        maxSelectable:{
+        maxSelectable: {
           type: Number,
-          default: 1
+          default: 1,
         },
         options: [
           {
@@ -72,13 +74,14 @@ const productScheama = new mongoose.Schema(
           },
         ],
       },
-    ]
+    ],
   },
   {
     timestamps: true,
   }
 );
 
+productScheama.index({ createdAt: -1 });
 const Product =
   mongoose.models.Product || mongoose.model("Product", productScheama);
 export default Product;

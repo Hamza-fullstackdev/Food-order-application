@@ -56,5 +56,6 @@ const userScheama = new mongoose.Schema(
   }
 );
 
+userScheama.index({ createdAt: -1 });
 const User = mongoose.models.User || mongoose.model("User", userScheama);
 export default User;
