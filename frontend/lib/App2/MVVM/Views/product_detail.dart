@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:frontend/App2/Data/Responses/status.dart';
 import 'package:frontend/App2/MVVM/ViewModel/product_detail_view_model.dart';
@@ -30,12 +31,7 @@ class _ProductDetailState extends State<ProductDetail> {
     return Scaffold(
       key: _scaffoldKey,
       body: SafeArea(
-        child: Stack(
-          alignment: AlignmentGeometry.directional(0, 0.98),
-          children: [
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 100),
+        
                 child: Consumer<ProductDetailViewModel>(
                   builder: (context, value, child) {
                     if (value.singleProductApiResponse.status ==
@@ -49,7 +45,13 @@ class _ProductDetailState extends State<ProductDetail> {
                         child: Text(value.singleProductApiResponse.message!),
                       );
                     }
-                    return Column(
+        return Stack(
+          alignment: AlignmentGeometry.directional(0, 0.98),
+          children: [
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 100),
+                    child: Column(
                       children: [
                         Image.network(
                           width: MediaQuery.of(context).size.width,
@@ -222,16 +224,15 @@ class _ProductDetailState extends State<ProductDetail> {
                           ),
                         ),
                       ],
-                    );
-                  },
-                ),
+                    )
+                 
               ),
             ),
                 Positioned(
                   left: 16,
                   right: 16,
                   bottom: 0,
-                  child: Consumer<ProductDetailViewModel>(builder: (context, value, child) =>  CommonButton(
+                  child: Consumer<ProductDetailViewModel>(builder: (context, value, child) => CommonButton(
                       color: AppContants.redColor,
                       width: 326,
                       height: 57,
@@ -268,14 +269,13 @@ class _ProductDetailState extends State<ProductDetail> {
                             );
                           } else if (value.cartApiResponse.status ==
                               Status.Error) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('${value.cartApiResponse.message}'),
-                              ),
-                            );
+                              
+                            return TextView(text: "Retry Cart",);
                           } else if (value.cartApiResponse.status ==
                               Status.Loading) {
-                            return Center(child: CircularProgressIndicator());
+                            return Center(child: CircularProgressIndicator(
+                              padding: EdgeInsets.all(0),
+                            ));
                           }
                           return TextView(
                             text: "Check out",
@@ -290,8 +290,8 @@ class _ProductDetailState extends State<ProductDetail> {
                 
             ),
           ],
-        ),
-      ),
+        );
+  })),
     );
   }
 }

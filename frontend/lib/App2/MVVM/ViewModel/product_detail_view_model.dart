@@ -9,10 +9,6 @@ class ProductDetailViewModel extends ChangeNotifier {
   final _productsRepo = ProductsRepo();
   final _cartRepo = CartRepo();
 
-  ApiResponse _cartApiResponse = ApiResponse.loading();
-  
-  ApiResponse get cartApiResponse => _cartApiResponse;
-
   Map<String, String?> selectedRadio = {};
   Map<String, Set<String>> selectedCheckboxes = {};
 
@@ -20,6 +16,9 @@ class ProductDetailViewModel extends ChangeNotifier {
   Products get products => _products;
 
   ApiResponse _singleProductApiResponse = ApiResponse.notStarted();
+  ApiResponse _cartApiResponse = ApiResponse.notStarted();
+  ApiResponse get cartApiResponse => _cartApiResponse;
+
   ApiResponse get singleProductApiResponse => _singleProductApiResponse;
 
   List<String> invalidGroups = [];
@@ -45,7 +44,10 @@ class ProductDetailViewModel extends ChangeNotifier {
     return invalidGroups.isEmpty;
   }
 
-  void selectOption(List<VariantGroups> varients, String productId) {
+  Future<void> selectOption(
+    List<VariantGroups> varients,
+    String productId,
+  ) async {
     List<Map<String, dynamic>> selectedOptions = [];
 
     for (var group in varients) {
@@ -64,8 +66,8 @@ class ProductDetailViewModel extends ChangeNotifier {
 
       if (selectedOptionId.isNotEmpty) {
         selectedOptions.add({
-        "variantGroupId" : group.sId!,
-        "optionIds" : selectedOptionId
+          "variantGroupId": group.sId!,
+          "optionIds": selectedOptionId,
         });
       }
     }
@@ -74,11 +76,10 @@ class ProductDetailViewModel extends ChangeNotifier {
       "selectedOptions": selectedOptions,
       "quantity": 1,
     };
-    addToCartItem(body: body);
-    notifyListeners();
+    await addToCartItem(body: body);
   }
 
-  void addToCartItem({required Map<String ,dynamic> body}) async {
+  Future<void> addToCartItem({required Map<String, dynamic> body}) async {
     _cartApiResponse = ApiResponse.loading();
     notifyListeners();
     _cartApiResponse = await _cartRepo.addItemToCart(body);
@@ -103,7 +104,7 @@ class ProductDetailViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
-  
+
   bool isChecked(String groupName, String optionId) {
     return selectedCheckboxes[groupName]?.contains(optionId) ?? false;
   }
@@ -118,5 +119,4 @@ class ProductDetailViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
-  
 }

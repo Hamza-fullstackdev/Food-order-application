@@ -6,7 +6,7 @@ import 'package:frontend/App2/Resources/app_url.dart';
 class CartRepo {
   final apiRequest = ApiRequestService();
 
-  Future<ApiResponse<Map<String, dynamic>>> addItemToCart(
+  Future<ApiResponse<String>> addItemToCart(
     Map<String, dynamic> body,
   ) async {
     try {
