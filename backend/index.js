@@ -1,6 +1,9 @@
 import express from "express";
+import http from "http";
+import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import GracefulShutdown from "http-graceful-shutdown";
 import { connectToDatabase } from "./config/db.js";
 import { config } from "./utils/config.js";
 import { rateLimit } from "express-rate-limit";
@@ -19,6 +22,7 @@ const limiter = rateLimit({
 });
 
 const app = express();
+const server = http.createServer(app);
 const PORT = config.PORT || 3000;
 connectToDatabase();
 startBackup();
@@ -58,8 +62,23 @@ app.use("/api/v1/subcategory", subCategoryRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/order", orderRouter);
 
-app.listen(PORT || 3000, () => {
-  console.log(`Server is running on port ${PORT || 3000}`);
+server.listen(PORT || 5000, () => {
+  console.log(`Server is running on port ${PORT || 5000}`);
+});
+
+GracefulShutdown(server, {
+  signals: "SIGINT SIGTERM",
+  timeout: 10000,
+  onShutdown: async () => {
+    console.log("Gracefully shutting down server...");
+    if (mongoose.connection.readyState === 1) {
+      await mongoose.connection.close();
+      console.log("MongoDB connection closed.");
+    }
+  },
+  finally: () => {
+    console.log("Server completely stopped.");
+  },
 });
 
 app.use((err, req, res, next) => {
@@ -71,5 +90,3 @@ app.use((err, req, res, next) => {
     message,
   });
 });
-
-// export default app;
