@@ -123,31 +123,52 @@ export const getCart = async (req, res, next) => {
       const product = item.productId ? item.productId.toObject() : {};
       const selectedOptions = item.selectedOptions || [];
 
-      const filteredGroups = (product.variantGroups || [])
-        .filter((group) =>
-          selectedOptions.some(
-            (sel) => sel.variantGroupId.toString() === group._id.toString()
-          )
-        )
-        .map((group) => {
-          const selectedGroup = selectedOptions.find(
-            (sel) => sel.variantGroupId.toString() === group._id.toString()
-          );
+      const selectedMap = new Map(
+        selectedOptions.map((sel) => [
+          sel.variantGroupId.toString(),
+          sel.optionIds,
+        ])
+      );
 
-          return {
-            _id: group._id,
-            name: group.name,
-            options: group.options.filter((opt) =>
-              selectedGroup.optionIds.some(
-                (selOptId) => selOptId.toString() === opt._id.toString()
-              )
-            ),
-          };
+      if (!product.variantGroups?.length || selectedMap.size === 0) {
+        return {
+          _id: item._id,
+          quantity: item.quantity,
+          itemTotal: 0,
+          product,
+        };
+      }
+
+      let optionsTotal = 0;
+      const filteredGroups = [];
+
+      for (const group of product.variantGroups) {
+        const selectedIds = selectedMap.get(group._id.toString());
+        if (!selectedIds) continue;
+
+        const selectedIdSet = new Set(selectedIds.map(String));
+        const selectedOptionsInGroup = [];
+
+        for (const opt of group.options || []) {
+          if (selectedIdSet.has(opt._id.toString())) {
+            selectedOptionsInGroup.push(opt);
+            optionsTotal += opt.price || 0;
+          }
+        }
+
+        filteredGroups.push({
+          _id: group._id,
+          name: group.name,
+          options: selectedOptionsInGroup,
         });
+      }
+
+      const itemTotal = optionsTotal * item.quantity;
 
       return {
         _id: item._id,
         quantity: item.quantity,
+        itemTotal,
         product: {
           ...product,
           variantGroups: filteredGroups,
@@ -155,9 +176,12 @@ export const getCart = async (req, res, next) => {
       };
     });
 
-    res.status(200).json({ status: 200, cartItems: formattedCartItems });
+    res.status(200).json({
+      status: 200,
+      cartItems: formattedCartItems,
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(errorHandler(500, "Something went wrong, please try again later"));
   }
 };
