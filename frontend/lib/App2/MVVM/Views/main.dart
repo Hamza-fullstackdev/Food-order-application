@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/App/MVVM/viewModels/cart_view_model.dart';
 import 'package:frontend/App2/MVVM/ViewModel/auth_provider.dart';
+import 'package:frontend/App2/MVVM/ViewModel/cart_view_model.dart';
 import 'package:frontend/App2/MVVM/ViewModel/category_view_model.dart';
 import 'package:frontend/App2/MVVM/ViewModel/product_detail_view_model.dart';
 import 'package:frontend/App2/MVVM/ViewModel/product_provider.dart';
 import 'package:frontend/App2/MVVM/Views/cart_screen.dart';
+import 'package:frontend/App2/MVVM/Views/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -12,10 +13,10 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
-        ChangeNotifierProvider(create: (context) => ProductProvider()),
-        ChangeNotifierProvider(create: (context) => ProductDetailViewModel()),
-        ChangeNotifierProvider(create: (context) => CategoryViewModel()),
         ChangeNotifierProvider(create: (context) => CartViewModel()),
+        ChangeNotifierProvider(create: (context) => ProductProvider()),
+        ChangeNotifierProvider(create: (context) => CategoryViewModel()),
+        ChangeNotifierProvider(create: (context) => ProductDetailViewModel()),
       ],
       child: MyApp(),
     ),

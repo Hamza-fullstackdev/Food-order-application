@@ -1,5 +1,5 @@
 class AppUrl {
-  static final base_url = "http://192.168.1.115:5000/api/v1/";
+  static final base_url = "http://192.168.100.10:5000/api/v1/";
   static final login_url = "${base_url}auth/login";
   static final signup_url = "${base_url}auth/register";
   static final refresh_url = "${base_url}auth/refresh-token";
@@ -11,6 +11,7 @@ class AppUrl {
       "${base_url}category/get-all-categories";
       
   static final post_add_to_cart = "${base_url}cart/add-to-cart";
+  static final get_cart_items = "${base_url}cart/get-cart";
 }
 
 class AppStrings {

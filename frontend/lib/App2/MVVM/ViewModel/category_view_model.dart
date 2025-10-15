@@ -17,7 +17,6 @@ class CategoryViewModel extends ChangeNotifier{
 
   
   int get selectedIndex => _selectedIndex;
-
   List<Categories> get categoryList => _categoryList;
 
 

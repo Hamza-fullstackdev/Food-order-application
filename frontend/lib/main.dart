@@ -12,10 +12,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => CategoryViewModel()),
 
         ChangeNotifierProvider(create: (_) => ProductViewModel()),
-                ChangeNotifierProvider(create: (_) => CartProvider()),
-
-
-        
+        ChangeNotifierProvider(create: (_) => CartProvider()),
       ],
       child: const MyApp(),
     ),
