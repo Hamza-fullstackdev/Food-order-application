@@ -10,6 +10,12 @@ class HomeProvider extends ChangeNotifier {
   ApiResponces _categoryResponse = ApiResponces();
   ApiResponces _productResponse = ApiResponces();
 
+  String _categoryId = '68c92b52cf8c8608857f0b9e';
+  int _categoryIndex = 0;
+
+  String get categoryId => _categoryId;
+  int get categoryIndex => _categoryIndex;
+
   ApiResponces get categoryResponse => _categoryResponse;
   ApiResponces get productResponse => _productResponse;
 
@@ -26,4 +32,12 @@ class HomeProvider extends ChangeNotifier {
     _productResponse = await _productRepo.getProductsByCategoryId(selectedId);
     notifyListeners();
   }
+
+  void updateCategoryId(String Id,int index){
+    _categoryId = Id;
+    _categoryIndex = index;
+    notifyListeners();
+  }
+
+
 }

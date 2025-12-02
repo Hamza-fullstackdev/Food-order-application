@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:frontend/MVVM/models/GetProduct_ByCategoryId.dart';
 
 class ProductDetailProvider extends ChangeNotifier {
-  final Map<String, String> _isRadio = {};
   int _quantity = 1;
 
+  final Map<String, String> _isRadio = {};
   final Map<String, Set<String>> _selectedSwitches = {};
 
   
   Map<String, String> get isRadio => _isRadio;
   Map<String, Set<String>> get isSwitch => _selectedSwitches;
+
   int get quantity => _quantity;
 
   void updateQuntity(int quantity) {
@@ -39,16 +40,15 @@ class ProductDetailProvider extends ChangeNotifier {
     invalidVarients.clear();
     for (final group in varients) {
       String groupId = group.sId.toString();
-      String groupName = group.name ?? "";
 
       if (group.isRequired == true) {
         if (group.maxSelectable == 1) {
           if (_isRadio[groupId] == null) {
-            invalidVarients.add(groupName);
+            invalidVarients.add(groupId);
           }
         } else {
           if ((_selectedSwitches[groupId]?.isEmpty ?? true)) {
-            invalidVarients.add(groupName);
+            invalidVarients.add(groupId);
           }
         }
       }

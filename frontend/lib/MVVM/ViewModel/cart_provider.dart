@@ -1,43 +1,82 @@
 import 'package:flutter/foundation.dart';
-import 'package:frontend/MVVM/models/cartModel.dart' show CartModel;
+import 'package:frontend/DataLayer/Response/api_responces.dart';
+import 'package:frontend/Repository/cart_repo.dart';
 
 class CartsProvider extends ChangeNotifier {
+  final CartRepo _cartRepo = CartRepo();
+
+  ApiResponces _addtoCartResponse = ApiResponces();
+  ApiResponces _getAllCartResponse = ApiResponces();
+  ApiResponces _removeItemResponse = ApiResponces();
+  ApiResponces _updateCartResponse = ApiResponces();
+
+  ApiResponces get addtoCartResponse => _addtoCartResponse;
+  ApiResponces get removeItemResponse => _removeItemResponse;
+  ApiResponces get updateCartResponse => _updateCartResponse;
+  ApiResponces get getAllCartResponse => _getAllCartResponse;
+
   bool _isEditing = false;
 
   int _price = 0;
   final Map<int, int> _quantity = {};
 
-  final List<CartModel> _cartList = [];
-
   int get price => _price;
   bool get isEditing => _isEditing;
 
-
-  List<CartModel> get cartList => _cartList;
   Map<int, int> get quantity => _quantity;
 
-  void setIsEditing(){
+  void setIsEditing() {
     _isEditing = !_isEditing;
     notifyListeners();
   }
-  void addToCart(CartModel productModel) {
-    _cartList.add(productModel);
-    _quantity[_cartList.length - 1] = productModel.quantity;
-    calculateTotal();
-  }
-  void removeToCart(int index) {
-    _cartList.removeAt(index);
-    calculateTotal();
+
+  Future<void> setCarts(
+    String productId,
+    int quantity,
+    List<Map<String, dynamic>> selectedOptions,
+  ) async {
+    _addtoCartResponse = ApiResponces.loading();
+    notifyListeners();
+    _addtoCartResponse = await _cartRepo.addItemToCart(
+      productId,
+      quantity,
+      selectedOptions,
+    );
+    notifyListeners();
   }
 
-  void increment(int index) {
+  Future<void> getCarts() async {
+    _getAllCartResponse = ApiResponces.loading();
+    notifyListeners();
+    _getAllCartResponse = await _cartRepo.getAllCarts();
+    notifyListeners();
+  }
+
+  Future<void> removeFromCart(String id) async {
+    _removeItemResponse = ApiResponces.loading();
+    notifyListeners();
+    _removeItemResponse = await _cartRepo.removeItemFromCart(id);
+    notifyListeners();
+  }
+
+  Future<void> updateCart(String cartItemId, int quantity) async {
+    _updateCartResponse = ApiResponces.loading();
+    notifyListeners();
+    _updateCartResponse = await _cartRepo.updateCart(cartItemId, quantity);
+    notifyListeners();
+  }
+
+  void increment(String cartItemId, int index) {
     _quantity[index] = (_quantity[index] ?? 1) + 1;
+    updateCart(cartItemId, _quantity[index]!);
+
     calculateTotal();
   }
 
-  void decrement(int index) {
+  void decrement(String cartItemId, int index) {
     if ((_quantity[index] ?? 1) > 1) {
       _quantity[index] = (_quantity[index] ?? 1) - 1;
+      updateCart(cartItemId, _quantity[index]!);
       calculateTotal();
     }
   }
@@ -48,12 +87,7 @@ class CartsProvider extends ChangeNotifier {
   }
 
   void calculateTotal() {
-    _price = 0; 
-
-    for (int i = 0; i < _cartList.length; i++) {
-      int qty = _quantity[i] ?? _cartList[i].quantity;
-      _price +=  _cartList[i].price * qty;
-    }
+    _price = 0;
 
     notifyListeners();
   }

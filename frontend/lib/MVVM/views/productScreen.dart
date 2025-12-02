@@ -10,7 +10,6 @@ import 'package:frontend/MVVM/views/cart_Screen.dart';
 import 'package:frontend/MVVM/views/mealMenu_Screen.dart';
 import 'package:frontend/MVVM/views/productDetailscreen.dart';
 import 'package:frontend/Resources/app_colors.dart';
-import 'package:frontend/Resources/app_messeges.dart';
 import 'package:frontend/Resources/app_routes.dart';
 import 'package:frontend/Resources/assetsPath.dart';
 import 'package:frontend/Resources/status.dart';
@@ -66,15 +65,10 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final provider = Provider.of<HomeProvider>(context);
-      await provider.fetchCategories();
-      if (provider.categoryResponse.status == ResponseStatus.success) {
-       
-        provider.fetchProductById('68c92b52cf8c8608857f0b9e');
-      } else {
-        MessageUtils.showSnackBar(context, provider.categoryResponse.message!);
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<HomeProvider>(context, listen: false);
+      provider.fetchCategories();
+      provider.fetchProductById(provider.categoryId);
     });
   }
 
@@ -331,227 +325,248 @@ class _ProductScreenState extends State<ProductScreen> {
                         const SizedBox(height: 30),
                         Consumer<HomeProvider>(
                           builder: (context, value, child) {
-                            
-                            if (value.categoryResponse.status == ResponseStatus.loading) {
-                              return CircularProgressIndicator();
-                            } else if(value.categoryResponse.status == ResponseStatus.failed){
-                              return TextViewNormal(text: 'Result is: ${value.categoryResponse.message!}');
-                            }
-                            final List<Categories> categoriesList = value.categoryResponse.data;
-                            return SizedBox(
-                              height: 45,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: categoriesList.length,
-                                itemBuilder: (context, index) {
-                                  final Categories category = categoriesList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                    ),
-                                    child: ChoiceChip(
-                                      showCheckmark: false,
-                                      label: Text(
-                                        category.name ?? '',
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16.7,
-                                          color: 0 == index
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
+                            if (value.categoryResponse.status ==
+                                ResponseStatus.success) {
+                              final List<Categories> categoriesList =
+                                  value.categoryResponse.data;
+                              return SizedBox(
+                                height: 45,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: categoriesList.length,
+                                  itemBuilder: (context, index) {
+                                    final Categories category =
+                                        categoriesList[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
                                       ),
-                                      avatar: SizedBox(
-                                        height: 70,
-                                        width: 70,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadiusGeometry.circular(20),
-                                          child: Image.network(
-                                            category.image ?? '',
-                                            fit: BoxFit.cover,
+                                      child: ChoiceChip(
+                                        showCheckmark: false,
+                                        label: Text(
+                                          category.name ?? '',
+                                          style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16.7,
+                                            color: value.categoryIndex == index
+                                                ? Colors.white
+                                                : Colors.black,
                                           ),
                                         ),
+                                        avatar: SizedBox(
+                                          height: 70,
+                                          width: 70,
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadiusGeometry.circular(
+                                                  20,
+                                                ),
+                                            child: Image.network(
+                                              category.image ?? '',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        selected: value.categoryIndex == index,
+                                        selectedColor:
+                                            AppColors.darkOrangeColor,
+                                        backgroundColor: Colors.white,
+                                        side: BorderSide(
+                                          color: 0 == index
+                                              ? Colors.transparent
+                                              : AppColors.darkOrangeColor,
+                                          width: 1.5,
+                                        ),
+                                        onSelected: (num) {
+                                          value.updateCategoryId(category.cId!, index);
+                                          value.fetchProductById(category.cId!);
+                                        },
                                       ),
-                                      selected: 0 == index,
-                                      selectedColor: AppColors.darkOrangeColor,
-                                      backgroundColor: Colors.white,
-                                      side: BorderSide(
-                                        color: 0 == index
-                                            ? Colors.transparent
-                                            : AppColors.darkOrangeColor,
-                                        width: 1.5,
-                                      ),
-                                      onSelected: (value) {},
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
+                                    );
+                                  },
+                                ),
+                              );
+                            } else if (value.categoryResponse.status ==
+                                ResponseStatus.failed) {
+                              return TextViewNormal(
+                                text:
+                                    'Result is: ${value.categoryResponse.message!}',
+                              );
+                            } else {
+                              return CircularProgressIndicator();
+                            }
                           },
                         ),
                         const SizedBox(height: 3),
                         Consumer<HomeProvider>(
                           builder: (context, value, child) {
-                            if (value.productResponse.status == ResponseStatus.loading) {
-                              return CircularProgressIndicator();
-                            } else if(value.productResponse.status == ResponseStatus.failed){
-                              return TextViewNormal(text: 'Result is: ${value.productResponse.message!}');
-                            }
-
-                            final List<Products> productsList =
-                                value.productResponse.data;
-                            return SizedBox(
-                              height: 250,
-                              child: ListView.builder(
-                                physics: const BouncingScrollPhysics(
-                                  parent: AlwaysScrollableScrollPhysics(),
-                                ),
-                                scrollDirection: Axis.horizontal,
-                                itemCount: productsList.length,
-                                itemBuilder: (context, index) {
-                                  final data = productsList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 8.0,
-                                      bottom: 8,
-                                      left: 4,
-                                    ),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                          context,
-                                          AppRoutes.productDetailPage,
-                                          arguments: [
-                                            productsList[0],
-                                            '4.3',
-                                            'Free',
-                                            '20 min',
-                                          ],
-                                        );
-                                      },
-                                      child: Container(
-                                        width: 160,
-                                        margin: const EdgeInsets.only(
-                                          right: 12,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            15,
+                            if (value.productResponse.status ==
+                                ResponseStatus.success) {
+                              final List<Products> productsList =
+                                  value.productResponse.data;
+                              return SizedBox(
+                                height: 250,
+                                child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(
+                                    parent: AlwaysScrollableScrollPhysics(),
+                                  ),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: productsList.length,
+                                  itemBuilder: (context, index) {
+                                    final data = productsList[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                        top: 8.0,
+                                        bottom: 8,
+                                        left: 4,
+                                      ),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            AppRoutes.productDetailPage,
+                                            arguments: [
+                                              productsList[0],
+                                              '4.3',
+                                              'Free',
+                                              '20 min',
+                                            ],
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 160,
+                                          margin: const EdgeInsets.only(
+                                            right: 12,
                                           ),
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.shade200,
-                                              blurRadius: 6,
-                                              spreadRadius: 2,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              15,
                                             ),
-                                          ],
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.star,
-                                                    color: Color(0xffFF9F06),
-                                                    size: 16,
-                                                  ),
-                                                  const SizedBox(width: 4),
-                                                  Text(
-                                                    "4.5",
-                                                    style: GoogleFonts.poppins(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Center(
-                                                child: Container(
-                                                  height: 100,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          10,
-                                                        ),
-                                                    image: DecorationImage(
-                                                      image: AssetImage(
-                                                        data.image ??
-                                                            AssetsPath
-                                                                .burgerPic,
-                                                      ),
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                data.name ?? 'N/A',
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              Text(
-                                                data.shortDescription ??
-                                                    'No description',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 10,
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                              const Spacer(),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "\$${data.price?.toString() ?? '0'}",
-                                                    style: GoogleFonts.poppins(
-                                                      color: AppColors
-                                                          .darkOrangeColor,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              CartPage(),
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: const Icon(
-                                                      size: 32,
-                                                      Icons.add_circle,
-                                                      color: AppColors
-                                                          .darkOrangeColor,
-                                                    ),
-                                                  ),
-                                                ],
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey.shade200,
+                                                blurRadius: 6,
+                                                spreadRadius: 2,
                                               ),
                                             ],
                                           ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.star,
+                                                      color: Color(0xffFF9F06),
+                                                      size: 16,
+                                                    ),
+                                                    const SizedBox(width: 4),
+                                                    Text(
+                                                      "4.5",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 8),
+                                                Center(
+                                                  child: Container(
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            10,
+                                                          ),
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                          data.image ??
+                                                              AssetsPath
+                                                                  .burgerPic,
+                                                        ),
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  data.name ?? 'N/A',
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  data.shortDescription ??
+                                                      'No description',
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 10,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                const Spacer(),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "\$${data.price?.toString() ?? '0'}",
+                                                      style: GoogleFonts.poppins(
+                                                        color: AppColors
+                                                            .darkOrangeColor,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    CartPage(),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: const Icon(
+                                                        size: 32,
+                                                        Icons.add_circle,
+                                                        color: AppColors
+                                                            .darkOrangeColor,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
+                                    );
+                                  },
+                                ),
+                              );
+                            } else if (value.productResponse.status ==
+                                ResponseStatus.failed) {
+                              return TextViewNormal(
+                                text:
+                                    'Result is: ${value.productResponse.message!}',
+                              );
+                            } else {
+                              return CircularProgressIndicator();
+                            }
                           },
                         ),
                         const SizedBox(height: 6),

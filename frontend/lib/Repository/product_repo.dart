@@ -8,13 +8,21 @@ import 'package:frontend/Resources/app_url.dart';
 class ProductRepo {
   final ProductInterface _products = ProductService();
 
-  Future<ApiResponces<List<Products>>> getProductsByCategoryId(String categoryId) async {
+  Future<ApiResponces<List<Products>>> getProductsByCategoryId(
+    String categoryId,
+  ) async {
     try {
+      final List<Products> productsList = [];
       final String url = '${ApiUrl.getProductsByCategoryIdUrl}$categoryId';
       final data = await _products.getProductsByCategoryId(url);
-      final List<Products> productsList = data['products'];
 
-      return ApiResponces.success(productsList);
+      if (data != null && data['products'] != null) {
+        for (var item in data['products']) {
+          productsList.add(Products.fromJson(item));
+        }
+        return ApiResponces.success(productsList);
+      }
+      return ApiResponces.error(data['message'] ?? 'No product found, please try again later!!');
     } catch (e) {
       if (e is ApiException) {
         return ApiResponces.error(e.message);

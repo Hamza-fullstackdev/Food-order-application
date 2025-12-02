@@ -32,6 +32,8 @@ void main() {
         ChangeNotifierProvider(create: (context) => PaymentMethodsProvider()),
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => HomeProvider()),
+        ChangeNotifierProvider(create: (context) => CartsProvider()),
+
 
 
       ],

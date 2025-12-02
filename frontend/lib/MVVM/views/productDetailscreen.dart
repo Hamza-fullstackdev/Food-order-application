@@ -1,13 +1,15 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/DataLayer/Response/api_responces.dart';
 import 'package:frontend/MVVM/ViewModel/cart_provider.dart';
 import 'package:frontend/MVVM/ViewModel/product_detail_provider.dart';
 import 'package:frontend/MVVM/models/GetProduct_ByCategoryId.dart';
-import 'package:frontend/MVVM/models/cartModel.dart';
 import 'package:frontend/Resources/app_colors.dart';
+import 'package:frontend/Resources/app_messeges.dart';
 import 'package:frontend/Resources/app_routes.dart';
+import 'package:frontend/Resources/status.dart';
 import 'package:frontend/Widgets/common_button.dart';
 import 'package:frontend/Widgets/text_view.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +61,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         bottomRight: Radius.circular(25),
                       ),
                       image: DecorationImage(
-                        image: AssetImage(productsModel.image!),
+                        image: NetworkImage(productsModel.image!),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -195,7 +197,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                             RadioListTile<String>(
                                               activeColor:
                                                   AppColors.orangeColor,
-                                              value: option.name!,
+                                              value: option.sId!,
                                               groupValue:
                                                   value.isRadio[groupId],
                                               title: TextViewNormal(
@@ -205,9 +207,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                 size: 16,
                                               ),
                                               onChanged: (selectedValue) {
+                                                print(groupId);
                                                 value.setSelectedRadio(
                                                   groupId,
-                                                  selectedValue!,
+                                                  
+                                                  option.sId!,
                                                 );
                                               },
                                             ),
@@ -217,7 +221,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         builder: (context, value, child) {
                                           final bool isChecked =
                                               value.isSwitch[groupId]?.contains(
-                                                option.name.toString(),
+                                                option.sId.toString(),
                                               ) ??
                                               false;
                                           return CheckboxListTile(
@@ -232,7 +236,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                             onChanged: (checked) {
                                               value.setSelectedSwitch(
                                                 groupId,
-                                                option.name!,
+                                                option.sId!,
                                               );
                                             },
                                           );
@@ -363,33 +367,47 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       Consumer<ProductDetailProvider>(
                         builder: (context, value, child) =>
                             ButtonContainerFilled(
-                              function: () {
-                                
-                                Provider.of<CartsProvider>(
+                              function: () async {
+                                final provider = Provider.of<CartsProvider>(
                                   context,
-                                  listen: false,
-                                ).addToCart(
-                                  CartModel(
-                                    productId: productsModel.sId!,
-                                    productName: productsModel.name!,
-                                    productImg: productsModel.image!,
-                                    quantity: value.quantity,
-                                    price: productsModel.price!,
-                                    selectedVarients: value.getSelectedOptions(productsModel.variantGroups!),
+                                  listen: false
+                                );
+                                await provider.setCarts(
+                                  productsModel.sId!,
+                                  value.quantity,
+                                  value.getSelectedOptions(
+                                    productsModel.variantGroups!,
                                   ),
                                 );
-                                Navigator.popAndPushNamed(
-                                  context,
-                                  AppRoutes.cartPage,
-                                );
+                                if (provider.addtoCartResponse.status ==
+                                    ResponseStatus.success) {
+                                  Navigator.popAndPushNamed(
+                                    context,
+                                    AppRoutes.cartPage,
+                                  );
+                                } else if (provider.addtoCartResponse.status ==
+                                    ResponseStatus.failed) {
+                                  MessageUtils.showSnackBar(
+                                    context,
+                                    provider.addtoCartResponse.message!,
+                                  );
+                                  print(provider.addtoCartResponse.message!);
+                                }
                               },
                               width: MediaQuery.of(context).size.width,
-                              child: TextViewNormal(
-                                text: 'Add to Cart',
-                                colors: AppColors.whiteColor,
-                                size: 16,
-                                isBold: true,
-                              ),
+                              child:
+                                  Provider.of<CartsProvider>(
+                                        context,
+                                        listen: false,
+                                      ).addtoCartResponse.status ==
+                                      ApiResponces.loading
+                                  ? Center(child: CircularProgressIndicator())
+                                  : TextViewNormal(
+                                      text: 'Add to Cart',
+                                      colors: AppColors.whiteColor,
+                                      size: 16,
+                                      isBold: true,
+                                    ),
                             ),
                       ),
                     ],

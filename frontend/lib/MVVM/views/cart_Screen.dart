@@ -3,9 +3,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/MVVM/ViewModel/cart_provider.dart';
-import 'package:frontend/MVVM/models/cartModel.dart';
+import 'package:frontend/MVVM/models/cart_model.dart';
 import 'package:frontend/Resources/app_colors.dart';
 import 'package:frontend/Resources/app_routes.dart';
+import 'package:frontend/Resources/status.dart';
 import 'package:frontend/Widgets/common_button.dart';
 import 'package:frontend/Widgets/text_view.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class _CartPageState extends State<CartPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<CartsProvider>(context, listen: false).calculateTotal();
+      Provider.of<CartsProvider>(context, listen: false).getCarts();
     });
   }
 
@@ -88,6 +90,19 @@ class _CartPageState extends State<CartPage> {
                   Expanded(
                     child: Consumer<CartsProvider>(
                       builder: (context, value, child) {
+                        if (value.getAllCartResponse.status ==
+                            ResponseStatus.loading) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (value.getAllCartResponse.status ==
+                            ResponseStatus.failed) {
+                          return Center(
+                            child: TextViewNormal(
+                              text: value.getAllCartResponse.message!,
+                            ),
+                          );
+                        }
+                        final List<CartModel> cartList =
+                            value.getAllCartResponse.data!;
                         return Container(
                           margin: EdgeInsets.only(
                             bottom: MediaQuery.of(context).size.height * 0.33,
@@ -95,12 +110,11 @@ class _CartPageState extends State<CartPage> {
                           child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: value.cartList.length,
+                            itemCount: cartList.length,
                             padding: EdgeInsets.symmetric(vertical: 16),
                             itemBuilder: (context, index) {
-                              final CartModel currentCart =
-                                  value.cartList[index];
-                                  
+                              final CartModel currentCart = cartList[index];
+
                               return Container(
                                 margin: EdgeInsets.symmetric(vertical: 8),
 
@@ -139,8 +153,8 @@ class _CartPageState extends State<CartPage> {
                                           ),
                                           color: AppColors.greyColorlight,
                                           image: DecorationImage(
-                                            image: AssetImage(
-                                              currentCart.productImg,
+                                            image: NetworkImage(
+                                              currentCart.product!.image!,
                                             ),
                                             fit: BoxFit.cover,
                                           ),
@@ -172,15 +186,19 @@ class _CartPageState extends State<CartPage> {
                                                         .spaceBetween,
                                                 children: [
                                                   TextViewNormal(
-                                                    text:
-                                                        currentCart.productName,
+                                                    text: currentCart
+                                                        .product!
+                                                        .name!,
                                                     size: 14,
                                                     colors:
                                                         AppColors.whiteColor,
                                                   ),
                                                   InkWell(
                                                     onTap: () {
-                                                      value.removeToCart(index);
+                                                      cartList.remove(index);
+                                                      value.removeFromCart(
+                                                        currentCart.sId!,
+                                                      );
                                                     },
                                                     child: Visibility(
                                                       visible: value.isEditing,
@@ -203,27 +221,36 @@ class _CartPageState extends State<CartPage> {
                                               ),
                                             ),
                                             SizedBox(
-                                              
                                               child: Wrap(
                                                 direction: Axis.horizontal,
                                                 alignment: WrapAlignment.start,
                                                 spacing: 5,
                                                 runSpacing: 3,
                                                 children: currentCart
-                                                    .selectedVarients
+                                                    .product!
+                                                    .variantGroups!
                                                     .map((varient) {
-                                                     final List optionIds =
-                                                          varient['optionIds'];
-                                                      return TextViewNormal(
-                                                        text:
-                                                            '${optionIds.join(', ')}, ',
-                                                        colors: AppColors
-                                                            .darkGreyColor,
+                                                      return Wrap(
+                                                        direction:
+                                                            Axis.horizontal,
+                                                        alignment:
+                                                            WrapAlignment.start,
+                                                        children: varient.options!.map((
+                                                          options,
+                                                        ) {
+                                                          return TextViewNormal(
+                                                            text:
+                                                                '${options.name}, ',
+                                                            colors: AppColors
+                                                                .darkGreyColor,
+                                                          );
+                                                        }).toList(),
                                                       );
                                                     })
                                                     .toList(),
                                               ),
                                             ),
+
                                             const Spacer(),
                                             Container(
                                               margin: EdgeInsets.only(
@@ -250,12 +277,9 @@ class _CartPageState extends State<CartPage> {
                                                           value,
                                                           child,
                                                         ) => TextViewNormal(
-                                                          text:
-                                                              (currentCart.price *
-                                                                      (value.quantity[index] ??
-                                                                          currentCart
-                                                                              .quantity))
-                                                                  .toString(),
+                                                          text: currentCart
+                                                              .itemTotal
+                                                              .toString(),
                                                           size: 14,
                                                           colors: AppColors
                                                               .whiteColor,
@@ -266,8 +290,9 @@ class _CartPageState extends State<CartPage> {
                                                         MainAxisSize.min,
                                                     children: [
                                                       InkWell(
-                                                        onTap: () {
-                                                          value.decrement(
+                                                        onTap: ()  {
+                                                           value.decrement(
+                                                            currentCart.sId!,
                                                             index,
                                                           );
                                                         },
@@ -287,12 +312,7 @@ class _CartPageState extends State<CartPage> {
                                                       ),
                                                       SizedBox(width: 10),
                                                       TextViewLarge(
-                                                        text:
-                                                            (value.quantity[index] ??
-                                                                    currentCart
-                                                                        .quantity)
-                                                                .toString()
-                                                                .toString(),
+                                                        text:currentCart.quantity.toString(),
                                                         isBold: true,
                                                         size: 14,
                                                         colors: AppColors
@@ -300,8 +320,9 @@ class _CartPageState extends State<CartPage> {
                                                       ),
                                                       SizedBox(width: 10),
                                                       InkWell(
-                                                        onTap: () {
-                                                          value.increment(
+                                                        onTap: ()  {
+                                                           value.increment(
+                                                            currentCart.sId!,
                                                             index,
                                                           );
                                                         },
@@ -444,7 +465,10 @@ class _CartPageState extends State<CartPage> {
                         builder: (context, value, child) =>
                             ButtonContainerFilled(
                               function: () {
-                                Navigator.pushNamed(context, AppRoutes.paymentPage);
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.paymentPage,
+                                );
                               },
                               height: 57,
                               width: MediaQuery.of(context).size.width,

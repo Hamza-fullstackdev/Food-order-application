@@ -19,7 +19,7 @@ class CategoryService extends CategoryInterface {
 
       final response = await http
           .get(Uri.parse(url), headers: headers)
-          .timeout(const Duration(seconds: 20));
+          .timeout(const Duration(seconds: 10));
 
       return _handleSuccessOrError(response);
     } on SocketException {

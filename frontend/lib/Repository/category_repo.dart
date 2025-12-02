@@ -10,11 +10,18 @@ class CategoryRepo {
 
   Future<ApiResponces<List<Categories>>> getCategories() async {
     try {
+      final List<Categories> categoriesList = [];
       final String url = ApiUrl.allCategoriesUrl;
       final data = await _categoriesInterface.getCategories(url);
-      final List<Categories> categoryList = data['categories'];
+      if (data != null && data['categories'] != null) {
+        for (var item in data['categories']) {
+          categoriesList.add(Categories.fromJson(item));
+        }
+      return ApiResponces.success(categoriesList);
 
-      return ApiResponces.success(categoryList);
+      }
+      return ApiResponces.error(data['message'] ?? "No Category found, please try again!!");
+
     } catch (e) {
       if (e is ApiException) {
         return ApiResponces.error(e.message);

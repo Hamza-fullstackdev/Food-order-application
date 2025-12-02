@@ -10,14 +10,15 @@ class TokenValidation {
     try {
       final pref = await SharedPreferences.getInstance();
 
-      String? accessToken = pref.getString('accessToken');
-      String? refreshToken = pref.getString('refreshToken');
+      String? accessToken = await pref.getString('accessToken');
+      String? refreshToken = await pref.getString('refreshToken');
 
       if (accessToken == null || refreshToken == null) {
         throw ApiExceptions.unauthorized();
       }
 
       if (!JwtDecoder.isExpired(accessToken)) {
+        print('access token is : $accessToken');
         return accessToken;
       }
 
@@ -26,10 +27,9 @@ class TokenValidation {
         'Authorization': 'Bearer $refreshToken',
       };
 
-      final response = await http.post(
-        Uri.parse(ApiUrl.refreshTokenUrl),
-        headers: headers,
-      );
+      final response = await http
+          .post(Uri.parse(ApiUrl.refreshTokenUrl), headers: headers)
+          .timeout(Duration(seconds: 20));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = jsonDecode(response.body);
@@ -73,8 +73,7 @@ class TokenValidation {
       case 500:
         throw ApiExceptions.internalServerError();
       default:
-        throw ApiExceptions.unknown(
-            "Unexpected error: ${response.statusCode}");
+        throw ApiExceptions.unknown("Unexpected error: ${response.statusCode}");
     }
   }
 }
