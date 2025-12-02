@@ -3,6 +3,7 @@ import 'package:frontend/DataLayer/Network/Services/auth_service.dart';
 import 'package:frontend/DataLayer/Response/api_responces.dart';
 import 'package:frontend/DataLayer/api_exceptions.dart';
 import 'package:frontend/Resources/app_url.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepo {
   final AuthInterfaces _authInterfaces = AuthService();
@@ -14,8 +15,21 @@ class AuthRepo {
     try {
       final url = ApiUrl.loginUrl;
 
-      final body = {'email': email, 'password': pass};
-      final data = await _authInterfaces.postResquest(body, url);
+      final body = {"email": email, "password": pass};
+      final Map<String, dynamic> data = await _authInterfaces
+          .postRequestForLogin(body, url);
+        print(data);
+      if (data.containsKey('user')) {
+
+        print(data['user']['accessToken']);
+        final preference = await SharedPreferences.getInstance();
+        final String accessToken = data['user']['accessToken'];
+        final String refreshToken = data['user']['refreshToken'];
+
+        preference.setString('accessToken', accessToken);
+        preference.setString('refreshToken', refreshToken);
+      }
+
       return ApiResponces.success(data);
     } catch (e) {
       if (e is ApiException) {
@@ -37,7 +51,6 @@ class AuthRepo {
       return ApiResponces.success(data);
     } catch (e) {
       if (e is ApiException) {
-        print(e.message);
 
         return ApiResponces.error(e.message);
       }

@@ -147,6 +147,7 @@ class _SignupPageState extends State<SignupScreen> {
                         SizedBox(height: 5),
                         EditTextForm(
                           controller: _emailController,
+                          isCapital: false,
                           hintMessage: 'enter email here...',
                           errorMessage: "Email should not be empty",
                           keyboardType: TextInputType.emailAddress,
@@ -224,6 +225,9 @@ class _SignupPageState extends State<SignupScreen> {
 
                                   if (value.signUpResponse.status ==
                                       ResponseStatus.success) {
+                                        MessageUtils.showSnackBar(context,
+                                      'Sign up successfull',
+                                    );
                                     Navigator.pop(context);
                                   } else if (value.signUpResponse.status ==
                                       ResponseStatus.failed) {

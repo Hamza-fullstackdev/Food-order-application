@@ -32,18 +32,12 @@ class AuthService implements AuthInterfaces {
 
       return _handleErrorResponse(response);
     } on SocketException {
-      print('print 1');
       throw ApiExceptions.noInternet();
     } on TimeoutException {
-      print('print 2');
       throw ApiExceptions.timeout();
     } on FormatException {
-      print('print 3');
-
       throw ApiExceptions.parseError();
     } catch (e) {
-      print(e.toString());
-
       throw ApiExceptions.unknown(e.toString());
     }
   }
@@ -51,7 +45,7 @@ class AuthService implements AuthInterfaces {
   dynamic _handleErrorResponse(http.Response response) {
     switch (response.statusCode) {
       case 400:
-        throw ApiExceptions.badRequest("Invalid request payload.");
+        throw ApiExceptions.badRequest("User not found");
       case 401:
         throw ApiExceptions.unauthorized();
       case 403:
@@ -66,6 +60,38 @@ class AuthService implements AuthInterfaces {
         throw ApiExceptions.internalServerError();
       default:
         throw ApiExceptions.unknown("Unexpected error: ${response.statusCode}");
+    }
+  }
+
+  @override
+  Future postRequestForLogin(Map<String, dynamic> body, String url) async {
+    try {
+      final headers = {'Content-Type': 'application/json'};
+      final response = await http.post(
+        Uri.parse(url),
+        headers: headers,
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final decode = jsonDecode(response.body);
+
+        if (decode is Map<String, dynamic>) {
+          return decode;
+        } else {
+          return {"statusCode": response.statusCode, "body": decode};
+        }
+      }
+
+      return _handleErrorResponse(response);
+    } on SocketException {
+      throw ApiExceptions.noInternet();
+    } on TimeoutException {
+      throw ApiExceptions.timeout();
+    } on FormatException {
+      throw ApiExceptions.parseError();
+    } catch (e) {
+      throw ApiExceptions.unknown(e.toString());
     }
   }
 }

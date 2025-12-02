@@ -40,11 +40,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.loginPage,
+      initialRoute: AppRoutes.splashPage,
       routes: {
         AppRoutes.splashPage: (context) => SplashScreen(),
         AppRoutes.loginPage: (context) => LoginScreen(),

@@ -114,6 +114,7 @@ class _LoginPageState extends State<LoginScreen> {
                         SizedBox(height: 5),
                         EditTextForm(
                           controller: _emailController,
+                          isCapital: false,
                           hintMessage: 'enter email here...',
                           errorMessage: "Email should not be empty",
                           keyboardType: TextInputType.emailAddress,

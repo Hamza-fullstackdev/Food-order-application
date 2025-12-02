@@ -24,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       
     SharedPreferences pref = await SharedPreferences.getInstance();
     _token = pref.getString("refreshToken");
+    print(_token);
       if(!mounted){return ;} 
         if(_token == null || JwtDecoder.isExpired(_token!)){
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => IntroPage()));
