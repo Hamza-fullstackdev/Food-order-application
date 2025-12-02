@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/MVVM/ViewModel/home_provider.dart';
 import 'package:frontend/MVVM/models/GetProduct_ByCategoryId.dart';
 import 'package:frontend/MVVM/models/categoryModle.dart';
 import 'package:frontend/MVVM/views/ProfileScreen.dart';
@@ -9,9 +10,13 @@ import 'package:frontend/MVVM/views/cart_Screen.dart';
 import 'package:frontend/MVVM/views/mealMenu_Screen.dart';
 import 'package:frontend/MVVM/views/productDetailscreen.dart';
 import 'package:frontend/Resources/app_colors.dart';
+import 'package:frontend/Resources/app_messeges.dart';
 import 'package:frontend/Resources/app_routes.dart';
 import 'package:frontend/Resources/assetsPath.dart';
+import 'package:frontend/Resources/status.dart';
+import 'package:frontend/Widgets/text_view.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -58,127 +63,23 @@ class _ProductScreenState extends State<ProductScreen> {
       ],
     },
   ];
-  final List<Categories> categories = [
-    Categories(
-      cId: '1',
-      userId: '2',
-      name: 'Pizza',
-      createdAt: 'today',
-      updatedAt: 'tomorow',
-      iV: 2,
-      image: AssetsPath.cashCard,
-      imageId: '0',
-    ),
-    Categories(
-      cId: '1',
-      userId: '2',
-      name: 'Pizza',
-      createdAt: 'today',
-      updatedAt: 'tomorow',
-      iV: 2,
-      image: AssetsPath.menuIcon,
-      imageId: '0',
-    ),
-    Categories(
-      cId: '1',
-      userId: '2',
-      name: 'Pizza',
-      createdAt: 'today',
-      updatedAt: 'tomorow',
-      iV: 2,
-      image: AssetsPath.menuIcon,
-      imageId: '0',
-    ),
-  ];
-
-  final List<Products> _productList = [
-    // Pizza Point Products (menuId: 1, restaurantIndex: 0)
-    Products(
-      sId: '1',
-      userId: 'user_restaurant_1',
-      categoryId: '1',
-      subcategoryId: null,
-      name: 'Margherita Pizza',
-      shortDescription: 'Classic Italian pizza with fresh mozzarella',
-      description:
-          'Authentic Italian Margherita pizza with fresh tomato sauce, premium mozzarella cheese, and fresh basil leaves on a hand-tossed crust.',
-      price: 899,
-      image: AssetsPath.foodImg,
-      imageId: 'img_001',
-      createdAt: '2024-01-15T10:30:00Z',
-      updatedAt: '2024-01-15T10:30:00Z',
-      iV: 0,
-      variantGroups: [
-        VariantGroups(
-          sId: '1',
-          name: 'Size',
-          isRequired: true,
-          maxSelectable: 1,
-          options: [
-            Options(sId: '1', name: 'Small (10")', price: 0),
-            Options(sId: '2', name: 'Medium (12")', price: 300),
-            Options(sId: '3', name: 'Large (14")', price: 500),
-          ],
-        ),
-        VariantGroups(
-          sId: '2',
-          name: 'Extra Toppings',
-          isRequired: false,
-          maxSelectable: 3,
-          options: [
-            Options(sId: '4', name: 'Extra Cheese', price: 150),
-            Options(sId: '5', name: 'Olives', price: 100),
-            Options(sId: '6', name: 'Mushrooms', price: 120),
-          ],
-        ),
-      ],
-    ),
-    Products(
-      sId: '1',
-      userId: 'user_restaurant_1',
-      categoryId: '1', // Pizza category
-      subcategoryId: null,
-      name: 'Margherita Pizza',
-      shortDescription: 'Classic Italian pizza with fresh mozzarella',
-      description:
-          'Authentic Italian Margherita pizza with fresh tomato sauce, premium mozzarella cheese, and fresh basil leaves on a hand-tossed crust.',
-      price: 899,
-      image: AssetsPath.foodImg,
-      imageId: 'img_001',
-      createdAt: '2024-01-15T10:30:00Z',
-      updatedAt: '2024-01-15T10:30:00Z',
-      iV: 0,
-      variantGroups: [
-        VariantGroups(
-          sId: '1',
-          name: 'Size',
-          isRequired: true,
-          maxSelectable: 1,
-          options: [
-            Options(sId: '1', name: 'Small (10")', price: 0),
-            Options(sId: '2', name: 'Medium (12")', price: 300),
-            Options(sId: '3', name: 'Large (14")', price: 500),
-          ],
-        ),
-        VariantGroups(
-          sId: '2',
-          name: 'Extra Toppings',
-          isRequired: false,
-          maxSelectable: 3,
-          options: [
-            Options(sId: '4', name: 'Extra Cheese', price: 150),
-            Options(sId: '5', name: 'Olives', price: 100),
-            Options(sId: '6', name: 'Mushrooms', price: 120),
-          ],
-        ),
-      ],
-    ),
-  ];
-
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final provider = Provider.of<HomeProvider>(context);
+      await provider.fetchCategories();
+      if (provider.categoryResponse.status == ResponseStatus.success) {
+       
+        provider.fetchProductById('68c92b52cf8c8608857f0b9e');
+      } else {
+        MessageUtils.showSnackBar(context, provider.categoryResponse.message!);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -428,197 +329,230 @@ class _ProductScreenState extends State<ProductScreen> {
                           ),
                         ),
                         const SizedBox(height: 30),
-                        SizedBox(
-                          height: 45,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: categories.length,
-                            itemBuilder: (context, index) {
-                              final Categories category = categories[index];
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                ),
-                                child: ChoiceChip(
-                                  showCheckmark: false,
-                                  label: Text(
-                                    category.name ?? '',
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16.7,
-                                      color: 0 == index
-                                          ? Colors.white
-                                          : Colors.black,
+                        Consumer<HomeProvider>(
+                          builder: (context, value, child) {
+                            
+                            if (value.categoryResponse.status == ResponseStatus.loading) {
+                              return CircularProgressIndicator();
+                            } else if(value.categoryResponse.status == ResponseStatus.failed){
+                              return TextViewNormal(text: 'Result is: ${value.categoryResponse.message!}');
+                            }
+                            final List<Categories> categoriesList = value.categoryResponse.data;
+                            return SizedBox(
+                              height: 45,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: categoriesList.length,
+                                itemBuilder: (context, index) {
+                                  final Categories category = categoriesList[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
                                     ),
-                                  ),
-                                  avatar: SizedBox(
-                                    height: 70,
-                                    width: 70,
-                                    child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadiusGeometry.circular(20),
-                                      child: Image.network(
-                                        category.image ?? '',
-                                        fit: BoxFit.cover,
+                                    child: ChoiceChip(
+                                      showCheckmark: false,
+                                      label: Text(
+                                        category.name ?? '',
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16.7,
+                                          color: 0 == index
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
                                       ),
+                                      avatar: SizedBox(
+                                        height: 70,
+                                        width: 70,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadiusGeometry.circular(20),
+                                          child: Image.network(
+                                            category.image ?? '',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      selected: 0 == index,
+                                      selectedColor: AppColors.darkOrangeColor,
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(
+                                        color: 0 == index
+                                            ? Colors.transparent
+                                            : AppColors.darkOrangeColor,
+                                        width: 1.5,
+                                      ),
+                                      onSelected: (value) {},
                                     ),
-                                  ),
-                                  selected: 0 == index,
-                                  selectedColor: AppColors.darkOrangeColor,
-                                  backgroundColor: Colors.white,
-                                  side: BorderSide(
-                                    color: 0 == index
-                                        ? Colors.transparent
-                                        : AppColors.darkOrangeColor,
-                                    width: 1.5,
-                                  ),
-                                  onSelected: (value) {},
-                                ),
-                              );
-                            },
-                          ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         ),
                         const SizedBox(height: 3),
-                        SizedBox(
-                          height: 250,
-                          child: ListView.builder(
-                            physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics(),
-                            ),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: _productList.length,
-                            itemBuilder: (context, index) {
-                              final data = _productList[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                  top: 8.0,
-                                  bottom: 8,
-                                  left: 4,
+                        Consumer<HomeProvider>(
+                          builder: (context, value, child) {
+                            if (value.productResponse.status == ResponseStatus.loading) {
+                              return CircularProgressIndicator();
+                            } else if(value.productResponse.status == ResponseStatus.failed){
+                              return TextViewNormal(text: 'Result is: ${value.productResponse.message!}');
+                            }
+
+                            final List<Products> productsList =
+                                value.productResponse.data;
+                            return SizedBox(
+                              height: 250,
+                              child: ListView.builder(
+                                physics: const BouncingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics(),
                                 ),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                      context,
-                                      AppRoutes.productDetailPage,
-                                      arguments: [
-                                        _productList[0],
-                                        '4.3',
-                                        'Free',
-                                        '20 min',
-                                      ],
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 160,
-                                    margin: const EdgeInsets.only(right: 12),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.shade200,
-                                          blurRadius: 6,
-                                          spreadRadius: 2,
-                                        ),
-                                      ],
+                                scrollDirection: Axis.horizontal,
+                                itemCount: productsList.length,
+                                itemBuilder: (context, index) {
+                                  final data = productsList[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 8.0,
+                                      bottom: 8,
+                                      left: 4,
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          AppRoutes.productDetailPage,
+                                          arguments: [
+                                            productsList[0],
+                                            '4.3',
+                                            'Free',
+                                            '20 min',
+                                          ],
+                                        );
+                                      },
+                                      child: Container(
+                                        width: 160,
+                                        margin: const EdgeInsets.only(
+                                          right: 12,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            15,
+                                          ),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.shade200,
+                                              blurRadius: 6,
+                                              spreadRadius: 2,
+                                            ),
+                                          ],
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              const Icon(
-                                                Icons.star,
-                                                color: Color(0xffFF9F06),
-                                                size: 16,
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                    Icons.star,
+                                                    color: Color(0xffFF9F06),
+                                                    size: 16,
+                                                  ),
+                                                  const SizedBox(width: 4),
+                                                  Text(
+                                                    "4.5",
+                                                    style: GoogleFonts.poppins(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              const SizedBox(width: 4),
+                                              const SizedBox(height: 8),
+                                              Center(
+                                                child: Container(
+                                                  height: 100,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                    image: DecorationImage(
+                                                      image: AssetImage(
+                                                        data.image ??
+                                                            AssetsPath
+                                                                .burgerPic,
+                                                      ),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
                                               Text(
-                                                "4.5",
+                                                data.name ?? 'N/A',
                                                 style: GoogleFonts.poppins(
+                                                  fontSize: 14,
                                                   fontWeight: FontWeight.w600,
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Center(
-                                            child: Container(
-                                              height: 100,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(10),
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                    data.image ??
-                                                        AssetsPath.burgerPic,
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            data.name ?? 'N/A',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          Text(
-                                            data.shortDescription ??
-                                                'No description',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 10,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
                                               Text(
-                                                "\$${data.price?.toString() ?? '0'}",
+                                                data.shortDescription ??
+                                                    'No description',
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.poppins(
-                                                  color:
-                                                      AppColors.darkOrangeColor,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 10,
+                                                  color: Colors.grey,
                                                 ),
                                               ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CartPage(),
+                                              const Spacer(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "\$${data.price?.toString() ?? '0'}",
+                                                    style: GoogleFonts.poppins(
+                                                      color: AppColors
+                                                          .darkOrangeColor,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
-                                                  );
-                                                },
-                                                child: const Icon(
-                                                  size: 32,
-                                                  Icons.add_circle,
-                                                  color:
-                                                      AppColors.darkOrangeColor,
-                                                ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CartPage(),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: const Icon(
+                                                      size: 32,
+                                                      Icons.add_circle,
+                                                      color: AppColors
+                                                          .darkOrangeColor,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         ),
                         const SizedBox(height: 6),
                         Row(

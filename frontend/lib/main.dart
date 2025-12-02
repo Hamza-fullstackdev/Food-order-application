@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/MVVM/ViewModel/auth_provider.dart';
 import 'package:frontend/MVVM/ViewModel/cart_provider.dart';
+import 'package:frontend/MVVM/ViewModel/home_provider.dart';
 import 'package:frontend/MVVM/ViewModel/payment_provider.dart';
 import 'package:frontend/MVVM/ViewModel/product_detail_provider.dart';
 import 'package:frontend/MVVM/views/add_address_page.dart';
@@ -30,6 +31,8 @@ void main() {
         ChangeNotifierProvider(create: (context) => ProductDetailProvider()),
         ChangeNotifierProvider(create: (context) => PaymentMethodsProvider()),
         ChangeNotifierProvider(create: (context) => AuthProvider()),
+        ChangeNotifierProvider(create: (context) => HomeProvider()),
+
 
       ],
       child: const MyApp(),

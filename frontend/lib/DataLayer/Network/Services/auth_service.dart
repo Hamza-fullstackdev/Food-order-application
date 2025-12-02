@@ -30,7 +30,7 @@ class AuthService implements AuthInterfaces {
         }
       }
 
-      return _handleErrorResponse(response);
+      return _handleErrorResponse(response,jsonDecode(response.body)['message']);
     } on SocketException {
       throw ApiExceptions.noInternet();
     } on TimeoutException {
@@ -42,10 +42,10 @@ class AuthService implements AuthInterfaces {
     }
   }
 
-  dynamic _handleErrorResponse(http.Response response) {
+  dynamic _handleErrorResponse(http.Response response,String message) {
     switch (response.statusCode) {
       case 400:
-        throw ApiExceptions.badRequest("User not found");
+        throw ApiExceptions.badRequest(message);
       case 401:
         throw ApiExceptions.unauthorized();
       case 403:
@@ -53,9 +53,9 @@ class AuthService implements AuthInterfaces {
       case 404:
         throw ApiExceptions.notFound();
       case 409:
-        throw ApiExceptions.conflict("User already exists.");
+        throw ApiExceptions.conflict(message);
       case 422:
-        throw ApiExceptions.validationError("Validation failed.");
+        throw ApiExceptions.validationError(message);
       case 500:
         throw ApiExceptions.internalServerError();
       default:
@@ -83,7 +83,7 @@ class AuthService implements AuthInterfaces {
         }
       }
 
-      return _handleErrorResponse(response);
+      return _handleErrorResponse(response,jsonDecode(response.body)['message']);
     } on SocketException {
       throw ApiExceptions.noInternet();
     } on TimeoutException {
