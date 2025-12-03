@@ -159,6 +159,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           colorClickableText: AppColors.orangeColor,
                           trimLength: kIsWeb ? 350 : 120,
                         ),
+                        SizedBox(height: 20),
+
                         ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           scrollDirection: Axis.vertical,
@@ -169,8 +171,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 TextViewNormal(
+                                  isBold: true,
+                                  colors: AppColors.darkOrangeColor,
                                   text:
-                                      productsModel.variantGroups![index].name!,
+                                      productsModel
+                                              .variantGroups![index]
+                                              .isRequired ??
+                                          false
+                                      ? '${productsModel.variantGroups![index].name} *'
+                                      : productsModel
+                                            .variantGroups![index]
+                                            .name!,
                                 ),
                                 ListView.builder(
                                   itemCount: productsModel
@@ -210,8 +221,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                 print(groupId);
                                                 value.setSelectedRadio(
                                                   groupId,
-                                                  
+
                                                   option.sId!,
+                                                  productsModel.variantGroups!,
+                                                  option.price!,
                                                 );
                                               },
                                             ),
@@ -237,6 +250,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                               value.setSelectedSwitch(
                                                 groupId,
                                                 option.sId!,
+                                                productsModel.variantGroups!,
+                                                option.price!,
                                               );
                                             },
                                           );
@@ -288,8 +303,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         children: [
                           Consumer<ProductDetailProvider>(
                             builder: (context, value, child) => TextViewNormal(
-                              text:
-                                  '\$ ${(value.quantity * productsModel.price!).toStringAsFixed(2)}',
+                              text: '\$ ${(value.quantity * value.price)}',
                               size: kIsWeb ? 28 : 24,
                               isBold: true,
                             ),
@@ -370,28 +384,39 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               function: () async {
                                 final provider = Provider.of<CartsProvider>(
                                   context,
-                                  listen: false
+                                  listen: false,
                                 );
-                                await provider.setCarts(
-                                  productsModel.sId!,
-                                  value.quantity,
-                                  value.getSelectedOptions(
-                                    productsModel.variantGroups!,
-                                  ),
-                                );
-                                if (provider.addtoCartResponse.status ==
-                                    ResponseStatus.success) {
-                                  Navigator.popAndPushNamed(
-                                    context,
-                                    AppRoutes.cartPage,
+                                if (value.validateVarients(
+                                  productsModel.variantGroups!,
+                                )) {
+                                  await provider.setCarts(
+                                    productsModel.sId!,
+                                    value.quantity,
+                                    value.getSelectedOptions(
+                                      productsModel.variantGroups!,
+                                    ),
                                   );
-                                } else if (provider.addtoCartResponse.status ==
-                                    ResponseStatus.failed) {
+                                  if (provider.addtoCartResponse.status ==
+                                      ResponseStatus.success) {
+                                    Navigator.popAndPushNamed(
+                                      context,
+                                      AppRoutes.cartPage,
+                                    );
+                                  } else if (provider
+                                          .addtoCartResponse
+                                          .status ==
+                                      ResponseStatus.failed) {
+                                    MessageUtils.showSnackBar(
+                                      context,
+                                      provider.addtoCartResponse.message!,
+                                    );
+                                    print(provider.addtoCartResponse.message!);
+                                  }
+                                } else {
                                   MessageUtils.showSnackBar(
                                     context,
-                                    provider.addtoCartResponse.message!,
+                                    'Please Select required varients...',
                                   );
-                                  print(provider.addtoCartResponse.message!);
                                 }
                               },
                               width: MediaQuery.of(context).size.width,

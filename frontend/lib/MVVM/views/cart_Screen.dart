@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, collection_methods_unrelated_type
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -277,9 +277,7 @@ class _CartPageState extends State<CartPage> {
                                                           value,
                                                           child,
                                                         ) => TextViewNormal(
-                                                          text: currentCart
-                                                              .itemTotal
-                                                              .toString(),
+                                                          text: (value.price[index]! * value.quantity[index]!).toString(),
                                                           size: 14,
                                                           colors: AppColors
                                                               .whiteColor,
@@ -290,7 +288,7 @@ class _CartPageState extends State<CartPage> {
                                                         MainAxisSize.min,
                                                     children: [
                                                       InkWell(
-                                                        onTap: ()  {
+                                                        onTap: () async {
                                                            value.decrement(
                                                             currentCart.sId!,
                                                             index,
@@ -312,7 +310,7 @@ class _CartPageState extends State<CartPage> {
                                                       ),
                                                       SizedBox(width: 10),
                                                       TextViewLarge(
-                                                        text:currentCart.quantity.toString(),
+                                                        text:value.quantity[index].toString(),
                                                         isBold: true,
                                                         size: 14,
                                                         colors: AppColors
@@ -320,7 +318,7 @@ class _CartPageState extends State<CartPage> {
                                                       ),
                                                       SizedBox(width: 10),
                                                       InkWell(
-                                                        onTap: ()  {
+                                                        onTap: () async {
                                                            value.increment(
                                                             currentCart.sId!,
                                                             index,
@@ -435,7 +433,7 @@ class _CartPageState extends State<CartPage> {
                               Consumer<CartsProvider>(
                                 builder: (context, value, child) =>
                                     TextViewNormal(
-                                      text: (value.price).toString(),
+                                      text: (value.totalPrice).toString(),
                                       size: 14,
                                       colors: AppColors.blackColor,
                                     ),

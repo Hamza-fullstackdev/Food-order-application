@@ -34,8 +34,6 @@ void main() {
         ChangeNotifierProvider(create: (context) => HomeProvider()),
         ChangeNotifierProvider(create: (context) => CartsProvider()),
 
-
-
       ],
       child: const MyApp(),
     ),

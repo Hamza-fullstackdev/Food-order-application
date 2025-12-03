@@ -80,6 +80,7 @@ class CartRepo {
       final Map<String, dynamic> body = {'quantity': quantity};
 
       final url = '${ApiUrl.updateCartUrl}$cartItemId';
+      print(url);
       final data = await _cartInterface.updateCart(body,url);
       print(data);
       if (data != null && data['message'] != null) {

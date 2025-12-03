@@ -3,30 +3,54 @@ import 'package:frontend/MVVM/models/GetProduct_ByCategoryId.dart';
 
 class ProductDetailProvider extends ChangeNotifier {
   int _quantity = 1;
+  int _price = 0;
 
   final Map<String, String> _isRadio = {};
   final Map<String, Set<String>> _selectedSwitches = {};
 
-  
   Map<String, String> get isRadio => _isRadio;
   Map<String, Set<String>> get isSwitch => _selectedSwitches;
 
   int get quantity => _quantity;
+  int get price => _price;
 
   void updateQuntity(int quantity) {
     _quantity = quantity;
+
     notifyListeners();
   }
 
-  void setSelectedRadio(String groupId, String selectedId) {
+  void setSelectedRadio(
+    String groupId,
+    String selectedId,
+    List<VariantGroups> variantGroups,
+    int updatedPrice
+  ) {
     _isRadio[groupId] = selectedId;
+    updatePrice(variantGroups,updatedPrice);
     notifyListeners();
   }
 
-  void setSelectedSwitch(String groupId, String selectedId) {
+  void updatePrice(List<VariantGroups> variantGroups,int updatedPrice) {
+    for (var item in variantGroups) {
+      if (item.isRequired!) {
+        _price = _price == 0 ? item.options![0].price! : updatedPrice;
+      }
+    }
+    notifyListeners();
+  }
+
+  void setSelectedSwitch(
+    String groupId,
+    String selectedId,
+    List<VariantGroups> variantGroups,
+    int updatedPrice
+  ) {
     if (!_selectedSwitches.containsKey(groupId)) {
       _selectedSwitches[groupId] = {};
     }
+    updatePrice(variantGroups,updatedPrice);
+
     if (_selectedSwitches[groupId]!.contains(selectedId)) {
       _selectedSwitches[groupId]!.remove(selectedId);
     } else {
