@@ -25,7 +25,7 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    MultiProvider(
+    MultiProvider( 
       providers: [
         ChangeNotifierProvider(create: (context) => CartsProvider()),
         ChangeNotifierProvider(create: (context) => ProductDetailProvider()),

@@ -3,7 +3,8 @@ import 'package:frontend/MVVM/models/GetProduct_ByCategoryId.dart';
 
 class ProductDetailProvider extends ChangeNotifier {
   int _quantity = 1;
-  int _price = 0;
+  int _totalPrice = 0;
+  int _basePrice = 0;
 
   final Map<String, String> _isRadio = {};
   final Map<String, Set<String>> _selectedSwitches = {};
@@ -12,54 +13,46 @@ class ProductDetailProvider extends ChangeNotifier {
   Map<String, Set<String>> get isSwitch => _selectedSwitches;
 
   int get quantity => _quantity;
-  int get price => _price;
+  int get totalPrice => _totalPrice;
+  int get basePrice => _basePrice;
+  List<String> invalidVarients = [];
+
+  List<VariantGroups>? groupCahce;
 
   void updateQuntity(int quantity) {
     _quantity = quantity;
-
-    notifyListeners();
+    calculatePrice(groupCahce!);
   }
 
   void setSelectedRadio(
     String groupId,
     String selectedId,
     List<VariantGroups> variantGroups,
-    int updatedPrice
+    int updatedPrice,
   ) {
+    groupCahce = variantGroups;
     _isRadio[groupId] = selectedId;
-    updatePrice(variantGroups,updatedPrice);
-    notifyListeners();
-  }
-
-  void updatePrice(List<VariantGroups> variantGroups,int updatedPrice) {
-    for (var item in variantGroups) {
-      if (item.isRequired!) {
-        _price = _price == 0 ? item.options![0].price! : updatedPrice;
-      }
-    }
-    notifyListeners();
+    calculatePrice(variantGroups);
   }
 
   void setSelectedSwitch(
     String groupId,
     String selectedId,
     List<VariantGroups> variantGroups,
-    int updatedPrice
+    int updatedPrice,
   ) {
-    if (!_selectedSwitches.containsKey(groupId)) {
-      _selectedSwitches[groupId] = {};
-    }
-    updatePrice(variantGroups,updatedPrice);
+    groupCahce = variantGroups;
+
+    _selectedSwitches.putIfAbsent(groupId, () => {});
 
     if (_selectedSwitches[groupId]!.contains(selectedId)) {
       _selectedSwitches[groupId]!.remove(selectedId);
     } else {
       _selectedSwitches[groupId]!.add(selectedId);
     }
-    notifyListeners();
+    calculatePrice(variantGroups);
   }
 
-  List<String> invalidVarients = [];
   bool validateVarients(List<VariantGroups> varients) {
     invalidVarients.clear();
     for (final group in varients) {
@@ -102,5 +95,45 @@ class ProductDetailProvider extends ChangeNotifier {
     }
 
     return result;
+  }
+
+  void calculatePrice(List<VariantGroups> groups) {
+    if (groups == null) return;
+
+    int basePrice = 0;
+    int totalPrice = 0;
+
+    for (var currentVarient in groups) {
+      final groupId = currentVarient.sId!;
+
+      if (currentVarient.maxSelectable! == 1) {
+        final selectedId = _isRadio[groupId];
+
+        if (selectedId != null) {
+          final option = currentVarient.options!.firstWhere(
+            (op) => op.sId! == selectedId,
+          );
+
+          if (currentVarient.isRequired!) {
+            basePrice = option.price! ?? 0;
+          } else {
+            totalPrice = totalPrice + option.price! ?? 0;
+          }
+        }
+      } else {
+        final selectedIds = _selectedSwitches[groupId] ?? {};
+
+        for (var item in selectedIds) {
+          final options = currentVarient.options!.firstWhere(
+            (op) => op.sId! == item,
+          );
+          totalPrice = totalPrice + options.price!;
+        }
+      }
+    }
+    _basePrice = basePrice;
+    _totalPrice = (_basePrice + totalPrice) * quantity;
+
+    notifyListeners();
   }
 }

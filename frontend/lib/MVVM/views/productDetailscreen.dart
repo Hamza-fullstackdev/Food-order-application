@@ -29,6 +29,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   String rating = '';
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPersistentFrameCallback((_) {});
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final List args = ModalRoute.of(context)!.settings.arguments as List;
@@ -218,7 +224,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                 size: 16,
                                               ),
                                               onChanged: (selectedValue) {
-                                                print(groupId);
                                                 value.setSelectedRadio(
                                                   groupId,
 
@@ -303,7 +308,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         children: [
                           Consumer<ProductDetailProvider>(
                             builder: (context, value, child) => TextViewNormal(
-                              text: '\$ ${(value.quantity * value.price)}',
+                              text: '\$ ${value.totalPrice}',
                               size: kIsWeb ? 28 : 24,
                               isBold: true,
                             ),
