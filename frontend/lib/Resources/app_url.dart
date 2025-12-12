@@ -1,5 +1,5 @@
 class ApiUrl {
-  static final String baseUrl = 'http://192.168.8.11:5000/api/v1/';
+  static final String baseUrl = 'http://192.168.8.12:5000/api/v1/';
   static final String registerUrl = '${baseUrl}auth/register';
   static final String loginUrl = '${baseUrl}auth/login';
 
@@ -13,4 +13,7 @@ class ApiUrl {
   static final String removeItemFromCart= '${baseUrl}cart/remove-from-cart/';
   static final String updateCartUrl= '${baseUrl}cart/update-cart/';
   static final String getAllCartsUrl = '${baseUrl}cart/get-cart';
+
+  static final String submitOrders = '${baseUrl}order/create-order';
+  
 }

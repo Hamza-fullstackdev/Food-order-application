@@ -2,10 +2,13 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/MVVM/ViewModel/order_provider.dart';
 import 'package:frontend/MVVM/ViewModel/payment_provider.dart';
 import 'package:frontend/Resources/app_colors.dart';
+import 'package:frontend/Resources/app_messeges.dart';
 import 'package:frontend/Resources/app_routes.dart';
 import 'package:frontend/Resources/assetsPath.dart';
+import 'package:frontend/Resources/status.dart';
 import 'package:frontend/Widgets/common_button.dart';
 import 'package:frontend/Widgets/text_view.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +29,7 @@ class _PaymentPageState extends State<PaymentPage> {
           children: [
             SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.only(top: 24,bottom: 140),
+                padding: EdgeInsets.only(top: 24, bottom: 140),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -86,7 +89,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                     ),
                                     decoration: BoxDecoration(
                                       color: AppColors.lightGreyColor2,
-                                      border: value.currentPaymentMethod == index
+                                      border:
+                                          value.currentPaymentMethod == index
                                           ? BoxBorder.all(
                                               width: 2,
                                               color: AppColors.orangeColor,
@@ -112,11 +116,12 @@ class _PaymentPageState extends State<PaymentPage> {
                                                   height: 20,
                                                   width: 20,
                                                   decoration: BoxDecoration(
-                                                    color:
-                                                        AppColors.darkOrangeColor,
+                                                    color: AppColors
+                                                        .darkOrangeColor,
                                                     shape: BoxShape.circle,
                                                     border: BoxBorder.all(
-                                                      color: AppColors.whiteColor,
+                                                      color:
+                                                          AppColors.whiteColor,
                                                       width: 2,
                                                     ),
                                                   ),
@@ -124,7 +129,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                                     child: Icon(
                                                       Icons.done,
                                                       size: 12,
-                                                      color: AppColors.whiteColor,
+                                                      color:
+                                                          AppColors.whiteColor,
                                                     ),
                                                   ),
                                                 ),
@@ -152,7 +158,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         if (value.currentPaymentMethod == 0) {
                           return const SizedBox();
                         }
-              
+
                         if (value.cardList.isNotEmpty) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -208,7 +214,9 @@ class _PaymentPageState extends State<PaymentPage> {
                                                     color: AppColors.blackColor
                                                         .withOpacity(0.1),
                                                     borderRadius:
-                                                        BorderRadius.circular(10),
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
                                                     image: DecorationImage(
                                                       image: AssetImage(
                                                         value
@@ -240,7 +248,8 @@ class _PaymentPageState extends State<PaymentPage> {
                                                   child: Icon(
                                                     Icons.done,
                                                     size: 20,
-                                                    color: AppColors.orangeColor,
+                                                    color:
+                                                        AppColors.orangeColor,
                                                   ),
                                                 ),
                                               )
@@ -253,7 +262,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             ),
                           );
                         }
-              
+
                         return Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
                           height: 280,
@@ -346,13 +355,15 @@ class _PaymentPageState extends State<PaymentPage> {
                       },
                     ),
                     SizedBox(height: 10),
-              
+
                     Consumer<PaymentMethodsProvider>(
                       builder: (context, value, child) =>
                           value.currentPaymentMethod == 0
                           ? SizedBox()
                           : Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
                               child: ButtonContainerFilled(
                                 width: MediaQuery.sizeOf(context).width,
                                 color: AppColors.whiteColor,
@@ -402,15 +413,35 @@ class _PaymentPageState extends State<PaymentPage> {
                     SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ButtonContainerFilled(
-                        width: MediaQuery.of(context).size.width,
-                        function: () {
-                          Navigator.popAndPushNamed(context, AppRoutes.paymentSuccess);
-                        },
-                        child: TextViewNormal(
-                          text: 'Pay & Confirm',
-                          colors: AppColors.whiteColor,
-                        ),
+                      child: Consumer<OrderProvider>(
+                        builder: (context, value, child) =>
+                            ButtonContainerFilled(
+                              width: MediaQuery.of(context).size.width,
+                              function: () {
+                                value.submitOrders();
+                                if (value.orderResponse.status ==
+                                    ResponseStatus.success) {
+                                  Navigator.popAndPushNamed(
+                                    context,
+                                    AppRoutes.paymentSuccess,
+                                  );
+                                } else if (value.orderResponse.status ==
+                                    ResponseStatus.failed) {
+                                  MessageUtils.showSnackBar(
+                                    context,
+                                    value.orderResponse.message!,
+                                  );
+                                }
+                              },
+                              child:
+                                  value.orderResponse.status ==
+                                      ResponseStatus.loading
+                                  ? Center(child: CircularProgressIndicator())
+                                  : TextViewNormal(
+                                      text: 'Pay & Confirm',
+                                      colors: AppColors.whiteColor,
+                                    ),
+                            ),
                       ),
                     ),
                   ],

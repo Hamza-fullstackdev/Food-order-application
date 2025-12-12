@@ -97,7 +97,7 @@ class ProductDetailProvider extends ChangeNotifier {
     return result;
   }
 
-  void calculatePrice(List<VariantGroups> groups) {
+  void calculatePrice(List<VariantGroups>? groups) {
     if (groups == null) return;
 
     int basePrice = 0;
@@ -115,9 +115,9 @@ class ProductDetailProvider extends ChangeNotifier {
           );
 
           if (currentVarient.isRequired!) {
-            basePrice = option.price! ?? 0;
+            basePrice = option.price ?? 0;
           } else {
-            totalPrice = totalPrice + option.price! ?? 0;
+            totalPrice = totalPrice + (option.price ?? 0);
           }
         }
       } else {
