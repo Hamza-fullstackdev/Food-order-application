@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -417,8 +417,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         builder: (context, value, child) =>
                             ButtonContainerFilled(
                               width: MediaQuery.of(context).size.width,
-                              function: () {
-                                value.submitOrders();
+                              function: () async {
+                                await value.submitOrders();
                                 if (value.orderResponse.status ==
                                     ResponseStatus.success) {
                                   Navigator.popAndPushNamed(

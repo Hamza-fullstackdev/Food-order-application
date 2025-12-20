@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/MVVM/ViewModel/address_provider.dart';
 import 'package:frontend/MVVM/ViewModel/auth_provider.dart';
 import 'package:frontend/MVVM/ViewModel/cart_provider.dart';
 import 'package:frontend/MVVM/ViewModel/home_provider.dart';
+import 'package:frontend/MVVM/ViewModel/order_provider.dart';
 import 'package:frontend/MVVM/ViewModel/payment_provider.dart';
 import 'package:frontend/MVVM/ViewModel/product_detail_provider.dart';
 import 'package:frontend/MVVM/views/add_address_page.dart';
+import 'package:frontend/MVVM/views/all_addresses_page.dart';
 import 'package:frontend/MVVM/views/add_card_page.dart';
 import 'package:frontend/MVVM/views/call_screen.dart';
 import 'package:frontend/MVVM/views/cart_Screen.dart';
@@ -24,16 +27,17 @@ import 'package:frontend/Widgets/bottomNavigation.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+
   runApp(
-    MultiProvider( 
+    MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CartsProvider()),
         ChangeNotifierProvider(create: (context) => ProductDetailProvider()),
         ChangeNotifierProvider(create: (context) => PaymentMethodsProvider()),
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => HomeProvider()),
-        ChangeNotifierProvider(create: (context) => CartsProvider()),
-
+        ChangeNotifierProvider(create: (context) => OrderProvider()),
+        ChangeNotifierProvider(create: (context) => AddressProvider()),
       ],
       child: const MyApp(),
     ),
@@ -42,7 +46,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +62,14 @@ class MyApp extends StatelessWidget {
         AppRoutes.productDetailPage: (context) => ProductDetailPage(),
         AppRoutes.cartPage: (context) => CartPage(),
         AppRoutes.paymentPage: (context) => PaymentPage(),
-        AppRoutes.addAddressPage: (context) => AddressesPage(),
+        AppRoutes.addAddressPage: (context) => AddAddress(),
+        AppRoutes.allAddressPage: (context) => AllAddressesPage(),
         AppRoutes.addCardPage: (context) => AddCard(),
         AppRoutes.paymentSuccess: (context) => PaymentSuccess(),
         AppRoutes.trackOrder: (context) => TrackOrder(),
         AppRoutes.chatScreen: (context) => ChatScreen(),
         AppRoutes.callScreen: (context) => CallScreen(),
-        AppRoutes.bottomSheet:(context) => FoodCourierBottomNav()
+        AppRoutes.bottomSheet: (context) => FoodCourierBottomNav(),
       },
     );
   }

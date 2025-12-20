@@ -10,15 +10,14 @@ class TokenValidation {
     try {
       final pref = await SharedPreferences.getInstance();
 
-      String? accessToken = await pref.getString('accessToken');
-      String? refreshToken = await pref.getString('refreshToken');
+      String? accessToken =  pref.getString('accessToken');
+      String? refreshToken =  pref.getString('refreshToken');
 
       if (accessToken == null || refreshToken == null) {
         throw ApiExceptions.unauthorized();
       }
 
       if (!JwtDecoder.isExpired(accessToken)) {
-        print('access token is : $accessToken');
         return accessToken;
       }
 

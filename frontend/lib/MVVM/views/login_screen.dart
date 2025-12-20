@@ -1,6 +1,7 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: curly_braces_in_flow_control_structures, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:frontend/MVVM/ViewModel/address_provider.dart';
 import 'package:frontend/MVVM/ViewModel/auth_provider.dart';
 import 'package:frontend/MVVM/views/edit_text.dart';
 import 'package:frontend/Resources/app_colors.dart';
@@ -194,6 +195,10 @@ class _LoginPageState extends State<LoginScreen> {
 
                                   if (value.loginResponse.status ==
                                       ResponseStatus.success) {
+                                    await Provider.of<AddressProvider>(
+                                      context,
+                                      listen: false,
+                                    ).checkLocationPermission();
                                     Navigator.pushNamed(
                                       context,
                                       AppRoutes.bottomSheet,

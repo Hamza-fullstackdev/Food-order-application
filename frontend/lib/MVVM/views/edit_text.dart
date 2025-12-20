@@ -7,9 +7,9 @@ class EditTextForm extends StatelessWidget {
   final String hintMessage;
   final String passError;
   final String confirmPassError;
-  final TextEditingController  controller;
-  final TextEditingController ? passController;
-  final IconButton ? icon;
+  final TextEditingController controller;
+  final TextEditingController? passController;
+  final IconButton? icon;
   final TextInputType keyboardType;
   final bool isCapital;
   final bool isConfirmPass;
@@ -31,7 +31,6 @@ class EditTextForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
       controller: controller,
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -49,7 +48,7 @@ class EditTextForm extends StatelessWidget {
       textInputAction: TextInputAction.next,
       obscureText: isPassword,
       obscuringCharacter: '*',
-      
+
       textCapitalization: isCapital
           ? TextCapitalization.sentences
           : TextCapitalization.none,
@@ -76,6 +75,7 @@ class EditTextForm extends StatelessWidget {
     );
   }
 }
+
 class EditTextNormal extends StatelessWidget {
   final bool suffix;
   final bool prefix;
@@ -135,34 +135,18 @@ class EditTextCardForm extends StatelessWidget {
   final String hintMessage;
   final String errorMessage;
   final TextEditingController controller;
-  final TextInputType keyboardType;
-  final bool isHidden; 
-  final List<TextInputFormatter>? inputFormatter;
-  final int? maxLength;
-  final TextInputAction textInputAction;
 
   const EditTextCardForm({
     super.key,
     required this.hintMessage,
     required this.controller,
     required this.errorMessage,
-    required this.keyboardType,
-    required this.textInputAction,
-    this.isHidden = false,
-    this.inputFormatter,
-    this.maxLength,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: keyboardType,
-      obscureText: isHidden,
-      obscuringCharacter: '*',
-      maxLength: maxLength,
-      inputFormatters: inputFormatter,
-      textInputAction: textInputAction,
       decoration: InputDecoration(
         hintText: hintMessage,
         hintStyle: TextStyle(color: AppColors.darkGreyColor),
@@ -186,18 +170,6 @@ class EditTextCardForm extends StatelessWidget {
           borderSide: BorderSide(color: Colors.red),
         ),
       ),
-
-      validator: (value) {
-        if (value == null || value.trim().isEmpty) {
-          return errorMessage;
-        }
-        if (keyboardType == TextInputType.number &&
-            maxLength != null &&
-            value.length != maxLength) {
-          return 'Invalid number';
-        }
-        return null;
-      },
     );
   }
 }

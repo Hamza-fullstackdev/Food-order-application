@@ -18,10 +18,8 @@ class AuthRepo {
       final body = {"email": email, "password": pass};
       final Map<String, dynamic> data = await _authInterfaces
           .postRequestForLogin(body, url);
-        print(data);
       if (data.containsKey('user')) {
 
-        print(data['user']['accessToken']);
         final preference = await SharedPreferences.getInstance();
         final String accessToken = data['user']['accessToken'];
         final String refreshToken = data['user']['refreshToken'];

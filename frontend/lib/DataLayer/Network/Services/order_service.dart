@@ -11,12 +11,12 @@ class OrderService extends OrderInterface {
   @override
   Future<dynamic> submitOrders(String url) async {
     try {
-      final accessToken = TokenValidation.validateToken();
+      final accessToken = await TokenValidation.validateToken();
       final headers = {'Authorization': 'Bearer $accessToken'};
 
       final response = await http.post(Uri.parse(url), headers: headers).timeout(Duration(seconds: 20));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final data = jsonEncode(response.body);
+        final data = jsonDecode(response.body);
         return data;
       }
       _handleErrorResponse(response);
@@ -65,6 +65,28 @@ class OrderService extends OrderInterface {
         throw ApiExceptions.unknown(
           "Unexpected error ${response.statusCode}: $message",
         );
+    }
+  }
+  
+  @override
+  Future<dynamic> getRoutes(String url, String apiKey) async {
+     try {
+      final headers = {'Authorization':  apiKey};
+
+      final response = await http.get(Uri.parse(url), headers: headers).timeout(Duration(seconds: 20));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body);
+        return data;
+      }
+      _handleErrorResponse(response);
+    } on SocketException {
+      throw ApiExceptions.noInternet();
+    } on TimeoutException {
+      throw ApiExceptions.timeout();
+    } on FormatException {
+      throw ApiExceptions.parseError();
+    } catch (e) {
+      throw ApiExceptions.unknown(e.toString());
     }
   }
 }

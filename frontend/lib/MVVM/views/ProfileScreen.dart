@@ -1,420 +1,332 @@
 // ignore_for_file: file_names
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/Resources/app_colors.dart';
 import 'package:frontend/Resources/assetsPath.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/Widgets/text_view.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  bool isToggled = true;
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Positioned(
-            top: 22,
-            left: -50,
-            right: -100,
-            child: Image.asset(
-              AssetsPath.mealMenuTopPattren,
-              height: 220,
-              width: MediaQuery.of(context).size.width + 150,
-              fit: BoxFit.contain,
-            ),
-          ),
-
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 32, horizontal: 20),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
                   children: [
-                    const SizedBox(height: 10),
-
-                    Row(
-                      children: [
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: const Color(0xffFFE5E5),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(
-                              CupertinoIcons.back,
-                              color: Color(0xffD61355),
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        Stack(
-                          children: [
-                            Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                color: const Color(0xffFFE5E5),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  CupertinoIcons.bell,
-                                  color: const Color(0xffD61355),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: 10.4,
-                              right: 13.7,
-                              child: Container(
-                                height: 5.8,
-                                width: 5.8,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffD61355),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: .7,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 15),
-
-                    Text(
-                      'Profile',
-                      style: GoogleFonts.poppins(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                    CircleAvatar(
+                      backgroundColor: AppColors.lightGreyColor2,
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.arrow_back_ios_new),
                       ),
                     ),
+                    SizedBox(width: 20),
+                    TextViewNormal(
+                      text: "Profile",
+                      colors: AppColors.blackColor,
+                    ),
+                  ],
+                ),
+                CircleAvatar(
+                  backgroundColor: AppColors.lightGreyColor,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.more_horiz),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                Container(
+                  height: 80,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage(AssetsPath.profilePic,),fit: BoxFit.cover
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextViewNormal(text: 'Vishal Khadok'),
+                    TextViewNormal(
+                      text: 'I love fast food',
+                      colors: AppColors.darkGreyColor,
+                    ),
+                  ],
+                ),
+              ],
+            ),
 
-                    const SizedBox(height: 30),
-
-                    Center(
-                      child: Stack(
+            SizedBox(height: 20),
+            Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: AppColors.lightGreyColor2,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
-                            width: 90,
-                            height: 90,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                colors: [Colors.yellow, Colors.red],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: AppColors.whiteColor,
+                                    child: Icon(
+                                      Icons.person_4_outlined,
+                                      color: AppColors.darkOrangeColor,
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  TextViewNormal(text: 'Personal Info'),
+                                ],
                               ),
-                            ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.arrow_forward_ios_rounded),
+                              ),
+                            ],
                           ),
-                          Positioned.fill(
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: ClipOval(
-                                child: Image.asset(
-                                  AssetsPath.profilePic,
-                                  fit: BoxFit.contain,
-                                ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: AppColors.whiteColor,
+                                    child: Icon(
+                                      Icons.favorite_border,
+                                      color: Colors.deepPurple,
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  TextViewNormal(text: 'Favourite'),
+                                ],
                               ),
-                            ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.arrow_forward_ios_rounded),
+                              ),
+                            ],
                           ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                color: const Color(0xffD61355),
-                                shape: BoxShape.circle,
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: AppColors.lightGreyColor2,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: AppColors.whiteColor,
+                                    child: Icon(
+                                      Icons.notifications_active_outlined,
+                                      color: Colors.orange.shade500,
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  TextViewNormal(text: 'Notifications'),
+                                ],
                               ),
-                              child: Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                                size: 18,
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.arrow_forward_ios_rounded),
                               ),
-                            ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: AppColors.whiteColor,
+                                    child: Icon(
+                                      Icons.payment,
+                                      color: Colors.blueAccent,
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  TextViewNormal(text: 'Payment Method'),
+                                ],
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.arrow_forward_ios_rounded),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
 
-                    const SizedBox(height: 37),
-
-                    Text(
-                      'Personal Info',
-                      style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Container(
+                      padding: EdgeInsets.all(20),
+                      height: MediaQuery.of(context).size.height * 0.35,
+                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.grey[200]!,
-                          width: 1.4,
-                        ),
+                        color: AppColors.lightGreyColor2,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 16,
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Your name',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    color: Color(0xff3B3B3B),
-                                  ),
-                                ),
-                                Text(
-                                  'Joyce Johnson',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 25),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Occupation',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    color: Color(0xff3B3B3B),
-                                  ),
-                                ),
-                                Text(
-                                  'Manager',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 25),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Employer',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    color: Color(0xff3B3B3B),
-                                  ),
-                                ),
-                                Text(
-                                  'Food Couriers',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 25),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Nigeria',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    color: Color(0xff3B3B3B),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isToggled = !isToggled;
-                                    });
-                                  },
-                                  child: Container(
-                                    width: 50,
-                                    height: 28,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: isToggled
-                                          ? const Color(0xffD61355)
-                                          : Colors.grey,
-                                    ),
-                                    child: AnimatedAlign(
-                                      alignment: isToggled
-                                          ? Alignment.centerRight
-                                          : Alignment.centerLeft,
-                                      duration: const Duration(
-                                        milliseconds: 200,
-                                      ),
-                                      child: Container(
-                                        width: 24,
-                                        height: 24,
-                                        margin: const EdgeInsets.all(2),
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: AppColors.whiteColor,
+                                    child: Icon(
+                                      Icons.question_mark_rounded,
+                                      color: Colors.deepOrangeAccent.shade400,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                  SizedBox(width: 20),
+                                  TextViewNormal(text: 'FAQs'),
+                                ],
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.arrow_forward_ios_rounded),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: AppColors.whiteColor,
+                                    child: Icon(
+                                      Icons.reviews_outlined,
+                                      color: Colors.cyan,
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  TextViewNormal(text: 'User Reviews'),
+                                ],
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.arrow_forward_ios_rounded),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor: AppColors.whiteColor,
+                                    child: Icon(
+                                      Icons.settings,
+                                      color: Colors.deepPurpleAccent,
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  TextViewNormal(text: 'Settings'),
+                                ],
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.arrow_forward_ios_rounded),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                        ],
                       ),
                     ),
-
-                    const SizedBox(height: 25),
-
-                    Text(
-                      'Contact Info',
-                      style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
+                    SizedBox(height: 20),
                     Container(
+                      padding: EdgeInsets.all(20),
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.grey[200]!,
-                          width: 1.4,
-                        ),
+                        color: AppColors.lightGreyColor2,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0,
-                          vertical: 16,
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Phone number',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    color: Color(0xff3B3B3B),
-                                  ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 20,
+                                backgroundColor: AppColors.whiteColor,
+                                child: Icon(
+                                  Icons.question_mark_rounded,
+                                  color: Colors.deepOrangeAccent.shade400,
                                 ),
-                                Text(
-                                  '+234 813 0400 445',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 25),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Email',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    color: Color(0xff3B3B3B),
-                                  ),
-                                ),
-                                Text(
-                                  'ekamcy@mail.com',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                              SizedBox(width: 20),
+                              TextViewNormal(text: 'FAQs'),
+                            ],
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.arrow_forward_ios_rounded),
+                          ),
+                        ],
                       ),
                     ),
-
-                    // const Spacer(),
-                    SizedBox(height: 40),
-
-                    SizedBox(
-                      width: double.infinity,
-                      height: 57,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xffD61355),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          'Edit',
-                          style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

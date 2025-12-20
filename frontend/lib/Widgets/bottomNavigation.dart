@@ -22,7 +22,7 @@ class _FoodCourierBottomNavState extends State<FoodCourierBottomNav> {
     ProductScreen(),
     CartPage(),
     ChatScreen(),
-    ProfileScreen(),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {

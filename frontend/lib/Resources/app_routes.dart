@@ -10,6 +10,7 @@ class AppRoutes {
  static final String cartPage = '/cartPage';
 
  static final String paymentPage = '/paymentPage';
+ static final String allAddressPage = '/allAddressPage';
  static final String addAddressPage = '/addAddressPage';
  static final String addCardPage = '/addCardPage';
  static final String paymentSuccess = '/paymentSuccess';

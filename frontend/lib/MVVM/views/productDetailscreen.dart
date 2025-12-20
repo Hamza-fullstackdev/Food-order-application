@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously, file_names, unrelated_type_equality_checks
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -415,7 +415,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       context,
                                       provider.addtoCartResponse.message!,
                                     );
-                                    print(provider.addtoCartResponse.message!);
+                                    (provider.addtoCartResponse.message!);
                                   }
                                 } else {
                                   MessageUtils.showSnackBar(

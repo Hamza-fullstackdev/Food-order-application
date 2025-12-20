@@ -160,4 +160,27 @@ class CartService implements CartInterface {
       throw ApiExceptions.unknown(e.toString());
     }
   }
+  
+  @override
+  Future getSecretKey(String url, Map<String, double> body) async {
+   try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(body)
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final decode = jsonDecode(response.body);
+        return decode;
+      }
+      return _handleErrorResponse(response);
+    } on SocketException {
+      throw ApiExceptions.noInternet();
+    } on TimeoutException {
+      throw ApiExceptions.timeout();
+    } on FormatException {
+      throw ApiExceptions.parseError();
+    } catch (e) {
+      throw ApiExceptions.unknown(e.toString());
+    }
+  }
 }

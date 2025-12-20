@@ -1,6 +1,7 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: curly_braces_in_flow_control_structures, unused_field
 
 import 'package:flutter/material.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:frontend/MVVM/ViewModel/payment_provider.dart';
 import 'package:frontend/MVVM/views/edit_text.dart';
 import 'package:frontend/Resources/app_colors.dart';
@@ -117,18 +118,19 @@ class _AddCardState extends State<AddCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        
+
                         TextViewNormal(
                           text: 'CARD HOLDER NAME',
                           size: 14,
                           colors: AppColors.darkGreyColor,
                         ),
                         SizedBox(height: 5),
+                        
                         EditTextCardForm(
                           hintMessage: 'Enter the name on your card',
                           controller: _nameController,
                           errorMessage: 'Enter card holder name',
-                          keyboardType: TextInputType.name,
-                          textInputAction: TextInputAction.next,
                         ),
                         SizedBox(height: 10),
                         TextViewNormal(
@@ -141,10 +143,6 @@ class _AddCardState extends State<AddCard> {
                           hintMessage: '1234 5678 9012 3456',
                           controller: _cardNumController,
                           errorMessage: 'Card number is required',
-                          keyboardType: TextInputType.number,
-                          inputFormatter: [_cardFormatter],
-                          maxLength: 19,
-                          textInputAction: TextInputAction.next,
                         ),
                         SizedBox(height: 10),
                         TextViewNormal(
@@ -154,11 +152,6 @@ class _AddCardState extends State<AddCard> {
                         ),
                         SizedBox(height: 5),
                         TextFormField(
-                          controller: _expireDateController,
-                          keyboardType: TextInputType.number,
-                          obscuringCharacter: '*',
-                          inputFormatters: [_expiryFormatter],
-                          textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             hintText: 'MM/YY',
                             hintStyle: TextStyle(
@@ -224,10 +217,6 @@ class _AddCardState extends State<AddCard> {
                           hintMessage: '3-digit code (back of card)',
                           controller: _cvcController,
                           errorMessage: 'CVC is required',
-                          keyboardType: TextInputType.number,
-                          maxLength: 3,
-                          textInputAction: TextInputAction.done,
-                          isHidden: true,
                         ),
                       ],
                     ),
@@ -243,13 +232,13 @@ class _AddCardState extends State<AddCard> {
                     width: MediaQuery.of(context).size.width,
                     function: () {
                       if (_formKey.currentState!.validate()) {
-                        value.addNewCard(
-                          'Visa',
-                          _nameController.text,
-                          _cardNumController.text,
-                          _expireDateController.text,
-                          _cvcController.text,
-                        );
+                        // value.addNewCard(
+                        //   'Visa',
+                        //   _nameController.,
+                        //   _cardNumController.text,
+                        //   _expireDateController.text,
+                        //   _cvcController.text,
+                        // );
                         Navigator.pop(context);
                       }
                     },

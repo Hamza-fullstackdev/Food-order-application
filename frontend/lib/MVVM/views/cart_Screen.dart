@@ -1,14 +1,17 @@
-// ignore_for_file: file_names, collection_methods_unrelated_type
+// ignore_for_file: file_names, collection_methods_unrelated_type, use_build_context_synchronously
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/MVVM/ViewModel/address_provider.dart';
 import 'package:frontend/MVVM/ViewModel/cart_provider.dart';
 import 'package:frontend/MVVM/models/cart_model.dart';
 import 'package:frontend/Resources/app_colors.dart';
+import 'package:frontend/Resources/app_messeges.dart';
 import 'package:frontend/Resources/app_routes.dart';
 import 'package:frontend/Resources/status.dart';
 import 'package:frontend/Widgets/common_button.dart';
 import 'package:frontend/Widgets/text_view.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatefulWidget {
@@ -97,12 +100,12 @@ class _CartPageState extends State<CartPage> {
                             ResponseStatus.failed) {
                           return Center(
                             child: TextViewNormal(
-                              text: value.getAllCartResponse.message!,
+                              text: value.getAllCartResponse.message ?? '',
                             ),
                           );
                         }
                         final List<CartModel> cartList =
-                            value.getAllCartResponse.data!;
+                            value.getAllCartResponse.data ?? [];
                         return Container(
                           margin: EdgeInsets.only(
                             bottom: MediaQuery.of(context).size.height * 0.33,
@@ -277,7 +280,11 @@ class _CartPageState extends State<CartPage> {
                                                           value,
                                                           child,
                                                         ) => TextViewNormal(
-                                                          text: (value.price[index]! * value.quantity[index]!).toString(),
+                                                          text:
+                                                              (value.price[index]! *
+                                                                      value
+                                                                          .quantity[index]!)
+                                                                  .toString(),
                                                           size: 14,
                                                           colors: AppColors
                                                               .whiteColor,
@@ -289,7 +296,7 @@ class _CartPageState extends State<CartPage> {
                                                     children: [
                                                       InkWell(
                                                         onTap: () async {
-                                                           value.decrement(
+                                                          value.decrement(
                                                             currentCart.sId!,
                                                             index,
                                                           );
@@ -310,7 +317,9 @@ class _CartPageState extends State<CartPage> {
                                                       ),
                                                       SizedBox(width: 10),
                                                       TextViewLarge(
-                                                        text:value.quantity[index].toString(),
+                                                        text: value
+                                                            .quantity[index]
+                                                            .toString(),
                                                         isBold: true,
                                                         size: 14,
                                                         colors: AppColors
@@ -319,7 +328,7 @@ class _CartPageState extends State<CartPage> {
                                                       SizedBox(width: 10),
                                                       InkWell(
                                                         onTap: () async {
-                                                           value.increment(
+                                                          value.increment(
                                                             currentCart.sId!,
                                                             index,
                                                           );
@@ -386,15 +395,18 @@ class _CartPageState extends State<CartPage> {
                             size: 14,
                             colors: AppColors.darkBlack,
                           ),
-                          InkWell(
-                            onTap: () => Navigator.pushNamed(
-                              context,
-                              AppRoutes.addAddressPage,
-                            ),
-                            child: TextViewNormal(
-                              text: 'Edit',
-                              colors: AppColors.orangeColor,
-                              size: 16,
+                          Consumer<AddressProvider>(
+                            builder: (context, value, child) => InkWell(
+                              onTap: () => Navigator.pushNamed(
+                                context,
+                                AppRoutes.allAddressPage,
+                                arguments: value.latLng,
+                              ),
+                              child: TextViewNormal(
+                                text: 'Update',
+                                colors: AppColors.orangeColor,
+                                size: 16,
+                              ),
                             ),
                           ),
                         ],
@@ -408,11 +420,17 @@ class _CartPageState extends State<CartPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Center(
-                          child: TextViewNormal(
-                            text: '2118 Thornridge Cir. Syracuse',
-                            size: 12,
-                            // ignore: deprecated_member_use
-                            colors: AppColors.blackColor.withOpacity(0.7),
+                          child: Consumer<AddressProvider>(
+                            builder: (context, value, child) => Text(
+                              softWrap: true,
+                              maxLines: 2,
+                              value.currentAddress,
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xff4B5563),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -462,18 +480,35 @@ class _CartPageState extends State<CartPage> {
                       Consumer<CartsProvider>(
                         builder: (context, value, child) =>
                             ButtonContainerFilled(
-                              function: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoutes.paymentPage,
-                                );
+                              function: () async {
+                                final isPayment = await value
+                                    .setUpPayment();
+                                if (isPayment == true) {
+                                  MessageUtils.showSnackBar(
+                                    context,
+                                    "Payment Success",
+                                  );
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    AppRoutes.paymentSuccess,
+                                  );
+                                } else {
+                                  MessageUtils.showSnackBar(
+                                    context,
+                                    isPayment.toString(),
+                                  );
+                                }
                               },
                               height: 57,
                               width: MediaQuery.of(context).size.width,
-                              child: TextViewNormal(
-                                text: 'Place Order',
-                                colors: AppColors.whiteColor,
-                              ),
+                              child:
+                                  value.stripeResponse.status ==
+                                      ResponseStatus.loading
+                                  ? Center(child: CircularProgressIndicator())
+                                  : TextViewNormal(
+                                      text: 'Place Order',
+                                      colors: AppColors.whiteColor,
+                                    ),
                             ),
                       ),
                     ],

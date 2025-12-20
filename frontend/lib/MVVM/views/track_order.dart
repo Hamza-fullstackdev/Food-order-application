@@ -1,12 +1,52 @@
+// ignore_for_file: unused_field, deprecated_member_use
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/MVVM/ViewModel/order_provider.dart';
 import 'package:frontend/Resources/app_colors.dart';
 import 'package:frontend/Resources/app_routes.dart';
 import 'package:frontend/Resources/assetsPath.dart';
+import 'package:frontend/Resources/status.dart';
 import 'package:frontend/Widgets/text_view.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
-class TrackOrder extends StatelessWidget {
+class TrackOrder extends StatefulWidget {
   const TrackOrder({super.key});
+
+  @override
+  State<TrackOrder> createState() => _TrackOrderState();
+}
+
+class _TrackOrderState extends State<TrackOrder> {
+  late GoogleMapController _mapController;
+  LatLng _user = const LatLng(30.6667, 73.1000);
+  final LatLng _resturant = const LatLng(30.6726980, 73.1214628);
+
+
+  void _onMapCreated(GoogleMapController mapController) {
+    _mapController = mapController;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final provider = Provider.of<OrderProvider>(context, listen: false);
+
+      await provider.getRoutes(
+        _resturant,
+        _user,
+        'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjEwMDhlOGUzYjFmMDQ0OGZiMzE4ZmQ5OTg0YzVkYTU3IiwiaCI6Im11cm11cjY0In0=',
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _mapController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +54,72 @@ class TrackOrder extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            Container(color: AppColors.lightGreyColor2),
+            Container(
+              color: AppColors.lightGreyColor2,
+              child: Consumer<OrderProvider>(
+                builder: (context, value, child) {
+                  final polylinePoints =
+                      value.routesResponse.status == ResponseStatus.success
+                      ? value.routesResponse.data ?? []
+                      : [_resturant, _user];
+                  return GoogleMap(
+                    onMapCreated: _onMapCreated,
+                    onTap: (argument) {
+                      setState(() async {
+                        _user = argument;
+                        _mapController.moveCamera(
+                          CameraUpdate.newCameraPosition(
+                            CameraPosition(target: _user, zoom: 16.0),
+                          ),
+                        );
+                        await value.getRoutes(
+                          _resturant,
+                          argument,
+                          'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjEwMDhlOGUzYjFmMDQ0OGZiMzE4ZmQ5OTg0YzVkYTU3IiwiaCI6Im11cm11cjY0In0=',
+                        );
+                      });
+                    },
+
+                    polylines: {
+                      Polyline(
+                        polylineId: PolylineId("PolyLine"),
+                        color: AppColors.orangeColor,
+                        points: polylinePoints,
+                        width: 5,
+                        startCap: Cap.roundCap,
+                        endCap: Cap.squareCap,
+                      ),
+                    },
+                    markers: {
+                      Marker(markerId: MarkerId('Food App'), position: _user),
+                      Marker(
+                        markerId: MarkerId('Zaika Hub'),
+                        position: _resturant,
+                        icon: AssetMapBitmap(
+                          AssetsPath.burgerPic,
+                          width: 20,
+                          height: 20,
+                        ),
+                      ),
+                    },
+                    circles: {
+                      Circle(
+                        circleId: CircleId('Zaika Hub'),
+                        center: _resturant,
+                        radius: 350,
+                        strokeWidth: 0,
+                        fillColor: AppColors.darkOrangeColor.withOpacity(0.4),
+                      ),
+                    },
+                    buildingsEnabled: true,
+                    initialCameraPosition: CameraPosition(
+                      target: _user,
+                      zoom: 16.2,
+                    ),
+                  );
+                },
+              ),
+            ),
             DraggableScrollableSheet(
               maxChildSize: 0.7,
               initialChildSize: kIsWeb ? 0.25 : 0.15,

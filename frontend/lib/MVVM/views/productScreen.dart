@@ -1,7 +1,9 @@
-// ignore_for_file: deprecated_member_use, file_names
+// ignore_for_file: deprecated_member_use, file_names, avoid_types_as_parameter_names
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart' hide Card;
+import 'package:frontend/MVVM/ViewModel/address_provider.dart';
 import 'package:frontend/MVVM/ViewModel/home_provider.dart';
 import 'package:frontend/MVVM/models/GetProduct_ByCategoryId.dart';
 import 'package:frontend/MVVM/models/categoryModle.dart';
@@ -65,10 +67,11 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final provider = Provider.of<HomeProvider>(context, listen: false);
       provider.fetchCategories();
       provider.fetchProductById(provider.categoryId);
+      // await Stripe.instance.applySettings();
     });
   }
 
@@ -107,12 +110,20 @@ class _ProductScreenState extends State<ProductScreen> {
                         size: 20,
                       ),
                       const SizedBox(width: 4),
-                      Text(
-                        "Freedom way, Lekki phase",
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xff4B5563),
+                      Expanded(
+                        flex: 2,
+                        child: Consumer<AddressProvider>(
+                          
+                          builder: (context, value, child) => Text(
+                            softWrap: true,
+                            maxLines: 2,
+                            value.currentAddress,
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xff4B5563),
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -123,7 +134,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ProfileScreen(),
+                            builder: (context) => const ProfilePage(),
                           ),
                         );
                       },
@@ -378,7 +389,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                           width: 1.5,
                                         ),
                                         onSelected: (num) {
-                                          value.updateCategoryId(category.cId!, index);
+                                          value.updateCategoryId(
+                                            category.cId!,
+                                            index,
+                                          );
                                           value.fetchProductById(category.cId!);
                                         },
                                       ),

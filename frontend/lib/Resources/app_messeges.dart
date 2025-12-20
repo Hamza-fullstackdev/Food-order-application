@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:frontend/Resources/app_colors.dart';
 
 class MessageUtils {
   static void showToast(
@@ -23,7 +26,7 @@ class MessageUtils {
   static void showSnackBar(
     BuildContext context,
     String message, {
-    Color backgroundColor = Colors.black,
+    final backgroundColor = AppColors.darkBlack,
     int durationInSeconds = 2,
   }) {
     final snackBar = SnackBar(
@@ -37,11 +40,11 @@ class MessageUtils {
   static void showMaterialBanner(
     BuildContext context,
     String message, {
-    Color backgroundColor = Colors.blue,
+    Color backgroundColor = AppColors.darkBlack,
     int durationInSeconds = 3,
   }) {
     final banner = MaterialBanner(
-      content: Text(message),
+      content: Text(message,style: TextStyle(color: AppColors.whiteColor),),
       backgroundColor: backgroundColor,
       actions: [
         TextButton(

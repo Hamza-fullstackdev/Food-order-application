@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:frontend/DataLayer/Response/api_responces.dart';
 import 'package:frontend/Repository/category_repo.dart';

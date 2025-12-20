@@ -56,11 +56,8 @@ class CartRepo {
     }
   }
 
-  Future<ApiResponces<bool>> removeItemFromCart(
-    String categoryId,
-  ) async {
+  Future<ApiResponces<bool>> removeItemFromCart(String categoryId) async {
     try {
-
       final url = '${ApiUrl.removeItemFromCart}$categoryId';
       final data = await _cartInterface.removeItemFromCart(url);
       if (data != null && data['message'] != null) {
@@ -75,18 +72,33 @@ class CartRepo {
     }
   }
 
-  Future<ApiResponces> updateCart(String cartItemId,int quantity) async {
+  Future<ApiResponces> updateCart(String cartItemId, int quantity) async {
     try {
       final Map<String, dynamic> body = {'quantity': quantity};
 
       final url = '${ApiUrl.updateCartUrl}$cartItemId';
-      print(url);
-      final data = await _cartInterface.updateCart(body,url);
-      print(data);
+      final data = await _cartInterface.updateCart(body, url);
       if (data != null && data['message'] != null) {
         return ApiResponces.success(true);
       }
       return ApiResponces.error(data['message'] ?? 'unable to remove item');
+    } catch (e) {
+      if (e is ApiException) {
+        return ApiResponces.error(e.message);
+      }
+      return ApiResponces.error("Unexpected error: ${e.toString()}");
+    }
+  }
+
+  Future<ApiResponces<String>> getSecretKey(double amount) async {
+    try {
+      final Map<String, double> body = {'amount': amount};
+      final url = ApiUrl.paymentUrl;
+      final data = await _cartInterface.getSecretKey(url, body);
+      if (data != null && data['clientSecret'] != null) {
+        return ApiResponces.success(data['clientSecret']);
+      }
+      return ApiResponces.error('Failed to fetch Secret key from backend.');
     } catch (e) {
       if (e is ApiException) {
         return ApiResponces.error(e.message);

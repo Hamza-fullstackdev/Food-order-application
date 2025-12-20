@@ -1,4 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart'
+    // show Stripe, SetupPaymentSheetParameters;
 import 'package:frontend/DataLayer/Response/api_responces.dart';
 import 'package:frontend/MVVM/models/cart_model.dart';
 import 'package:frontend/Repository/cart_repo.dart';
@@ -11,17 +13,20 @@ class CartsProvider extends ChangeNotifier {
   ApiResponces _getAllCartResponse = ApiResponces();
   ApiResponces _removeItemResponse = ApiResponces();
   ApiResponces _updateCartResponse = ApiResponces();
+  ApiResponces _stripeResponse = ApiResponces();
 
   ApiResponces get addtoCartResponse => _addtoCartResponse;
   ApiResponces get removeItemResponse => _removeItemResponse;
   ApiResponces get updateCartResponse => _updateCartResponse;
   ApiResponces get getAllCartResponse => _getAllCartResponse;
+  ApiResponces get stripeResponse => _stripeResponse;
 
   bool _isEditing = false;
   int _totalPrice = 0;
 
   final Map<int, int> _quantity = {}; // index → quantity
-  final Map<int, int> _price = {}; // index → total product price including variants
+  final Map<int, int> _price =
+      {}; // index → total product price including variants
 
   int get totalPrice => _totalPrice;
   bool get isEditing => _isEditing;
@@ -70,18 +75,14 @@ class CartsProvider extends ChangeNotifier {
 
         _quantity[i] = item.quantity ?? 1;
 
-
-
         _price[i] = 0;
         if (item.product?.variantGroups != null) {
           for (var group in item.product!.variantGroups!) {
             for (Options option in group.options ?? []) {
-              _price[i] = (_price[i] ?? 0) + (option.price ?? 0); 
+              _price[i] = (_price[i] ?? 0) + (option.price ?? 0);
             }
           }
         }
-
-         
       }
 
       calculateTotal();
@@ -143,6 +144,34 @@ class CartsProvider extends ChangeNotifier {
       _totalPrice += itemPrice * qty;
     }
 
+    notifyListeners();
+  }
+
+  Future<dynamic> setUpPayment() async {
+    try {
+      await getSecretKey(totalPrice.toDouble());
+      if (stripeResponse.status == ResponseStatus.success) {
+        // final String secretKey = stripeResponse.data!;
+        // // await Stripe.instance.initPaymentSheet(
+        // //   paymentSheetParameters: SetupPaymentSheetParameters(
+        // //     merchantDisplayName: 'Flutter App',
+        // //     paymentIntentClientSecret: secretKey,
+        // //     style: ThemeMode.system,
+        // //   ),
+        // // );
+        // await Stripe.instance.presentPaymentSheet();
+
+        return true;
+      }
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<void> getSecretKey(double amount) async {
+    _stripeResponse = ApiResponces.loading();
+    notifyListeners();
+    _stripeResponse = await _cartRepo.getSecretKey(amount);
     notifyListeners();
   }
 }
