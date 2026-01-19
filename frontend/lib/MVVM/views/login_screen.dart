@@ -48,61 +48,52 @@ class _LoginPageState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.orangeColor,
       resizeToAvoidBottomInset: false,
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          children: [
-            Container(
-              color: AppColors.blackColor,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.38,
-              child: Stack(
-                children: [
-                  Image.asset(AssetsPath.decorationImg2),
-                  Positioned(
-                    bottom: 70.0,
-                    width: MediaQuery.of(context).size.width,
-
-                    child: Column(
-                      children: [
-                        Center(
-                          child: TextViewNormal(
-                            isBold: true,
-                            size: 30,
-                            text: "Log In",
-                            colors: AppColors.whiteColor,
-                          ),
-                        ),
-                        SizedBox(height: 5),
-                        TextViewNormal(
-                          text: "Please sign in to your existing account",
-                          // ignore: deprecated_member_use
-                          colors: AppColors.whiteColor.withOpacity(0.7),
-                          align: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            AssetsPath.decorationImg2,
+            height: 150,
+            color: AppColors.dartWhiteColor,
+            fit: BoxFit.cover,
+          ),
+          Column(
+            children: [
+              Center(
+                child: TextViewNormal(
+                  isBold: true,
+                  size: 30,
+                  text: "Log In",
+                  colors: AppColors.whiteColor,
+                ),
               ),
-            ),
-            Positioned(
-              bottom: 0,
+              SizedBox(height: 5),
+              TextViewNormal(
+                text: "Please sign in to your existing account",
+                // ignore: deprecated_member_use
+                colors: AppColors.whiteColor.withOpacity(0.7),
+                align: TextAlign.center,
+              ),
+            ],
+          ),
 
-              child: SingleChildScrollView(
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.65,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+          Expanded(
+            child: SafeArea(
+              child: Container(
+                // height: MediaQuery.of(context).size.height * 0.65,
+                padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),
 
-                  decoration: BoxDecoration(
-                    color: AppColors.whiteColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
+                decoration: BoxDecoration(
+                  color: AppColors.whiteColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
+                ),
+                child: SingleChildScrollView(
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -127,6 +118,7 @@ class _LoginPageState extends State<LoginScreen> {
                         EditTextForm(
                           hintMessage: 'enter password here...',
                           controller: _passController,
+
                           isPassword: _obsecureText,
                           errorMessage: "Password should not be empty",
                           keyboardType: TextInputType.text,
@@ -309,8 +301,8 @@ class _LoginPageState extends State<LoginScreen> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

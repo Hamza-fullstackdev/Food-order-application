@@ -1,5 +1,5 @@
 class ApiUrl {
-  static final String baseUrl = 'http://192.168.0.113:5000/api/v1/';
+  static final String baseUrl = 'http://192.168.101.202:5000/api/v1/';
   static final String registerUrl = '${baseUrl}auth/register';
   static final String loginUrl = '${baseUrl}auth/login';
 

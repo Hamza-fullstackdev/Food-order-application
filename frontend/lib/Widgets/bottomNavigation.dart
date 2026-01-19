@@ -38,11 +38,20 @@ class _FoodCourierBottomNavState extends State<FoodCourierBottomNav> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         selectedItemColor: AppColors.orangeColor,
-        unselectedItemColor: const Color.fromARGB(255, 226, 147, 69),
-        backgroundColor: Colors.white,
+        unselectedItemColor: AppColors.lightBlackColor,
+        backgroundColor: AppColors.lightOrangeColor,
+
+        selectedFontSize: 16,
+        unselectedFontSize: 14,
+        unselectedIconTheme: const IconThemeData(size: 25),
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w900),
+        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+
+        selectedIconTheme: const IconThemeData(size: 30),
+
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.house_fill),
             label: 'Home',
@@ -51,7 +60,11 @@ class _FoodCourierBottomNavState extends State<FoodCourierBottomNav> {
             icon: Icon(CupertinoIcons.shopping_cart),
             label: 'Cart',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Chat'),
+          BottomNavigationBarItem(
+            activeIcon: Icon(Icons.chat_rounded),
+            icon: Icon(Icons.chat),
+            label: 'Chat',
+          ),
           BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.userSecret),
             label: 'Profile',

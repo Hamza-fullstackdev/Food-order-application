@@ -1,6 +1,9 @@
 import 'dart:ui';
 
 class AppColors {
+  
+  //! Private constructor to prevent instantiation
+  const AppColors._(); 
 
   static const greyColorDark = Color(0xff3B3B3B);
   static const lightGrey = Color(0xffE6E6E6);

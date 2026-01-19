@@ -39,7 +39,8 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.38,
               child: Stack(
-                children: [
+                children: [                
+                  
                   Image.asset(AssetsPath.decorationImg2),
                   Padding(
                     padding: const EdgeInsets.only(top: 48,left: 16),
