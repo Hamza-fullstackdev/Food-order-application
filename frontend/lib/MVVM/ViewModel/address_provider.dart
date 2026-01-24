@@ -33,7 +33,7 @@ class AddressProvider extends ChangeNotifier {
   Position get position => _position!;
   LatLng get latLng => _latLng!;
   List<String> get labelList => _labelsList;
-  String get selectedAddress => _selectedAddress!;
+  String get selectedAddress => _selectedAddress ?? ' ';
 
   void updateLabel(String newLabel) {
     selectedLabel = newLabel;

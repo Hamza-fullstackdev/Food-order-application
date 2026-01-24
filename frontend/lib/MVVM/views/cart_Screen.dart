@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/MVVM/ViewModel/address_provider.dart';
 import 'package:frontend/MVVM/ViewModel/cart_provider.dart';
+import 'package:frontend/MVVM/ViewModel/order_provider.dart';
 import 'package:frontend/MVVM/models/cart_model.dart';
 import 'package:frontend/Resources/app_colors.dart';
 import 'package:frontend/Resources/app_messeges.dart';
@@ -41,7 +42,7 @@ class _CartPageState extends State<CartPage> {
             Container(
               padding: EdgeInsets.all(16),
               height: MediaQuery.of(context).size.height,
-              color: AppColors.blackColor,
+              color: AppColors.whiteColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,7 +72,7 @@ class _CartPageState extends State<CartPage> {
                           TextViewNormal(
                             text: 'Cart',
                             size: 20,
-                            colors: AppColors.whiteColor,
+                            colors: AppColors.blackColor,
                           ),
                         ],
                       ),
@@ -81,10 +82,11 @@ class _CartPageState extends State<CartPage> {
                             value.setIsEditing();
                           },
                           child: TextViewNormal(
+                            size: 14,
                             text: value.isEditing ? 'Done' : 'EDIT Items',
                             colors: value.isEditing
                                 ? Colors.green.shade400
-                                : AppColors.darkOrangeColor,
+                                : AppColors.greyColorDark,
                           ),
                         ),
                       ),
@@ -123,7 +125,7 @@ class _CartPageState extends State<CartPage> {
 
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: AppColors.darkBlack,
+                                  color: AppColors.lightGrey,
                                 ),
                                 child: IntrinsicHeight(
                                   child: Row(
@@ -154,7 +156,7 @@ class _CartPageState extends State<CartPage> {
                                           borderRadius: BorderRadius.circular(
                                             10,
                                           ),
-                                          color: AppColors.greyColorlight,
+                                          color: AppColors.darkBlack,
                                           image: DecorationImage(
                                             image: NetworkImage(
                                               currentCart.product!.image!,
@@ -193,10 +195,9 @@ class _CartPageState extends State<CartPage> {
                                                         .product!
                                                         .name!,
                                                     size: 14,
-                                                    colors:
-                                                        AppColors.whiteColor,
+                                                    colors: AppColors.darkBlack,
                                                   ),
-                                                  InkWell(
+                                                  GestureDetector(
                                                     onTap: () {
                                                       cartList.remove(index);
                                                       value.removeFromCart(
@@ -285,16 +286,17 @@ class _CartPageState extends State<CartPage> {
                                                                       value
                                                                           .quantity[index]!)
                                                                   .toString(),
-                                                          size: 14,
+                                                          size: 12,
+                                                          isBold: true,
                                                           colors: AppColors
-                                                              .whiteColor,
+                                                              .blackColor,
                                                         ),
                                                   ),
                                                   Row(
                                                     mainAxisSize:
                                                         MainAxisSize.min,
                                                     children: [
-                                                      InkWell(
+                                                      GestureDetector(
                                                         onTap: () async {
                                                           value.decrement(
                                                             currentCart.sId!,
@@ -305,7 +307,10 @@ class _CartPageState extends State<CartPage> {
                                                           radius: 14,
                                                           backgroundColor:
                                                               AppColors
-                                                                  .orangeColor,
+                                                                  .darkGreyColor
+                                                                  .withOpacity(
+                                                                    0.7,
+                                                                  ),
                                                           child: TextViewLarge(
                                                             text: '-',
                                                             isBold: true,
@@ -326,7 +331,7 @@ class _CartPageState extends State<CartPage> {
                                                             .whiteColor,
                                                       ),
                                                       SizedBox(width: 10),
-                                                      InkWell(
+                                                      GestureDetector(
                                                         onTap: () async {
                                                           value.increment(
                                                             currentCart.sId!,
@@ -337,7 +342,10 @@ class _CartPageState extends State<CartPage> {
                                                           radius: 14,
                                                           backgroundColor:
                                                               AppColors
-                                                                  .orangeColor,
+                                                                  .darkGreyColor
+                                                                  .withOpacity(
+                                                                    0.7,
+                                                                  ),
                                                           child: TextViewNormal(
                                                             isBold: true,
                                                             colors: AppColors
@@ -377,7 +385,7 @@ class _CartPageState extends State<CartPage> {
 
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: AppColors.whiteColor,
+                  color: AppColors.orangeColor.withOpacity(0.9),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(25),
                     topRight: Radius.circular(25),
@@ -393,19 +401,18 @@ class _CartPageState extends State<CartPage> {
                           TextViewNormal(
                             text: 'Delivery Address',
                             size: 14,
-                            colors: AppColors.darkBlack,
+                            colors: AppColors.whiteColor,
                           ),
                           Consumer<AddressProvider>(
-                            builder: (context, value, child) => InkWell(
+                            builder: (context, value, child) => GestureDetector(
                               onTap: () => Navigator.pushNamed(
                                 context,
                                 AppRoutes.allAddressPage,
                                 arguments: value.latLng,
                               ),
-                              child: TextViewNormal(
-                                text: 'Update',
-                                colors: AppColors.orangeColor,
-                                size: 16,
+                              child: Icon(
+                                Icons.edit_location_outlined,
+                                color: AppColors.whiteColor,
                               ),
                             ),
                           ),
@@ -437,42 +444,21 @@ class _CartPageState extends State<CartPage> {
                       SizedBox(height: 20),
 
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              TextViewNormal(
-                                text: 'Total:',
-                                size: 12,
-                                // ignore: deprecated_member_use
-                                colors: AppColors.blackColor.withOpacity(0.7),
-                              ),
-
-                              Consumer<CartsProvider>(
-                                builder: (context, value, child) =>
-                                    TextViewNormal(
-                                      text: (value.totalPrice).toString(),
-                                      size: 14,
-                                      colors: AppColors.blackColor,
-                                    ),
-                              ),
-                            ],
+                          TextViewNormal(
+                            text: 'Price:',
+                            size: 12,
+                            isBold: true,
+                            // ignore: deprecated_member_use
+                            colors: AppColors.whiteColor,
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextViewNormal(
-                                text: 'Breakdown',
-                                colors: AppColors.orangeColor,
-                                size: 12,
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: AppColors.darkGreyColor,
-                                size: 16,
-                              ),
-                            ],
+                          Spacer(),
+                          Consumer<CartsProvider>(
+                            builder: (context, value, child) => TextViewNormal(
+                              text: (value.totalPrice).toString(),
+                              size: 14,
+                              colors: AppColors.whiteColor.withOpacity(0.9),
+                            ),
                           ),
                         ],
                       ),
@@ -480,34 +466,66 @@ class _CartPageState extends State<CartPage> {
                       Consumer<CartsProvider>(
                         builder: (context, value, child) =>
                             ButtonContainerFilled(
+                              color: AppColors.whiteColor,
                               function: () async {
-                                final isPayment = await value
-                                    .setUpPayment();
-                                if (isPayment == true) {
+                                final provider = Provider.of<OrderProvider>(
+                                  context,
+                                  listen: false,
+                                );
+                                await provider.submitOrders();
+                                if (provider.orderResponse.status ==
+                                    ResponseStatus.success) {
                                   MessageUtils.showSnackBar(
                                     context,
                                     "Payment Success",
                                   );
                                   Navigator.pushReplacementNamed(
                                     context,
+                                    // result: Transform.flip(),
                                     AppRoutes.paymentSuccess,
                                   );
-                                } else {
+                                } else if (provider.orderResponse.status ==
+                                    ResponseStatus.failed) {
                                   MessageUtils.showSnackBar(
                                     context,
-                                    isPayment.toString(),
+                                    provider.orderResponse.message ??
+                                        'Failed to process order...',
                                   );
                                 }
+
+                                // final isPayment = await value
+                                //     .setUpPayment();
+                                // if (isPayment == true) {
+                                //   MessageUtils.showSnackBar(
+                                //     context,
+                                //     "Payment Success",
+                                //   );
+                                //   Navigator.pushReplacementNamed(
+                                //     context,
+                                //     AppRoutes.paymentSuccess,
+                                //   );
+                                // } else {
+                                //   MessageUtils.showSnackBar(
+                                //     context,
+                                //     isPayment.toString(),
+                                //   );
+                                // }
                               },
                               height: 57,
                               width: MediaQuery.of(context).size.width,
                               child:
-                                  value.stripeResponse.status ==
+                                  Provider.of<OrderProvider>(
+                                        context,
+                                      ).orderResponse.status ==
                                       ResponseStatus.loading
-                                  ? Center(child: CircularProgressIndicator())
+                                  ? Center(
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.orangeColor,
+                                      ),
+                                    )
                                   : TextViewNormal(
                                       text: 'Place Order',
-                                      colors: AppColors.whiteColor,
+                                      colors: AppColors.orangeColor,
                                     ),
                             ),
                       ),

@@ -22,12 +22,12 @@ class ProductRepo {
         }
         return ApiResponces.success(productsList);
       }
-      return ApiResponces.error(data['message'] ?? 'No product found, please try again later!!');
+      return ApiResponces.failed(data['message'] ?? 'No product found, please try again later!!');
     } catch (e) {
       if (e is ApiException) {
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 }

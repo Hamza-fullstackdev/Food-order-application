@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:frontend/Resources/app_colors.dart';
 
 class MessageUtils {
+  
   static void showToast(
     String message, {
     ToastGravity gravity = ToastGravity.BOTTOM,
@@ -30,7 +31,11 @@ class MessageUtils {
     int durationInSeconds = 2,
   }) {
     final snackBar = SnackBar(
-      content: Text(message),
+      behavior: SnackBarBehavior.floating,
+      clipBehavior: Clip.antiAlias,
+      padding: EdgeInsets.symmetric(vertical: 24,horizontal: 16),
+      dismissDirection: DismissDirection.horizontal,
+      content: Text(message,style: TextStyle(color: AppColors.dartWhiteColor),),
       backgroundColor: backgroundColor,
       duration: Duration(seconds: durationInSeconds),
     );

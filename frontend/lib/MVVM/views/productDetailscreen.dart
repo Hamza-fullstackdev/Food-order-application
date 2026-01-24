@@ -2,7 +2,6 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/DataLayer/Response/api_responces.dart';
 import 'package:frontend/MVVM/ViewModel/cart_provider.dart';
 import 'package:frontend/MVVM/ViewModel/product_detail_provider.dart';
 import 'package:frontend/MVVM/models/GetProduct_ByCategoryId.dart';
@@ -42,6 +41,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     deliveryCharges = args[1];
     deliveryTime = args[2];
     rating = args[3];
+  }
+  
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -358,24 +362,30 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 ),
                                 const SizedBox(width: kIsWeb ? 15 : 10),
                                 Consumer<ProductDetailProvider>(
-                                  builder: (context, value, child) =>
-                                      TextButton(
-                                        onPressed: () {
-                                          value.updateQuntity(
-                                            value.quantity + 1,
-                                          );
-                                        },
-                                        child: CircleAvatar(
-                                          radius: 18,
-                                          backgroundColor: AppColors.darkBlack,
-                                          child: TextViewNormal(
-                                            isBold: true,
-                                            colors: AppColors.whiteColor,
-                                            size: 14,
-                                            text: '+',
-                                          ),
-                                        ),
+                                  builder: (context, value, child) => TextButton(
+                                    onPressed: () {
+                                      if (value.validateVarients(
+                                        productsModel.variantGroups!,
+                                      )) {
+                                        value.updateQuntity(value.quantity + 1);
+                                      } else {
+                                        MessageUtils.showSnackBar(
+                                          context,
+                                          'Please Select required varients...',
+                                        );
+                                      }
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 18,
+                                      backgroundColor: AppColors.darkBlack,
+                                      child: TextViewNormal(
+                                        isBold: true,
+                                        colors: AppColors.whiteColor,
+                                        size: 14,
+                                        text: '+',
                                       ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -403,6 +413,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   );
                                   if (provider.addtoCartResponse.status ==
                                       ResponseStatus.success) {
+                                        value.reset();
                                     Navigator.popAndPushNamed(
                                       context,
                                       AppRoutes.cartPage,
@@ -415,7 +426,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       context,
                                       provider.addtoCartResponse.message!,
                                     );
-                                    (provider.addtoCartResponse.message!);
                                   }
                                 } else {
                                   MessageUtils.showSnackBar(
@@ -428,10 +438,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               child:
                                   Provider.of<CartsProvider>(
                                         context,
-                                        listen: false,
+                                        listen: true,
                                       ).addtoCartResponse.status ==
-                                      ApiResponces.loading
-                                  ? Center(child: CircularProgressIndicator())
+                                      ResponseStatus.loading
+                                  ? Center(child: CircularProgressIndicator(
+                                    color: AppColors.dartWhiteColor,
+                                  ))
                                   : TextViewNormal(
                                       text: 'Add to Cart',
                                       colors: AppColors.whiteColor,

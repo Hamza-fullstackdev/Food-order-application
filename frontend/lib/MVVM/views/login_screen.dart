@@ -143,8 +143,8 @@ class _LoginPageState extends State<LoginScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Checkbox(
-                                  checkColor: AppColors.orangeColor,
-
+                                  checkColor: AppColors.whiteColor,
+                                  activeColor: AppColors.orangeColor,
                                   value: _rememberMe,
                                   onChanged: (value) {
                                     setState(() {
@@ -206,7 +206,9 @@ class _LoginPageState extends State<LoginScreen> {
                                 child:
                                     value.loginResponse.status ==
                                         ResponseStatus.loading
-                                    ? CircularProgressIndicator()
+                                    ? CircularProgressIndicator(
+                                      color: AppColors.whiteColor,
+                                    )
                                     : TextViewNormal(
                                         text: "Login",
                                         size: 14,

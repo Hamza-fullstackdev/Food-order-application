@@ -25,14 +25,14 @@ class CartRepo {
       if (data != null && data['cartItem'] != null) {
         return ApiResponces.success(true);
       }
-      return ApiResponces.error(
+      return ApiResponces.failed(
         data['message'] ?? 'Item is already in the cart',
       );
     } catch (e) {
       if (e is ApiException) {
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 
@@ -47,12 +47,12 @@ class CartRepo {
         }
         return ApiResponces.success(cartList);
       }
-      return ApiResponces.error(data['message'] ?? 'No Item in the cart');
+      return ApiResponces.failed(data['message'] ?? 'No Item in the cart');
     } catch (e) {
       if (e is ApiException) {
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 
@@ -63,12 +63,12 @@ class CartRepo {
       if (data != null && data['message'] != null) {
         return ApiResponces.success(true);
       }
-      return ApiResponces.error(data['message'] ?? 'unable to remove item');
+      return ApiResponces.failed(data['message'] ?? 'unable to remove item');
     } catch (e) {
       if (e is ApiException) {
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 
@@ -81,12 +81,12 @@ class CartRepo {
       if (data != null && data['message'] != null) {
         return ApiResponces.success(true);
       }
-      return ApiResponces.error(data['message'] ?? 'unable to remove item');
+      return ApiResponces.failed(data['message'] ?? 'unable to remove item');
     } catch (e) {
       if (e is ApiException) {
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 
@@ -98,12 +98,12 @@ class CartRepo {
       if (data != null && data['clientSecret'] != null) {
         return ApiResponces.success(data['clientSecret']);
       }
-      return ApiResponces.error('Failed to fetch Secret key from backend.');
+      return ApiResponces.failed('Failed to fetch Secret key from backend.');
     } catch (e) {
       if (e is ApiException) {
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 }

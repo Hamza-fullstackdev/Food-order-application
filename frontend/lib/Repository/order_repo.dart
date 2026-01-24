@@ -16,12 +16,12 @@ class OrderRepo {
       if (data != null && data['order'] != null) {
         return ApiResponces.success(true);
       }
-      return ApiResponces.error(data['message'] ?? 'Cart is empty.');
+      return ApiResponces.failed(data['message'] ?? 'Cart is empty.');
     } catch (e) {
       if (e is ApiException) {
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 
@@ -37,22 +37,22 @@ class OrderRepo {
       final data = await _orders.getRoutes(url, apiKey);
 
       if (data == null) {
-        return ApiResponces.error('No response from routing service');
+        return ApiResponces.failed('No response from routing service');
       }
 
       final routeResponse = RouteResponse.fromJson(data);
 
       if (routeResponse.features.isEmpty) {
-        return ApiResponces.error('No route found');
+        return ApiResponces.failed('No route found');
       }
       final polylinePoints = routeResponse.features.first.geometry.points;
 
       return ApiResponces.success(polylinePoints);
     } catch (e) {
       if (e is ApiException) {
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 }

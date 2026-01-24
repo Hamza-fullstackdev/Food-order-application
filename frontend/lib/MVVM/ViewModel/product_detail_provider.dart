@@ -6,8 +6,8 @@ class ProductDetailProvider extends ChangeNotifier {
   int _totalPrice = 0;
   int _basePrice = 0;
 
-  final Map<String, String> _isRadio = {};
-  final Map<String, Set<String>> _selectedSwitches = {};
+  Map<String, String> _isRadio = {};
+  Map<String, Set<String>> _selectedSwitches = {};
 
   Map<String, String> get isRadio => _isRadio;
   Map<String, Set<String>> get isSwitch => _selectedSwitches;
@@ -135,5 +135,13 @@ class ProductDetailProvider extends ChangeNotifier {
     _totalPrice = (_basePrice + totalPrice) * quantity;
 
     notifyListeners();
+  }
+  void reset(){
+    _quantity = 1;
+   _totalPrice = 0;
+   _basePrice = 0;
+
+   _isRadio = {};
+   _selectedSwitches = {};
   }
 }

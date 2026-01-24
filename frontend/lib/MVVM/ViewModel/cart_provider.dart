@@ -34,13 +34,11 @@ class CartsProvider extends ChangeNotifier {
   Map<int, int> get quantity => _quantity;
   Map<int, int> get price => _price;
 
-  // Toggle editing mode (delete mode)
   void setIsEditing() {
     _isEditing = !_isEditing;
     notifyListeners();
   }
 
-  // Add item to cart
   Future<void> setCarts(
     String productId,
     int quantity,
@@ -174,4 +172,5 @@ class CartsProvider extends ChangeNotifier {
     _stripeResponse = await _cartRepo.getSecretKey(amount);
     notifyListeners();
   }
+
 }

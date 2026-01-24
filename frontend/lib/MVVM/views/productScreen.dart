@@ -591,7 +591,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                                   context,
                                                   AppRoutes.productDetailPage,
                                                   arguments: [
-                                                    productsList[0],
+                                                    productsList[index],
                                                     '4.3',
                                                     'Free',
                                                     '20 min',

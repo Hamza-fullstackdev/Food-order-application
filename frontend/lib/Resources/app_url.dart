@@ -1,5 +1,5 @@
 class ApiUrl {
-  static final String baseUrl = 'http://192.168.101.202:5000/api/v1/';
+  static final String baseUrl = 'http://192.168.0.115:5000/api/v1/';
   static final String registerUrl = '${baseUrl}auth/register';
   static final String loginUrl = '${baseUrl}auth/login';
 
@@ -18,5 +18,6 @@ class ApiUrl {
 
   static final String submitOrders = '${baseUrl}order/create-order';
 
-  static final String paymentUrl = 'http://192.168.0.113:8080/api/payment/create-payment-intent';
+  static final String paymentUrl =
+      'http://192.168.8.15:8080/api/payment/create-payment-intent';
 }

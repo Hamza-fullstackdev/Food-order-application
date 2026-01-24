@@ -31,9 +31,9 @@ class AuthRepo {
       return ApiResponces.success(data);
     } catch (e) {
       if (e is ApiException) {
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 
@@ -50,9 +50,9 @@ class AuthRepo {
     } catch (e) {
       if (e is ApiException) {
 
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 }

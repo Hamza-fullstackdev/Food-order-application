@@ -20,13 +20,13 @@ class CategoryRepo {
       return ApiResponces.success(categoriesList);
 
       }
-      return ApiResponces.error(data['message'] ?? "No Category found, please try again!!");
+      return ApiResponces.failed(data['message'] ?? "No Category found, please try again!!");
 
     } catch (e) {
       if (e is ApiException) {
-        return ApiResponces.error(e.message);
+        return ApiResponces.failed(e.message);
       }
-      return ApiResponces.error("Unexpected error: ${e.toString()}");
+      return ApiResponces.failed("Unexpected error: ${e.toString()}");
     }
   }
 }
